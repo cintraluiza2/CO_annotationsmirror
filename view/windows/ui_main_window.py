@@ -1,4 +1,5 @@
 from qt_core import *
+from view.widgets.py_push_button import PyPushButton
 
 # Main Window
 class UiMainWindow(object):
@@ -25,10 +26,20 @@ class UiMainWindow(object):
         # Top Frame Menu
         self.left_menu_top_frame = QFrame()
         self.left_menu_top_frame.setMinimumHeight(50)
-        self.left_menu_top_frame.setStyleSheet("background-color: red")
-        
         # Top Buttons
-        self.togle_button_menu = QPushButton("Menu")
+        self.toggle_button_menu = PyPushButton("Menu", icon_path="burger.svg")
+        
+        # Button Spacer
+        self.button_space = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        
+        # Central Frame Menu
+        self.left_menu_central_frame = QFrame()
+        self.left_menu_central_frame.setMinimumHeight(50)
+        # Central Buttons
+        self.button_home = PyPushButton("Home", is_active=True, icon_path="home.svg")
+        self.button_class = PyPushButton("Classification", icon_path="class.svg")
+        self.button_extra = PyPushButton("Extraction", icon_path="extraction.svg")
+        self.button_data = PyPushButton("Data", icon_path="data.svg")
         
         # Menu Spacer
         self.left_menu_spacer = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -36,7 +47,9 @@ class UiMainWindow(object):
         # Bottom Frame Menu
         self.left_menu_bottom_frame = QFrame()
         self.left_menu_bottom_frame.setMinimumHeight(50)
-        self.left_menu_bottom_frame.setStyleSheet("background-color: red")
+        
+        # Bottom Buttons
+        self.button_exit = PyPushButton("Exit", icon_path="exit.svg")
         
         # Label Version
         self.left_menu_label_version = QLabel("v1.0.0")
@@ -83,10 +96,20 @@ class UiMainWindow(object):
         self.left_menu_layout.setContentsMargins(0, 0, 0, 0)
         self.left_menu_layout.setSpacing(0)
 
-        # Top Frame Layout
+        # Top Frame Layout Menu
         self.left_menu_top_layout = QVBoxLayout(self.left_menu_top_frame)
         self.left_menu_top_layout.setContentsMargins(0, 0, 0, 0)
         self.left_menu_top_layout.setSpacing(0)
+        
+        # Central Frame Layout Menu
+        self.left_menu_central_layout = QVBoxLayout(self.left_menu_central_frame)
+        self.left_menu_central_layout.setContentsMargins(0, 0, 0, 0)
+        self.left_menu_central_layout.setSpacing(20)
+        
+        # Bottom Frame Layout Menu
+        self.left_menu_bottom_layout = QVBoxLayout(self.left_menu_bottom_frame)
+        self.left_menu_bottom_layout.setContentsMargins(0, 0, 0, 0)
+        self.left_menu_bottom_layout.setSpacing(0)
         
         # Content Layout
         self.content_layout = QVBoxLayout(self.content)
@@ -104,9 +127,19 @@ class UiMainWindow(object):
         
         # Add Widgest Left Menu
         self.left_menu_layout.addWidget(self.left_menu_top_frame)
+        self.left_menu_layout.addItem(self.button_space)
+        self.left_menu_layout.addWidget(self.left_menu_central_frame)
         self.left_menu_layout.addItem(self.left_menu_spacer)
         self.left_menu_layout.addWidget(self.left_menu_bottom_frame)
         self.left_menu_layout.addWidget(self.left_menu_label_version)
+        
+        # Add Buttons Menu
+        self.left_menu_top_layout.addWidget(self.toggle_button_menu)
+        self.left_menu_central_layout.addWidget(self.button_home)
+        self.left_menu_central_layout.addWidget(self.button_class)
+        self.left_menu_central_layout.addWidget(self.button_extra)
+        self.left_menu_central_layout.addWidget(self.button_data)
+        self.left_menu_bottom_layout.addWidget(self.button_exit)
         
         # Add widgets content 
         self.content_layout.addWidget(self.top_bar)
