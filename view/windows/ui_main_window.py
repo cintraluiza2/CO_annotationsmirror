@@ -95,7 +95,7 @@ class UiMainWindow(object):
         self.classification_page = UiClassification()
         self.classification_page.setup_ui(self.pages)
         
-        # -------------------------------------------------------------------- LAYOUTS
+# -------------------------------------------------------------------- LAYOUTS
         # Layoyt Main Window
         self.main_layout = QHBoxLayout(self.central_frame)
         self.main_layout.setContentsMargins(0, 0, 0, 0)
@@ -130,7 +130,7 @@ class UiMainWindow(object):
         self.top_bar_layout = QHBoxLayout(self.top_bar)
         self.top_bar_layout.setContentsMargins(20, 0, 53, 0)
     
-        # -------------------------------------------------------------------- Widgets
+# -------------------------------------------------------------------- Widgets
         # Add widgets app
         self.main_layout.addWidget(self.left_menu)
         self.main_layout.addWidget(self.content)

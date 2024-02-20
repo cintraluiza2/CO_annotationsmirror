@@ -12,6 +12,6 @@ from controller.view_control import *
 # -----------------------Main ---------------------------
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = LoginWindow()
     sys.exit(app.exec())
     

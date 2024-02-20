@@ -69,6 +69,7 @@ class PyPushButton(QPushButton):
         else:
             self.setStyleSheet(style + active_style)
             
+    # ------------------------------------------------- Draw Image ----------------------------------------------
     def paintEvent(self, event) -> None:
         # Return Default Style
         QPushButton.paintEvent(self, event)

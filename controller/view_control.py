@@ -2,11 +2,21 @@
 # Import QT Core
 from qt_core import *
 
-# Import Main Window
+# Import Windows
+from view.windows.ui_login_window import UiLoginWindow
 from view.windows.ui_main_window import UiMainWindow
 # IMPORT WIDGETS
 from view.widgets.py_message_options import WarningMessageBox
 
+class LoginWindow(QMainWindow):
+    def __init__(self) -> None:
+        super().__init__()
+        
+        # Setup Login Window
+        self.ui = UiLoginWindow()
+        self.ui.setup_ui(self)
+        
+        self.show()
 
 # --------------- Main Window ------------------
 class MainWindow(QMainWindow):

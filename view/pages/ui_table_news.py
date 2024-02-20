@@ -11,7 +11,7 @@ class UiTableNews(object):
         
         # CREATE CENTRAL WIDGET
         self.central_frame = QFrame()
-        self.central_frame.setStyleSheet("font-family: 'Roboto'; color: black; background-color: #E5E5E5")
+        self.central_frame.setStyleSheet("font-family: 'Roboto'; color: black; background-color: #FFFFFF")
         
 # -------------------------------------------------------------------- ITENS/FRAMES
         # LABEL
