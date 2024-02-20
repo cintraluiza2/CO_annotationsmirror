@@ -31,6 +31,16 @@ class PyPushButton(QPushButton):
         self.set_style(text_padding=self.text_padding, text_color=self.text_color, btn_color=self.btn_color, btn_hover=self.btn_hover, btn_pressed=self.btn_pressed, is_active=self.is_active)
         
     # ------------------------------------------------- Methods ----------------------------------------------
+    def set_active(self, is_active_menu):
+        self.set_style(
+            text_padding=self.text_padding, 
+            text_color=self.text_color, 
+            btn_color=self.btn_color, 
+            btn_hover=self.btn_hover, 
+            btn_pressed=self.btn_pressed, 
+            is_active=is_active_menu
+        )
+    
     def set_style(self, text_padding = 55, text_color = "#FFFFFF", btn_color = "#1B4269", btn_hover = "#2563A0", btn_pressed = "#133557", is_active = False):
         
         style = f"""

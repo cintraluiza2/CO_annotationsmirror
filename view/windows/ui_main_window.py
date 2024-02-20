@@ -1,5 +1,9 @@
 from qt_core import *
+# IMPORT WIDGETS
 from view.widgets.py_push_button import PyPushButton
+#IMPORT PAGES
+from view.pages.ui_classification import UiClassification
+from view.pages.ui_table_news import UiTableNews
 
 # Main Window
 class UiMainWindow(object):
@@ -13,10 +17,9 @@ class UiMainWindow(object):
 
         # CREATE CENTRAL WIDGET
         self.central_frame = QFrame()
-        self.central_frame.setStyleSheet("background-color: #E5E5E5")
+        self.central_frame.setStyleSheet("font-family: 'Roboto'; color: black; background-color: #E5E5E5")
         
-        # -------------------------------------------------------------------- Itens
-        
+# ---------------------------------------------------------------------- ITENS/FRAMES
         # ------------------------ LEFT MENU ------------------------
         self.left_menu = QFrame()
         self.left_menu.setStyleSheet("background-color: #1B4269;")
@@ -84,6 +87,13 @@ class UiMainWindow(object):
         # ------------------------ PAGES ------------------------
         self.pages = QStackedWidget()
         self.pages.setStyleSheet("font-family: Roboto; font-size: 12pt; background-color: #FFFFFF")
+        # TABLE NEWS PAGE
+        self.table_news_page = UiTableNews()
+        self.table_news_page.setup_ui(self.pages)
+        
+        # CLASSIFICATION PAGE
+        self.classification_page = UiClassification()
+        self.classification_page.setup_ui(self.pages)
         
         # -------------------------------------------------------------------- LAYOUTS
         # Layoyt Main Window
