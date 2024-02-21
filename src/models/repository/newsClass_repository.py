@@ -2,7 +2,7 @@
 from typing import Dict, List
 
 
-class NewsClassRepository:
+class NewsClassRepository():
     def __init__(self, db_connection) -> None:
         self.__collection_name = "newsClass"
         self.__db_connection = db_connection

@@ -1,7 +1,7 @@
 ﻿from pymongo import MongoClient
 from .mongo_db_configs import mongo_db_infos
 
-class DBConnectionHandler:
+class DBConnectionHandler():
     def __init__(self) -> None:
         self.__connection_string = 'mongodb://{}:{}'.format(
             mongo_db_infos["HOST"],
