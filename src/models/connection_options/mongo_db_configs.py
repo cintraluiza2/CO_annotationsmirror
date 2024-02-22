@@ -3,5 +3,5 @@
     "PORT": "27017",
     "USERNAME": "",
     "PASSWORD": "",
-    "DB_NAME": "newsClass"
+    "DB_NAME": "crimeOrganizado"
 }

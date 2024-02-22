@@ -4,7 +4,7 @@ import os
 class UiLoginWindow(object):
     def setup_ui(self, parent):
         if not parent.objectName():
-            parent.setObjectName("MainWindow")
+            parent.setObjectName("parent")
         
         # SET INITIAL PARAMETERS
         parent.resize(700, 600)
@@ -57,7 +57,7 @@ class UiLoginWindow(object):
             border-style: solid;  
             border-color: black; 
             border-radius: 20px;
-            background-color: #EAEEF2; 
+            background-color: #CED2D6; 
             padding: 10px 10px 10px 15px;
             color: #524F4F
         """   
@@ -101,6 +101,8 @@ class UiLoginWindow(object):
         self.butons_access = QPushButton("Access")
         
 # ---------------------------------------------------------------------- Layouts
+        # CREATE WINDOW LAYOUT
+        self.window_layout = QVBoxLayout()
         # CREATE MAIN LAYOUT
         self.main_layout = QHBoxLayout(self.central_frame)
         self.main_layout.setContentsMargins(0, 0, 0, 0)
@@ -127,6 +129,8 @@ class UiLoginWindow(object):
         self.pass_layout = QVBoxLayout(self.pass_frame)
         
 # ---------------------------------------------------------------------- Widgets
+        # IN LAYOUT WINDOW
+        self.window_layout.addWidget(self.central_frame)
         # IN MAIN LAYOUT
         self.main_layout.addWidget(self.login_frame)
         
@@ -150,5 +154,5 @@ class UiLoginWindow(object):
         self.pass_layout.addWidget(self.txt_pass_word)
         
         # --------- SET CENTRAL WIDGET ------------
-        parent.setCentralWidget(self.central_frame)
+        parent.setLayout(self.window_layout)
         

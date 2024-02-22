@@ -4,7 +4,7 @@ from typing import Dict, List
 
 class NewsClassRepository():
     def __init__(self, db_connection) -> None:
-        self.__collection_name = "newsClass"
+        self.__collection_name = "newsData"
         self.__db_connection = db_connection
 
     # ------------------ Métodos de Inserção ------------------------
@@ -110,3 +110,5 @@ class NewsClassRepository():
         data = collection.delete_many(filters)
 
         return data.deleted_count
+    
+    

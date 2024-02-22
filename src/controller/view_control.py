@@ -6,19 +6,49 @@ from qt_core import *
 from view.windows.ui_login_window import UiLoginWindow
 from view.windows.ui_main_window import UiMainWindow
 # IMPORT WIDGETS
-from view.widgets.py_message_options import WarningMessageBox
+from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption
+# Imports Data
+from controller.db_control_connection import DBControlConnections
 
-class LoginWindow(QMainWindow):
+# ----------------------------Login Window--------------------------
+
+class LoginWindow(QDialog):
     def __init__(self) -> None:
         super().__init__()
+        
+        # DB CONTROL
+        self.__db_control = DBControlConnections()
         
         # Setup Login Window
         self.ui = UiLoginWindow()
         self.ui.setup_ui(self)
+        self.setWindowTitle("Login - QTSorting Hat")
+        
+        # Check Username and Password
+        self.ui.butons_access.clicked.connect(self.access_permission)
         
         self.show()
+        
+    def access_permission(self):
+        # DATABASE CHECK
+        txt_user = self.ui.txt_user.text()
+        txt_pass = self.ui.txt_pass_word.text()
+        result = self.__db_control.check_password(txt_user, txt_pass)
+        
+        if result[0]:
+            self.win = MainWindow()
+            self.win.show()
+            self.close() 
+        else:
+            if result[1] == "USER":
+                dlg = WarningMessageBox(title="Error", txt="Invalid username or password")
+            elif result[1] == "CPF":
+                dlg = WarningMessageBox(title="Error", txt="Invalid CPF. Please check the number.")
 
-# --------------- Main Window ------------------
+            dlg.exec()
+
+# ----------------------------Main Window--------------------------
+
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
@@ -40,6 +70,8 @@ class MainWindow(QMainWindow):
         self.ui.button_exit.clicked.connect(self.show_dialog_exit)
 
         self.show()
+
+# ---------------------------- Methods
 
     def toggle_button(self):
         # Get Menu Width
@@ -79,7 +111,7 @@ class MainWindow(QMainWindow):
         self.ui.pages.setCurrentIndex(1)
         
     def show_dialog_exit(self):        
-        dlg = WarningMessageBox(title="Attention!", text="Do you want to close the app?")
+        dlg = WarningMessageBoxOption(title="Attention!", txt="Do you want to close the app?")
         
         if dlg.exec_() == QMessageBox.Yes:
             self.close()
