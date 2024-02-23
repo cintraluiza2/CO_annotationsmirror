@@ -26,6 +26,8 @@ class MainWindow(QMainWindow):
         # TABLE PAGE
         self.table = self.ui.table_news_page.table
         self.table_init()
+        # CLASSIFICATION
+        self.classification = self.ui.classification_page
                 
         # Toggle Button
         self.ui.toggle_button_menu.clicked.connect(self.toggle_button)
@@ -96,4 +98,10 @@ class MainWindow(QMainWindow):
             
         
         self.table.resizeColumnsToContents()
+        
+    def set_text_class(self, title_news):
+        news = self.db.news_text(title_news)
+        text_news = news["article"]
+        self.classification.title_article.setText(title_news)
+        self.classification.text_box_article.setText(text_news)
         

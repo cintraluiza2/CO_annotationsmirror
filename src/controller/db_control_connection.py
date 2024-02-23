@@ -31,3 +31,9 @@ class DBControlConnections():
         # DATA NEWS
         list_news = self.__news_repository.select_many(optionsReturn={"_id": 0, "keyword": 0, "acquisition_date":0, "last_update": 0, "url": 0, "tags": 0, "article": 0, "manual_relevance_class": 0, "relevance_classification_date": 0, "relevance_model": 0})
         return list_news
+    
+    def news_text(self, title_news):
+        # DATA NEWS
+        filters = {"title": {"$regex": title_news}}
+        news_dic = self.__news_repository.select_one(filters=filters)
+        return news_dic
