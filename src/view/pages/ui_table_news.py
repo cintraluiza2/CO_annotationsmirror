@@ -23,7 +23,7 @@ class UiTableNews(object):
         #--------------------------- TABLE -------------------
         self.table = QTableWidget()
         self.table.setMinimumWidth(600)
-        self.table.setMaximumWidth(900)
+        self.table.setMaximumWidth(1200)
         self.table.setMaximumHeight(600)
         # Size Table
         self.table.setRowCount(50)
@@ -32,18 +32,21 @@ class UiTableNews(object):
         self.table.setColumnWidth(1, 100)
         self.table.setColumnWidth(2, 100)
         self.table.setColumnWidth(3, 100)
-        self.table.setColumnWidth(4, 150)
+        self.table.setColumnWidth(4, 100)
         
         # Define o modo de redimensionamento de todas as colunas para Qt.Fixed
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)  # Seleção de linha inteira
         self.table.setSelectionMode(QTableWidget.MultiSelection)  # Seleção de várias linhas
         # Definição do Header
-        self.table.setHorizontalHeaderLabels(["Title", "Publication", "Class", "Newspaper", "Level"])
+        self.table.setHorizontalHeaderLabels(["Publication", "Newspaper", "Title", "Class", "Level"])
         # Impede a edição de todas as células da tabela
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         # Oculta as linhas de divisão de coluna e linha
-        self.table.setShowGrid(False)
+        # self.table.setShowGrid(False)
+        
+        # Font
+        self.table.setStyleSheet("font-size: 11pt")
         
         # --------------------- BUTTONS --------------------------
         # Frame Button

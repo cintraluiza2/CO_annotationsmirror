@@ -19,6 +19,13 @@ class MainWindow(QMainWindow):
         # Setup Main Window
         self.ui = UiMainWindow()
         self.ui.setup_ui(self)
+        
+        # DB_CONTROL
+        self.db = DBControlConnections()
+        
+        # TABLE PAGE
+        self.table = self.ui.table_news_page.table
+        self.table_init()
                 
         # Toggle Button
         self.ui.toggle_button_menu.clicked.connect(self.toggle_button)
@@ -79,9 +86,14 @@ class MainWindow(QMainWindow):
         if dlg.exec_() == QMessageBox.Yes:
             self.close()
         
-class TableView(MainWindow):
-    def __init__(self) -> None:
-        super().__init__()
+# ------------------ TABLE CONTROL
+    def table_init(self):
+        list_news = self.db.news_list_table()
         
-        self.table = self.ui.table_news_page
-        self.table.setText("olá mundo")
+        for row, text in enumerate(list_news):
+            for column, label in enumerate(text):
+                self.table.setItem(row, column, QTableWidgetItem(str(text[label])))
+            
+        
+        self.table.resizeColumnsToContents()
+        
