@@ -7,7 +7,8 @@ import os
 from qt_core import *
 
 # Import Main Window
-from controller.view_control import *
+from controller.main_control import *
+from controller.login_control import *
 from controller.db_control_connection import *
 
 # -----------------------Main ---------------------------
