@@ -6,7 +6,8 @@ from PySide6.QtGui import QPaintEvent
 # Import QT Core
 from qt_core import *
 
-class PyPushButton(QPushButton):
+class PyPushButtonIcon(QPushButton):
+    
     def __init__(self, text = "", height = 40, minimum_width = 50, text_padding = 55, text_color = "#FFFFFF", icon_path = "", icon_color = "#FFFFFF", btn_color = "#1B4269", btn_hover = "#2563A0", btn_pressed = "#133557", is_active = False):
         super().__init__()
         
@@ -106,3 +107,53 @@ class PyPushButton(QPushButton):
         )
         
         painter.end()
+        
+# ------------------------------------------------------------------------------------ BUTTON GUI
+class PyPushButtonGUI(QPushButton):
+    def __init__(self, text = "", height = 40, width = 50, text_padding = 0, border_radius= 0, text_color = "#FFFFFF", btn_color = "#1B4269", btn_hover = "#2563A0", btn_pressed = "#133557", font_size = 12, font_family = "Arial"):
+        super().__init__()
+        
+        # Set Default Parameters
+        self.setText(text)
+        self.setMaximumHeight(height)
+        self.setMinimumHeight(height)
+        self.setMaximumWidth(width)
+        self.setMinimumWidth(150)
+        self.setCursor(Qt.PointingHandCursor)
+        
+        # Custom Parameters
+        self.text_padding = text_padding
+        self.text_color = text_color
+        self.btn_color = btn_color
+        self.btn_hover = btn_hover
+        self.btn_pressed = btn_pressed
+        self.font_size = font_size
+        self.font_family = font_family
+        self.border_radius = border_radius
+        
+        # Set Sytle
+        self._set_style(text_padding=self.text_padding, border_radius=border_radius, text_color=self.text_color, btn_color=self.btn_color, btn_hover=self.btn_hover, btn_pressed=self.btn_pressed, font_size=font_size, font_family=font_family)
+        
+    def _set_style(self, text_padding, border_radius, text_color, btn_color, btn_hover, btn_pressed, font_size, font_family):
+        
+        style = f"""
+        QPushButton {{
+            font-size: {font_size}pt;
+            font-family: {font_family};
+            color: {text_color};
+            background-color: {btn_color};
+            padding: {text_padding}px;
+            text-align: center;
+            border: solid;
+            border-radius: {border_radius}px;
+        }}
+        QPushButton::hover {{
+            background-color: {btn_hover};
+        }}
+        QPushButton::pressed {{
+            background-color: {btn_pressed};
+        }}
+        """
+
+        self.setStyleSheet(style)
+        

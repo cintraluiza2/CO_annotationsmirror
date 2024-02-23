@@ -1,5 +1,7 @@
 # Imports QT CORE
 from qt_core import *
+# IMPORTS WIDGETS
+from view.widgets.py_push_button import PyPushButtonGUI
 
 class UiTableNews(object):
     def setup_ui(self, parent):
@@ -48,10 +50,11 @@ class UiTableNews(object):
         self.frame_buttons = QFrame()
         self.frame_buttons.setMinimumHeight(50)
         self.frame_buttons.setMaximumHeight(50)
+        # self.frame_buttons.spacing(130)
         # Buttons
-        self.button_note = QPushButton("Note")
-        self.button_unselect = QPushButton("Unselect")
-        self.button_train = QPushButton("Train")
+        self.button_note = PyPushButtonGUI(text="Note", btn_color="#77966D", btn_hover="#6E9673", btn_pressed="#89966E", border_radius=20, width=187, font_size=13, font_family="Roboto")
+        self.button_unselect = PyPushButtonGUI(text="Unselect", btn_color="#D39854", btn_hover="#D4AA55", btn_pressed="#D48255", border_radius=20, width=187, font_size=13, font_family="Roboto")
+        self.button_train = PyPushButtonGUI(text="Train", btn_color="#1B5A69", btn_hover="#1B4269", btn_pressed="#1B695E", border_radius=20, width=187, font_size=13, font_family="Roboto")
         
 # -------------------------------------------------------------------- LAYOUTS
         # MAIN LAYOUT
@@ -68,7 +71,9 @@ class UiTableNews(object):
         self.main_layout.addWidget(self.frame_buttons)
         # IN BUTTONS LAYOUT
         self.buttons_layout.addWidget(self.button_note)
+        self.buttons_layout.addSpacing(120)
         self.buttons_layout.addWidget(self.button_unselect)
+        self.buttons_layout.addSpacing(120)
         self.buttons_layout.addWidget(self.button_train)
         
         # --------- SET CENTRAL WIDGET ------------

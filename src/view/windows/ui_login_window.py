@@ -1,5 +1,7 @@
 from qt_core import *
 import os
+# IMPORTS WIDGETS
+from view.widgets.py_push_button import PyPushButtonGUI
 
 class UiLoginWindow(object):
     def setup_ui(self, parent):
@@ -51,7 +53,7 @@ class UiLoginWindow(object):
         self.frame_input = QFrame()
         self.frame_input.setStyleSheet("font-size: 14pt; color: black;")
         self.frame_input.setMaximumWidth(448)
-        self.frame_input.setMaximumHeight(224)
+        self.frame_input.setMaximumHeight(300)
         
         style_line_edit = """
             border-style: solid;  
@@ -98,7 +100,7 @@ class UiLoginWindow(object):
         self.txt_user.setValidator(self.cpf_validator)
         
         # BUTTONS
-        self.butons_access = QPushButton("Access")
+        self.butons_access = PyPushButtonGUI(text="Access", font_family="Roboto", font_size=13, width=310, border_radius=20)
         
 # ---------------------------------------------------------------------- Layouts
         # CREATE WINDOW LAYOUT
@@ -144,6 +146,7 @@ class UiLoginWindow(object):
         # IN INPUT LAYOUT
         self.input_layout.addWidget(self.user_frame)
         self.input_layout.addWidget(self.pass_frame)
+        self.input_layout.addSpacing(10)
         self.input_layout.addWidget(self.butons_access)
         
         # IN USER LAYOUT

@@ -1,6 +1,6 @@
 from qt_core import *
 # IMPORT WIDGETS
-from view.widgets.py_push_button import PyPushButton
+from view.widgets.py_push_button import PyPushButtonIcon
 #IMPORT PAGES
 from view.pages.ui_classification import UiClassification
 from view.pages.ui_table_news import UiTableNews
@@ -30,7 +30,7 @@ class UiMainWindow(object):
         self.left_menu_top_frame = QFrame()
         self.left_menu_top_frame.setMinimumHeight(50)
         # Top Buttons
-        self.toggle_button_menu = PyPushButton("Menu", icon_path="burger.svg")
+        self.toggle_button_menu = PyPushButtonIcon("Menu", icon_path="burger.svg")
         
         # Button Spacer
         self.button_space = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -39,10 +39,10 @@ class UiMainWindow(object):
         self.left_menu_central_frame = QFrame()
         self.left_menu_central_frame.setMinimumHeight(50)
         # Central Buttons
-        self.button_home = PyPushButton("Home", is_active=True, icon_path="home.svg")
-        self.button_class = PyPushButton("Classification", icon_path="class.svg")
-        self.button_extra = PyPushButton("Extraction", icon_path="extraction.svg")
-        self.button_data = PyPushButton("Data", icon_path="data.svg")
+        self.button_home = PyPushButtonIcon("Home", is_active=True, icon_path="home.svg")
+        self.button_class = PyPushButtonIcon("Classification", icon_path="class.svg")
+        self.button_extra = PyPushButtonIcon("Extraction", icon_path="extraction.svg")
+        self.button_data = PyPushButtonIcon("Data", icon_path="data.svg")
         
         # Menu Spacer
         self.left_menu_spacer = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -52,7 +52,7 @@ class UiMainWindow(object):
         self.left_menu_bottom_frame.setMinimumHeight(50)
         
         # Bottom Buttons
-        self.button_exit = PyPushButton("Exit", icon_path="exit.svg")
+        self.button_exit = PyPushButtonIcon("Exit", icon_path="exit.svg")
         
         # Label Version
         self.left_menu_label_version = QLabel("v1.0.0")

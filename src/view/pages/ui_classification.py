@@ -1,4 +1,6 @@
 from qt_core import *
+# IMPORTS WIDGETS
+from view.widgets.py_push_button import PyPushButtonGUI, PyPushButtonIcon
 
 class UiClassification(object):
     def setup_ui(self, parent):
@@ -38,9 +40,11 @@ class UiClassification(object):
         self.frame_buttons.setMaximumHeight(50)
         
         # BUTTONS TEXT
-        self.button_back = QPushButton("Return")
-        self.button_accept = QPushButton("Accept")
-        self.button_rejected = QPushButton("Rejected")
+        self.button_back = PyPushButtonIcon(icon_path="arrow_return.svg", btn_color="transparent", btn_hover="transparent", btn_pressed="transparent", icon_color="#1B4269")
+        self.button_back.setMinimumWidth(50)
+        self.button_back.setMaximumWidth(50)
+        self.button_accept = PyPushButtonGUI("Accept", width=300, border_radius=20, font_family="Roboto", font_size=13, btn_color="#77966D", btn_hover="#566C4F", btn_pressed="#3B4A36")
+        self.button_rejected = PyPushButtonGUI("Rejected", width=300, border_radius=20, font_family="Roboto", font_size=13, btn_color="#941C2F", btn_hover="#8B1A2B", btn_pressed="#470E16")
         
 # -------------------------------------------------------------------- LAYOUTS
         # CREATE LAYOUT MAIN
