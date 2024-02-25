@@ -24,9 +24,10 @@ class MainWindow(QMainWindow):
         # DB_CONTROL
         self.db = DBControlConnections()
         
-        # TITLE LIST
+        # VARIABLES GLOBAL
         self.title_list = []
         self.id_news = ""
+        self.toggle_order = Qt.DescendingOrder
         
         # TABLE PAGE
         self.table = self.ui.table_news_page.table
@@ -34,6 +35,7 @@ class MainWindow(QMainWindow):
         self.table_page = self.ui.table_news_page
         self.table_page.button_note.clicked.connect(self.on_selection_table)
         self.table_page.button_unselect.clicked.connect(self.table.clearSelection)
+        self.table.horizontalHeader().sectionClicked.connect(self.on_column_header_clicked) # Colunm Header Clicked
         # CLASSIFICATION
         self.classification = self.ui.classification_page
         self.classification.button_accept.clicked.connect(self.accept_news)
@@ -84,6 +86,7 @@ class MainWindow(QMainWindow):
     def show_page_table(self):
         self.reset_selection()
         self.ui.button_home.set_active(True)
+        self.table_init()
         
         self.ui.pages.setCurrentIndex(0)
     
@@ -100,6 +103,17 @@ class MainWindow(QMainWindow):
             self.close()
         
 # ------------------ TABLE CONTROL
+    def on_column_header_clicked(self, logical_index): # Ordenação da Table
+        
+        if self.toggle_order == Qt.AscendingOrder:
+            self.table.sortItems(logical_index, self.toggle_order)
+            self.toggle_order = Qt.DescendingOrder
+            
+        else:
+            self.table.sortItems(logical_index, self.toggle_order)
+            self.toggle_order = Qt.AscendingOrder
+        
+        
     def table_init(self):
         list_news = self.db.news_list_table()
         
@@ -167,6 +181,7 @@ class MainWindow(QMainWindow):
     def back_table_page(self):
         dlg = WarningMessageBoxOption(title="Question", txt="Just to confirm, you would like to return?")
         dlg.setIcon(QMessageBox.Question)
-        dlg.exec()
-        self.show_page_table()
+        if dlg.exec_() == QMessageBox.Yes:
+            self.title_list.clear()
+            self.show_page_table()
         
