@@ -123,8 +123,7 @@ class MainWindow(QMainWindow):
             
         
         self.table.resizeColumnsToContents()
-        self.table.setColumnWidth(2, 900)
-        print(self.table.width())
+        self.table.setColumnWidth(2, 880)
         
     def on_selection_table(self):
         selected_items = self.table.selectedItems() # O selectedItems seleciona cada celula
