@@ -2,6 +2,8 @@
 from qt_core import *
 # IMPORTS WIDGETS
 from view.widgets.py_push_button import PyPushButtonGUI
+# IMPORT STYLE
+from view.widgets.style_css import table_style
 
 class UiTableNews(object):
     def setup_ui(self, parent):
@@ -28,7 +30,6 @@ class UiTableNews(object):
         # Size Table
         self.table.setRowCount(50)
         self.table.setColumnCount(6)
-        self.table.setColumnWidth(0, 410)
         
         # Define o modo de redimensionamento de todas as colunas para Qt.Fixed
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
@@ -42,7 +43,7 @@ class UiTableNews(object):
         # self.table.setShowGrid(False)
         
         # Font
-        self.table.setStyleSheet("font-size: 11pt")
+        self.table.setStyleSheet(table_style)
         
         # --------------------- BUTTONS --------------------------
         # Frame Button
