@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
         self.ui.button_home.clicked.connect(self.show_page_table)
         
         # BUTTON CLASSIFICATION
-        self.ui.button_class.clicked.connect(self.show_page_class)
+        # self.ui.button_class.clicked.connect(self.show_page_class)
         
         # BUTTON EXIT
         self.ui.button_exit.clicked.connect(self.show_dialog_exit)
@@ -116,12 +116,12 @@ class MainWindow(QMainWindow):
         
     def table_init(self):
         list_news = self.db.news_list_table()
-        
+        itens = len(list_news)
+        self.table.setRowCount(itens)
         for row, text in enumerate(list_news):
             for column, label in enumerate(text):
                 self.table.setItem(row, column, QTableWidgetItem(str(text[label])))
-            
-        
+    
         self.table.resizeColumnsToContents()
         self.table.setColumnWidth(2, 880)
         
@@ -156,7 +156,7 @@ class MainWindow(QMainWindow):
     #         row = 
         
     def set_text_class(self):
-        title_news = self.title_list.pop(0)
+        title_news = self.title_list.pop()
         
         news = self.db.news_text(title_news)
         text_news = news["article"]

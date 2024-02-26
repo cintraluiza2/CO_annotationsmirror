@@ -1,7 +1,7 @@
 # Imports QT CORE
 from qt_core import *
 # IMPORTS WIDGETS
-from view.widgets.py_push_button import PyPushButtonGUI
+from view.widgets.py_push_button import PyPushButtonGUI, PyPushButtonIcon
 # IMPORT STYLE
 from view.widgets.style_css import table_style
 
@@ -18,9 +18,14 @@ class UiTableNews(object):
         self.central_frame.setStyleSheet("font-family: 'Roboto'; color: black; background-color: #FFFFFF")
         
 # -------------------------------------------------------------------- ITENS/FRAMES
+        self.header_frame = QFrame()
         # LABEL
         self.title_page_news = QLabel("News")
         self.title_page_news.setStyleSheet("font: 25px")
+        self.button_prev = PyPushButtonIcon(icon_path="arrow_left.svg", btn_color="transparent", btn_hover="#E5E5E5", btn_pressed="transparent", icon_color="#374957")
+        self.button_prev.setMaximumWidth(50)
+        self.button_next = PyPushButtonIcon(icon_path="arrow_right.svg", btn_color="transparent", btn_hover="#E5E5E5", btn_pressed="transparent", icon_color="#374957")
+        self.button_next.setMaximumWidth(50)
         
         #--------------------------- TABLE -------------------
         self.table = QTableWidget()
@@ -63,14 +68,21 @@ class UiTableNews(object):
         self.main_layout = QVBoxLayout(self.central_frame)
         self.main_layout.setContentsMargins(15, 10, 15, 15)
         self.main_layout.setSpacing(15)
+        # HEADER LAYOUT
+        self.header_layout = QHBoxLayout(self.header_frame)
         # BUTTONS LAYOUT
         self.buttons_layout = QHBoxLayout(self.frame_buttons)
         
 # -------------------------------------------------------------------- WIDGETS
         # IN MAIN LAYOUT
-        self.main_layout.addWidget(self.title_page_news)
+        self.main_layout.addWidget(self.header_frame)
         self.main_layout.addWidget(self.table)
         self.main_layout.addWidget(self.frame_buttons)
+        # IN HEADER LAYOUT
+        self.header_layout.addWidget(self.title_page_news)
+        # self.header_layout.addWidget(self.button_prev)
+        # self.header_layout.addWidget(self.button_next)
+        # self.header_layout.addSpacing(50)
         # IN BUTTONS LAYOUT
         self.buttons_layout.addWidget(self.button_note)
         self.buttons_layout.addSpacing(120)
