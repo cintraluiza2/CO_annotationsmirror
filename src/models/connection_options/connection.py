@@ -3,10 +3,14 @@ from .mongo_db_configs import mongo_db_infos
 
 class DBConnectionHandler():
     def __init__(self) -> None:
-        self.__connection_string = 'mongodb://{}:{}'.format(
+        self.__connection_string = 'mongodb://{}:{}@{}:{}/{}?directConnection=true&serverSelectionTimeoutMS=2000'.format(
+            mongo_db_infos["USERNAME"],
+            mongo_db_infos["PASSWORD"],
             mongo_db_infos["HOST"],
-            mongo_db_infos["PORT"]
+            mongo_db_infos["PORT"],
+            mongo_db_infos["AUTHENTICATION"]
         )
+        self.__connection_string = "mongodb://couser:pKO8iqktPOp0OE@localhost:27018/couser?directConnection=true&serverSelectionTimeoutMS=2000"
         self.__database_name = mongo_db_infos["DB_NAME"]
         self.__client = None
         self.__db_connection = None
