@@ -47,16 +47,6 @@ table_style = """
         border-radius: 7;
     }
     
-    ScrollBar::sub-line:horizontal,
-    QScrollBar::add-line:horizontal {
-        subcontrol-origin: none;
-        background: transparent;
-    }
-
-    QScrollArea{
-        border:none;
-    }
-    
     QTableWidget::item {
         border-bottom: 1px solid white;
         font-family: 'Roboto';

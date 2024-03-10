@@ -2,13 +2,17 @@
 # Import QT Core
 from qt_core import *
 import random
-
 # Import Windows
 from view.windows.ui_main_window import UiMainWindow
 # IMPORT WIDGETS
 from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption
 # Imports Data
 from controller.db_control_connection import DBControlConnections
+
+# IMPORTS DATA
+from models.connection_options.connection import DBConnectionHandler
+from models.repository.newsClass_repository import NewsClassRepository
+from models.repository.users_repository import UsersRepository
 
 
 # ----------------------------Main Window--------------------------
@@ -21,12 +25,16 @@ class MainWindow(QMainWindow):
         self.ui = UiMainWindow()
         self.ui.setup_ui(self)
         
-        # DB_CONTROL
-        self.db = DBControlConnections()
+        # DB_VARIABLES
+        self.__db_handle = DBConnectionHandler()
+        self.__db_handle.connect_to_db()
+        self.__db_connection = self.__db_handle.get_db_connection()
+        self.__news_repository = NewsClassRepository(self.__db_connection)
+        self.__users_repository = UsersRepository(self.__db_connection)
         
         # VARIABLES GLOBAL
         self.title_list = []
-        self.id_news = ""
+        self.title_news = ""
         self.toggle_order = Qt.DescendingOrder
         
         # TABLE PAGE
@@ -115,7 +123,7 @@ class MainWindow(QMainWindow):
         
         
     def table_init(self):
-        list_news = self.db.news_list_table()
+        list_news = self.__news_repository.select_many_news(optionsReturn={"_id": 0, "publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "certainty_level": 1})
         itens = len(list_news)
         self.table.setRowCount(itens)
         for row, text in enumerate(list_news):
@@ -123,7 +131,7 @@ class MainWindow(QMainWindow):
                 self.table.setItem(row, column, QTableWidgetItem(str(text[label])))
     
         self.table.resizeColumnsToContents()
-        self.table.setColumnWidth(2, 880)
+        self.table.setColumnWidth(2, 860)
         
     def on_selection_table(self):
         selected_items = self.table.selectedItems() # O selectedItems seleciona cada celula
@@ -150,17 +158,13 @@ class MainWindow(QMainWindow):
                 
         
 # ------------------ CLASSIFICATION CONTROL
-    # def selection_system(self):
-    #     num_random = random.sample(range(50), 5)
-    #     for i in num_random:
-    #         row = 
         
     def set_text_class(self):
         title_news = self.title_list.pop()
         
-        news = self.db.news_text(title_news)
+        news = self.__news_repository.select_one_news(title={"$regex": title_news}, optionsReturn={"title": 1, "article": 1})
         text_news = news["article"]
-        self.id_news = news["_id"]
+        self.title_news = news["title"]
         self.classification.title_article.setText(title_news)
         self.classification.text_box_article.setText(text_news)
         
@@ -172,11 +176,14 @@ class MainWindow(QMainWindow):
         
     
     def accept_news(self):
+        edit = {"manual_relevance_class": 1}
+        self.__news_repository.edit_registry_news(self.title_news, edit)
         self.db.edit_accept_news(self.id_news)
         self.set_text_class()
         
     def rejected_news(self):
-        self.db.edit_rejected_news(self.id_news)
+        edit = {"manual_relevance_class": 0}
+        self.__news_repository.edit_registry_news(self.title_news, edit)
         self.set_text_class()
         
     def back_table_page(self):

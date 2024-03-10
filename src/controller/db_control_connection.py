@@ -27,22 +27,3 @@ class DBControlConnections():
         else:
             return (False, None) # Invalid username or password
         
-    def news_list_table(self):
-        # DATA NEWS
-        list_news = self.__news_repository.select_many_news(optionsReturn={"publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "certainty_level": 1})
-        return list_news
-    
-    def news_text(self, title_news):
-        # DATA NEWS
-        filters = {"title": {"$regex": title_news}}
-        news_dic = self.__news_repository.select_one(filters=filters, optionsReturn={"title": 1, "article": 1})
-        return news_dic
-
-    def edit_accept_news(self, title):
-        edit = {"manual_relevance_class": 1}
-        result = self.__news_repository.edit_registry_news(title, edit)
-        
-    def edit_rejected_news(self, objId):
-        edit = {"manual_relevance_class": 0}
-        result = self.__news_repository.edit_registry(objId, edit)
-        
