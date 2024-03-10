@@ -9,7 +9,6 @@ from qt_core import *
 # Import Main Window
 from controller.main_control import *
 from controller.login_control import *
-from controller.db_control_connection import *
 
 # -----------------------Main ---------------------------
 if __name__ == "__main__":
