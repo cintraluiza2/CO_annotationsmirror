@@ -70,12 +70,12 @@ class UiLoginWindow(object):
         self.user_frame.setMaximumHeight(90)
         
         # Label User
-        self.label_user = QLabel("User - CPF")
+        self.label_user = QLabel("Email")
         self.label_user.setAlignment(Qt.AlignLeft)
         
         # Create LineEdit User
         self.txt_user = QLineEdit()
-        self.txt_user.setPlaceholderText("000.000.000-00")
+        self.txt_user.setPlaceholderText("email@address.com")
         self.txt_user.setStyleSheet(style_line_edit)
         
         # Create Frame Pass
@@ -94,10 +94,6 @@ class UiLoginWindow(object):
         self.txt_pass_word.setPlaceholderText("8-character passcode")
         self.txt_pass_word
         self.txt_pass_word.setStyleSheet(style_line_edit)
-        
-        # Validators
-        self.cpf_validator = QRegularExpressionValidator(QRegularExpression("\d{3}\.\d{3}\.\d{3}-\d{2}"), self.txt_user)
-        self.txt_user.setValidator(self.cpf_validator)
         
         # BUTTONS
         self.butons_access = PyPushButtonGUI(text="Access", font_family="Roboto", font_size=13, width=310, border_radius=20)
