@@ -10,7 +10,7 @@ class DBConnectionHandler():
             mongo_db_infos["PORT"],
             mongo_db_infos["AUTHENTICATION"]
         )
-        self.__connection_string = "mongodb://couser:pKO8iqktPOp0OE@localhost:27018/couser?directConnection=true&serverSelectionTimeoutMS=2000"
+        self.__connection_string = "mongodb://localhost:27017/"
         self.__database_name = mongo_db_infos["DB_NAME"]
         self.__client = None
         self.__db_connection = None
