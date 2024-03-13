@@ -14,13 +14,14 @@ class UsersRepository():
         self.__db_connection = db_connection
 
     # ------------------ Métodos de Inserção ------------------------
-    def insert_user(self, name: str, email: str, password: str, role: int, avatar="-") -> bool:
+    def insert_user(self, first_name: str, last_name: str, email: str, password: str, role: int, avatar="-") -> bool:
         collection = self.__db_connection.get_collection(self.__collection_name)
         collection.create_index([("email", ASCENDING)], unique=True)
         try:
             validate_email(email)
             document = {
-                "name": name,
+                "first_name": first_name,
+                "last_name": last_name,
                 "email": email,
                 "password": password,
                 "role": role,

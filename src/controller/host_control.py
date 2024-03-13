@@ -14,7 +14,6 @@ from models.repository.users_repository import UsersRepository
 # IMPORTS BASIC
 from email_validator import validate_email, EmailNotValidError
 
-
 # ----------------------------Main Window--------------------------
 
 class HostWindow(QMainWindow):
@@ -121,17 +120,55 @@ class HostWindow(QMainWindow):
         
     def add_user(self):
         add_user = AddUserWindow()
+        # Variables
         email = add_user.edit_email
+        edit_pass = add_user.edit_pass
+        pass_confirm = add_user.edit_pass_confirm
+        btn_show = add_user.btn_show_password
+        # Veficação
+        btn_show.clicked.connect(lambda: self.toggle_password_visibility(btn_show, edit_pass))
         email.editingFinished.connect(lambda: self.mensage_email(email))
+        pass_confirm.editingFinished.connect(lambda: self.password_equal(edit_pass, pass_confirm))
+        # Conexão
+        add_user.btn_cancel.clicked.connect(add_user.close)
+        add_user.btn_register.clicked.connect(lambda: self.register_user(add_user))
         add_user.exec()
         
     def mensage_email(self, email):
         email_txt = str(email.text())
         try:
             validate_email(email_txt)
-            return
+            pass
         except EmailNotValidError as e:
             dlg = WarningMessageBox(title="Invalid", txt="Invalid email format!")
             dlg.exec()  
+            
+    def toggle_password_visibility(self, btn_show, edit_pass):
+        if btn_show.isChecked():
+            edit_pass.setEchoMode(QLineEdit.Normal)
+            btn_show.setIcon(QIcon("resources/images/icons/eyes_close.svg"))
+        else:
+            edit_pass.setEchoMode(QLineEdit.Password)
+            btn_show.setIcon(QIcon("resources/images/icons/eyes_open.svg"))
+    
+    def password_equal(self, password, pass_confirm):
+        if password.text() != pass_confirm.text():
+            dlg = WarningMessageBox(title="Attention!", txt="Password confirmation failed!")
+            dlg.exec() 
+        else:
+            pass
 
+    def register_user(self, user_form):
+        first_name = user_form.edit_fisrt_name.text()
+        last_name = user_form.edit_last_name.text()
+        email = user_form.edit_email.text()
+        password = user_form.edit_pass.text()
+        role = user_form.combo_role.currentIndex()
         
+        self.__users_repository.insert_user(first_name=first_name, last_name=last_name, email=email, password=password, role=role)
+        dlg = WarningMessageBox(title="Congratulations!", txt="Account created!")
+        dlg.exec()
+        user_form.close()
+        self.table.clearContents()
+        self.table_init() 
+    

@@ -32,7 +32,18 @@ class AddUserWindow(QDialog):
         self.label_pass = QLabel('Enter Password:')
         self.edit_pass = QLineEdit()
         self.edit_pass.setEchoMode(QLineEdit.Password)
-        form_layout.addRow(self.label_pass, self.edit_pass)
+        self.btn_show_password = QPushButton()
+        self.btn_show_password.setIcon(QIcon("resources/images/icons/eyes_open.svg"))
+        self.btn_show_password.setCheckable(True)
+        
+        # FRAME PASS BUTTON
+        self.frame_pass_button = QFrame()
+        self.layout_pass_button = QHBoxLayout(self.frame_pass_button)
+        self.layout_pass_button.setContentsMargins(0, 0, 0, 0)
+        self.layout_pass_button.setSpacing(0)
+        self.layout_pass_button.addWidget(self.edit_pass)
+        self.layout_pass_button.addWidget(self.btn_show_password)
+        form_layout.addRow(self.label_pass, self.frame_pass_button)
         
         self.label_pass_confirm = QLabel('Confirm password:')
         self.edit_pass_confirm = QLineEdit()
@@ -51,7 +62,6 @@ class AddUserWindow(QDialog):
         
         self.btn_register = PyPushButtonGUI(text='Register', border_radius=20)
         self.btn_cancel = PyPushButtonGUI('Cancel', border_radius=20, btn_color="#941C2F", btn_hover="#692630", btn_pressed="#3F2125")
-        # self.btn_cadastrar.clicked.connect(self.cadastrar_usuario)
         
         self.btn_layout.addWidget(self.btn_register)
         self.btn_layout.addWidget(self.btn_cancel)
