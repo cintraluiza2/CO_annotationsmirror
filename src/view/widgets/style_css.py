@@ -94,3 +94,10 @@ text_box_class_style = """
         background: transparent;
     }
 """
+
+form_register_style = """
+    QLabel {
+        font-family: Roboto; 
+        font-size: 11pt;
+    }
+"""

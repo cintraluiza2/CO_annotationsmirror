@@ -5,7 +5,8 @@ import random
 # Import Windows
 from view.windows.ui_host_window import UiHostWindow
 # IMPORT WIDGETS
-from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption
+from view.widgets.dialogs.py_add_user_dialog import AddUserWindow
+from view.widgets.py_message_options import WarningMessageBoxOption
 # IMPORTS DATA
 from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
@@ -116,7 +117,9 @@ class HostWindow(QMainWindow):
 
         self.table.resizeColumnsToContents()
         
-    # def add_user(self):
+    def add_user(self):
+        dlg = AddUserWindow()
+        dlg.exec()
         
 
         
