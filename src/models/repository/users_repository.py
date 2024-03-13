@@ -49,7 +49,14 @@ class UsersRepository():
 
     def select_many_users(self, filters=None) -> List[Dict]:
         collection = self.__db_connection.get_collection(self.__collection_name)
-        optionsReturn={"_id": 0, "password": 0}
+        optionsReturn = {
+            "_id": 0, 
+            "last_name": 0, 
+            "password": 0,
+            "notes": 0,
+            "role": 0,
+            "avatar": 0
+            }
         data = collection.find(filters, optionsReturn)
 
         response = []
