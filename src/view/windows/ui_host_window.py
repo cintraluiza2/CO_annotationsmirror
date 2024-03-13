@@ -13,6 +13,8 @@ class UiHostWindow(object):
             parent.setObjectName("MainWindow")
         
         # SET INITIAL PARAMETERS
+        parent.setWindowTitle('QTSorting Hat')
+        parent.setWindowIcon(QIcon('resources/images/icons/qt.svg'))
         parent.resize(1200, 720)
         parent.setMinimumSize(960, 540)
 
