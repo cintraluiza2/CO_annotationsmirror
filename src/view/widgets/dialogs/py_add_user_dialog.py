@@ -6,6 +6,7 @@ class AddUserWindow(QDialog):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('User Registration')
+        self.setWindowIcon(QIcon('resources/images/user_small.svg'))
         self.resize(600, 500)
         
         form_layout = QFormLayout()
@@ -40,8 +41,8 @@ class AddUserWindow(QDialog):
         
         self.label_role = QLabel('User Role:')
         self.combo_role = QComboBox()
-        self.combo_role.addItem('Administrator')
         self.combo_role.addItem('Standard User')
+        self.combo_role.addItem('Administrator')
         form_layout.addRow(self.label_role, self.combo_role)
 
         # Buttons Layout

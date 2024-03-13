@@ -28,7 +28,6 @@ class LoginWindow(QDialog):
         # Setup Login Window
         self.ui = UiLoginWindow()
         self.ui.setup_ui(self)
-        self.setWindowTitle("Login - QTSorting Hat")
         
         # Check Username and Password
         self.ui.butons_access.clicked.connect(self.access_permission)

@@ -6,11 +6,13 @@ import random
 from view.windows.ui_host_window import UiHostWindow
 # IMPORT WIDGETS
 from view.widgets.dialogs.py_add_user_dialog import AddUserWindow
-from view.widgets.py_message_options import WarningMessageBoxOption
+from view.widgets.py_message_options import WarningMessageBoxOption, WarningMessageBox
 # IMPORTS DATA
 from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
 from models.repository.users_repository import UsersRepository
+# IMPORTS BASIC
+from email_validator import validate_email, EmailNotValidError
 
 
 # ----------------------------Main Window--------------------------
@@ -118,8 +120,18 @@ class HostWindow(QMainWindow):
         self.table.resizeColumnsToContents()
         
     def add_user(self):
-        dlg = AddUserWindow()
-        dlg.exec()
+        add_user = AddUserWindow()
+        email = add_user.edit_email
+        email.editingFinished.connect(lambda: self.mensage_email(email))
+        add_user.exec()
         
+    def mensage_email(self, email):
+        email_txt = str(email.text())
+        try:
+            validate_email(email_txt)
+            return
+        except EmailNotValidError as e:
+            dlg = WarningMessageBox(title="Invalid", txt="Invalid email format!")
+            dlg.exec()  
 
         
