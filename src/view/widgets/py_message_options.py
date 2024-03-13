@@ -4,6 +4,7 @@ class WarningMessageBoxOption(QMessageBox):
     def __init__(self, title, txt):
         super().__init__()
         
+        self.setWindowIcon(QIcon('resources/images/icons/attention.svg'))
         self.resize(200, 140)
         self.setStyleSheet("font-size: 20; color: black; background-color: #F1F1F1")
         self.setWindowTitle(txt)
@@ -15,7 +16,8 @@ class WarningMessageBox(QMessageBox):
     def __init__(self, title, txt):
         super().__init__()
         
-        self.resize(200, 140)
+        self.setWindowIcon(QIcon('resources/images/icons/attention.svg'))
+        self.resize(300, 140)
         self.setStyleSheet("font-size: 20; color: black; background-color: #F1F1F1")
         self.setWindowTitle(title)
         self.setText(txt)
