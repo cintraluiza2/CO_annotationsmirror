@@ -9,11 +9,12 @@ from qt_core import *
 # Import Main Window
 from controller.main_control import *
 from controller.login_control import *
+from controller.host_control import *
 
 # -----------------------Main ---------------------------
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = HostWindow()
     window.show()
     sys.exit(app.exec())
     

@@ -6,9 +6,6 @@ import random
 from view.windows.ui_main_window import UiMainWindow
 # IMPORT WIDGETS
 from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption
-# Imports Data
-from controller.db_control_connection import DBControlConnections
-
 # IMPORTS DATA
 from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
