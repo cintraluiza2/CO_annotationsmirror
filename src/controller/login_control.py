@@ -6,8 +6,10 @@ from view.widgets.py_message_options import WarningMessageBox, WarningMessageBox
 from view.windows.ui_login_window import UiLoginWindow
 # Imports CONTROLLER
 from controller.main_control import MainWindow
+from controller.host_control import HostWindow
 # IMPORTS VALIDATORS
 from email_validator import validate_email, EmailNotValidError
+import bcrypt
 # IMPORTS DATA
 from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
@@ -41,13 +43,17 @@ class LoginWindow(QDialog):
         
         try:
             validate_email(user_email)
-            result = self.__users_repository.select_one_user(user_email, txt_pass)
-            print(result)
-            if result is None:
+            response = self.__users_repository.select_user_pass(user_email)
+            result = bcrypt.checkpw(txt_pass.encode("utf-8"), response["password"])
+            if result is False:
                 dlg = WarningMessageBox(title="Error", txt="Incorrect email or password")
                 dlg.exec()
             else:
-                self.win = MainWindow()
+                role = response["role"]
+                if role == 0:
+                    self.win = MainWindow()
+                else:
+                    self.win = HostWindow()
                 self.win.show()
                 self.close() 
                 
