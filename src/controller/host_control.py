@@ -40,7 +40,7 @@ class HostWindow(QMainWindow):
         # ---------------------------- TABLE USERS --------------------- 
         self.table_page = self.ui.table_users_page       
         self.table = self.table_page.table
-        self.table_init()
+        self.table_init_user()
         
         # Buttons
         self.table_page.button_add_user.clicked.connect(self.add_user)
@@ -107,7 +107,7 @@ class HostWindow(QMainWindow):
             self.close()
             
 # ---------------------------- Methods Table Users ------------------------------------
-    def table_init(self):
+    def table_init_user(self):
         list_news = self.__users_repository.select_many_users()
         itens = len(list_news)
         self.table.setRowCount(itens)
@@ -170,7 +170,7 @@ class HostWindow(QMainWindow):
             dlg.exec()
             user_form.close()
             self.table.clearContents()
-            self.table_init() 
+            self.table_init_user() 
         else:
             dlg = WarningMessageBox(title="Attention!", txt="Email already in use!")
             dlg.exec() 
