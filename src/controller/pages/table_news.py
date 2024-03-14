@@ -6,7 +6,7 @@ from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
 
 class TableNewsManager:
-    def __init__(self, table, table_page, show_page_class, set_text_class, set_title_list) -> None:
+    def __init__(self, table=None, table_page=None, show_page_class=None, set_text_class=None, set_title_list=None) -> None:
         self.table = table
         self.table_page = table_page
         self.show_page_class = show_page_class
@@ -23,6 +23,7 @@ class TableNewsManager:
         self.title_list = []
         self.title_news = ""
         self.toggle_order = Qt.DescendingOrder
+        self.num_columns = 6
         
         self.table_init()
         
@@ -44,7 +45,7 @@ class TableNewsManager:
         
     def on_selection_table(self):
         selected_items = self.table.selectedItems() # O selectedItems seleciona cada celula
-        num_selected = int(len(selected_items) / 5) # São 5 celulas por ser 5 colunas
+        num_selected = int(len(selected_items) / self.num_columns) # São 5 celulas por ser 5 colunas
         
         if num_selected == 0:
             dlg = WarningMessageBoxOption(title="Question", txt="Would you like the system to select the news for you?")
@@ -52,7 +53,7 @@ class TableNewsManager:
             dlg.exec()
         elif num_selected >= 5:
             for i in range(0, num_selected):               
-                row = selected_items[i * 5].row() # Necessário multiplicar por 5 para acessar nova linha
+                row = selected_items[i * self.num_columns].row() # Necessário multiplicar para acessar nova linha
                 column_title = self.table.item(row, 2)
                 self.title_list.append(column_title.text())
             

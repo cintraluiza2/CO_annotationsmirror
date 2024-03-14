@@ -12,6 +12,8 @@ from models.repository.newsClass_repository import NewsClassRepository
 from models.repository.users_repository import UsersRepository
 
 from controller.pages.table_users import TableUsersManager
+from controller.pages.table_news import TableNewsManager
+from controller.pages.classification_page import ClassificationManager
 
 # ----------------------------Main Window--------------------------
 
@@ -41,6 +43,16 @@ class HostWindow(QMainWindow):
         
         self.table_users_manager = TableUsersManager(self.table, self.table_page)
         
+        self.table_page.button_edit_user.clicked.connect(self.edit_user)
+        
+        # --------------------------- CLASSIFICATION --------------------
+        self.classification = self.ui.classification_page
+        self.classification_maneger = ClassificationManager(self.classification, self.show_page_table_class)
+        
+        # --------------------------- TABLE PAGE -----------------------
+        self.table_page = self.ui.table_news_page
+        self.table = self.table_page.table
+        self.table_news = TableNewsManager(self.table, self.table_page, self.show_page_class, self.classification_maneger.set_text_class, self.classification_maneger.set_title_list)
                 
         # ---------------------------- MENU BAR BUTTONS ---------------------        
         # Toggle Button
@@ -50,7 +62,7 @@ class HostWindow(QMainWindow):
         self.ui.button_home.clicked.connect(self.show_page_table)
         
         # BUTTON CLASSIFICATION
-        self.ui.button_class.clicked.connect(self.show_page_class)
+        self.ui.button_class.clicked.connect(self.show_page_table_class)
         
         # BUTTON EXIT
         self.ui.button_exit.clicked.connect(self.show_dialog_exit)
@@ -90,12 +102,18 @@ class HostWindow(QMainWindow):
     
         self.ui.pages.setCurrentIndex(0)
         
+    def show_page_table_class(self):
+        self.reset_selection()
+        self.ui.button_class.set_active(True)
+        
+        self.ui.pages.setCurrentIndex(1)
     
     def show_page_class(self):
         self.reset_selection()
         self.ui.button_class.set_active(True)
         
-        self.ui.pages.setCurrentIndex(1)
+        self.ui.pages.setCurrentIndex(2)
+    
         
     def show_dialog_exit(self):        
         dlg = WarningMessageBoxOption(title="Attention!", txt="Do you want to close the app?")
@@ -104,6 +122,7 @@ class HostWindow(QMainWindow):
             self.close()
             
 # ---------------------------- Methods Table Users ------------------------------------        
-            
+    def edit_user(self):
+        print("ola")        
         
     

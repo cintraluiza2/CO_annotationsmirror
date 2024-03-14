@@ -25,13 +25,6 @@ class MainWindow(QMainWindow):
         self.ui = UiMainWindow()
         self.ui.setup_ui(self)
         
-        # DB_VARIABLES
-        self.__db_handle = DBConnectionHandler()
-        self.__db_handle.connect_to_db()
-        self.__db_connection = self.__db_handle.get_db_connection()
-        self.__news_repository = NewsClassRepository(self.__db_connection)
-        self.__users_repository = UsersRepository(self.__db_connection)
-        
         # VARIABLES GLOBAL
         self.title_list = []
         self.title_news = ""
@@ -39,7 +32,7 @@ class MainWindow(QMainWindow):
         
         # CLASSIFICATION
         self.classification = self.ui.classification_page
-        self.classification_maneger = ClassificationManager(self.classification, self.show_page_table)
+        self.classification_maneger = ClassificationManager(self.classification, self.show_page_home)
         
         # TABLE PAGE
         self.table_page = self.ui.table_news_page
@@ -50,10 +43,10 @@ class MainWindow(QMainWindow):
         self.ui.toggle_button_menu.clicked.connect(self.toggle_button)
         
         # BUTTON HOME / TABLE
-        self.ui.button_home.clicked.connect(self.show_page_table)
+        self.ui.button_home.clicked.connect(self.show_page_home)
         
         # BUTTON CLASSIFICATION
-        # self.ui.button_class.clicked.connect(self.show_page_class)
+        # self.ui.button_class.clicked.connect(self.show_page_table_class)
         
         # BUTTON EXIT
         self.ui.button_exit.clicked.connect(self.show_dialog_exit)
@@ -87,10 +80,16 @@ class MainWindow(QMainWindow):
         self.animation.start()
         
     
-    def show_page_table(self):
+    def show_page_home(self):
         self.reset_selection()
         self.ui.button_home.set_active(True)
         self.table_news.table_init()
+        
+        self.ui.pages.setCurrentIndex(0)
+        
+    def show_page_table_class(self):
+        self.reset_selection()
+        self.ui.button_class.set_active(True)
         
         self.ui.pages.setCurrentIndex(0)
     

@@ -6,9 +6,9 @@ from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
 
 class ClassificationManager:
-    def __init__(self, classification, show_page_table) -> None:
+    def __init__(self, classification, show_page_table_class) -> None:
         self.classification = classification
-        self.show_page_table = show_page_table
+        self.show_page_table_class = show_page_table_class
         
         # DB_VARIABLES
         self.__db_handle = DBConnectionHandler()
@@ -28,19 +28,18 @@ class ClassificationManager:
         self.title_list = title_list
         
     def set_text_class(self):
-        title_news = self.title_list.pop()
-        
-        news = self.__news_repository.select_one_news(title={"$regex": title_news}, optionsReturn={"title": 1, "article": 1})
-        text_news = news["article"]
-        self.title_news = news["title"]
-        self.classification.title_article.setText(title_news)
-        self.classification.text_box_article.setText(text_news)
-        
-        if not self.title_list:
+        if self.title_list:
+            title_news = self.title_list.pop()
+            news = self.__news_repository.select_one_news(title={"$regex": title_news}, optionsReturn={"title": 1, "article": 1})
+            text_news = news["article"]
+            self.title_news = news["title"]
+            self.classification.title_article.setText(title_news)
+            self.classification.text_box_article.setText(text_news)
+        else:
             dlg = WarningMessageBox(title="Information", txt="The news classification process has been completed.")
             dlg.setIcon(QMessageBox.Information)
             dlg.exec()
-            self.show_page_table()
+            self.show_page_table_class()
             
     def accept_news(self):
         edit = {"manual_relevance_class": 1}
@@ -58,4 +57,4 @@ class ClassificationManager:
         dlg.setIcon(QMessageBox.Question)
         if dlg.exec_() == QMessageBox.Yes:
             self.title_list.clear()
-            self.show_page_table()
+            self.show_page_table_class()
