@@ -68,7 +68,6 @@ class UsersRepository():
             "last_name": 0, 
             "password": 0,
             "notes": 0,
-            "role": 0,
             "avatar": 0
             }
         data = collection.find(filters, optionsReturn)

@@ -34,13 +34,13 @@ class UiTableUsers(object):
         self.table.setMaximumHeight(600)
         # Size Table
         self.table.setRowCount(10)
-        self.table.setColumnCount(4)
+        self.table.setColumnCount(5)
         
         # Define o modo de redimensionamento de todas as colunas para Qt.Fixed
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)  # Seleção de linha inteira
         # Definição do Header
-        self.table.setHorizontalHeaderLabels(["Name", "Email", "News articles analyzed", "Notes"])
+        self.table.setHorizontalHeaderLabels(["Name", "Email", "User Role", "News articles analyzed", "Notes"])
         # Impede a edição de todas as células da tabela
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         # Oculta as linhas de divisão de coluna e linha
