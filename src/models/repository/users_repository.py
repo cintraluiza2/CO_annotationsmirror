@@ -29,8 +29,10 @@ class UsersRepository():
             }
             collection.insert_one(document)
             
+            return True
+            
         except DuplicateKeyError as e:
-            return e
+            return False
         
         except EmailNotValidError as e:
             return e

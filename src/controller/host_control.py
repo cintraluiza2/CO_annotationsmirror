@@ -13,6 +13,7 @@ from models.repository.newsClass_repository import NewsClassRepository
 from models.repository.users_repository import UsersRepository
 # IMPORTS BASIC
 from email_validator import validate_email, EmailNotValidError
+from pymongo.errors import DuplicateKeyError
 
 # ----------------------------Main Window--------------------------
 
@@ -164,11 +165,15 @@ class HostWindow(QMainWindow):
         email = user_form.edit_email.text()
         password = user_form.edit_pass.text()
         role = user_form.combo_role.currentIndex()
+        if self.__users_repository.insert_user(first_name=first_name, last_name=last_name, email=email, password=password, role=role):
+            dlg = WarningMessageBox(title="Congratulations!", txt="Account created!")
+            dlg.exec()
+            user_form.close()
+            self.table.clearContents()
+            self.table_init() 
+        else:
+            dlg = WarningMessageBox(title="Attention!", txt="Email already in use!")
+            dlg.exec() 
+            
         
-        self.__users_repository.insert_user(first_name=first_name, last_name=last_name, email=email, password=password, role=role)
-        dlg = WarningMessageBox(title="Congratulations!", txt="Account created!")
-        dlg.exec()
-        user_form.close()
-        self.table.clearContents()
-        self.table_init() 
     
