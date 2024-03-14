@@ -61,7 +61,7 @@ class MainWindow(QMainWindow):
 
         self.show()
 
-# ---------------------------- Methods
+# ---------------------------------------------------------------------------------------- Methods
     def reset_selection(self):
         for button in self.ui.left_menu.findChildren(QPushButton):
             try:
@@ -107,7 +107,7 @@ class MainWindow(QMainWindow):
         if dlg.exec_() == QMessageBox.Yes:
             self.close()
         
-# ------------------ TABLE CONTROL
+# ---------------------------------------------------------------------------------- TABLE CONTROL
     def on_column_header_clicked(self, logical_index): # Ordenação da Table
         
         if self.toggle_order == Qt.AscendingOrder:
@@ -154,7 +154,7 @@ class MainWindow(QMainWindow):
             dlg.exec()
                 
         
-# ------------------ CLASSIFICATION CONTROL
+# ------------------------------------------------------------------------------------------- CLASSIFICATION CONTROL
         
     def set_text_class(self):
         title_news = self.title_list.pop()
