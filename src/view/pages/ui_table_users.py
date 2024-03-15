@@ -30,7 +30,7 @@ class UiTableUsers(object):
         #--------------------------- TABLE -------------------
         self.frame_table = QFrame()
         self.table = QTableWidget()
-        self.table.setMaximumWidth(600)
+        self.table.setMaximumWidth(630)
         self.table.setMaximumHeight(600)
         # Size Table
         self.table.setRowCount(10)

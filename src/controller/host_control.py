@@ -10,7 +10,7 @@ from view.widgets.py_message_options import WarningMessageBoxOption, WarningMess
 from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
 from models.repository.users_repository import UsersRepository
-
+# CONTROLLER PAGES
 from controller.pages.table_users import TableUsersManager
 from controller.pages.table_news import TableNewsManager
 from controller.pages.classification_page import ClassificationManager
@@ -38,21 +38,19 @@ class HostWindow(QMainWindow):
         self.toggle_order = Qt.DescendingOrder
         
         # ---------------------------- TABLE USERS --------------------- 
-        self.table_page = self.ui.table_users_page       
-        self.table = self.table_page.table
+        self.table_user_page = self.ui.table_users_page       
+        self.table_user = self.table_user_page.table
         
-        self.table_users_manager = TableUsersManager(self.table, self.table_page)
-        
-        self.table_page.button_edit_user.clicked.connect(self.edit_user)
+        self.table_users_manager = TableUsersManager(self.table_user, self.table_user_page)
         
         # --------------------------- CLASSIFICATION --------------------
         self.classification = self.ui.classification_page
         self.classification_maneger = ClassificationManager(self.classification, self.show_page_table_class)
         
-        # --------------------------- TABLE PAGE -----------------------
-        self.table_page = self.ui.table_news_page
-        self.table = self.table_page.table
-        self.table_news = TableNewsManager(self.table, self.table_page, self.show_page_class, self.classification_maneger.set_text_class, self.classification_maneger.set_title_list)
+        # --------------------------- TABLE NEWS -----------------------
+        self.table_news_page = self.ui.table_news_page
+        self.table_news = self.table_news_page.table
+        self.table_news = TableNewsManager(self.table_news, self.table_news_page, self.show_page_class, self.classification_maneger.set_text_class, self.classification_maneger.set_title_list)
                 
         # ---------------------------- MENU BAR BUTTONS ---------------------        
         # Toggle Button
@@ -121,8 +119,6 @@ class HostWindow(QMainWindow):
         if dlg.exec_() == QMessageBox.Yes:
             self.close()
             
-# ---------------------------- Methods Table Users ------------------------------------        
-    def edit_user(self):
-        print("ola")        
+# ---------------------------- Methods Table Users ------------------------------------                    
         
     

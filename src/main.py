@@ -14,7 +14,7 @@ from controller.host_control import *
 # -----------------------Main ---------------------------
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = HostWindow()
+    window = LoginWindow()
     window.show()
     sys.exit(app.exec())
     

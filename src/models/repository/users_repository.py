@@ -81,8 +81,23 @@ class UsersRepository():
         return response
 
     # ------------------ Métodos de Edição ------------------------
-    def edit_registry_user(self, email: str, parameterEditing: Dict = None) -> int:
+    def edit_registry_user(self, email, first_name, last_name, role) -> int:
         collection = self.__db_connection.get_collection(self.__collection_name)
+        parameterEditing = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "role": role,
+        }
+        data = collection.update_one({"email": email},
+                                     {"$set": parameterEditing})
+        return data.modified_count
+    
+    def edit_registry_password(self, email, password) -> int:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt(10))
+        parameterEditing = {
+            "password": password
+        }
         data = collection.update_one({"email": email},
                                      {"$set": parameterEditing})
         return data.modified_count
