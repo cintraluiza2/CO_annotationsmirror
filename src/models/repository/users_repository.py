@@ -27,7 +27,10 @@ class UsersRepository():
                 "email": email,
                 "password": password,
                 "role": role,
-                "avatar": avatar
+                "avatar": avatar,
+                "notes": None,
+                "num_article_analyzed": 0,
+                "num_notes": 0
             }
             collection.insert_one(document)
             
