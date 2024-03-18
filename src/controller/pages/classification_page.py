@@ -44,7 +44,6 @@ class ClassificationManager:
     def accept_news(self):
         edit = {"manual_relevance_class": 1}
         self.__news_repository.edit_registry_news(self.title_news, edit)
-        self.db.edit_accept_news(self.id_news)
         self.set_text_class()
         
     def rejected_news(self):
