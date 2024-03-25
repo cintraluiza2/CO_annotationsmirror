@@ -18,5 +18,3 @@ mongo_db_infos = {
     "AUTHENTICATION": authentication,
     "DB_NAME": db_name
 }
-
-print(mongo_db_infos)
