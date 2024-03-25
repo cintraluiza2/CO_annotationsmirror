@@ -17,8 +17,8 @@ from sklearn.svm import LinearSVC
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import train_test_split
 # Imports News Rating
-from news_rating.doc_to_vector import DocToVector
-from news_rating.confidence_calculation import ConfidenceCalculation
+from models.news_rating.doc_to_vector import DocToVector
+from models.news_rating.confidence_calculation import ConfidenceCalculation
 
 class ModelPrediction:
     def __init__(self) -> None:

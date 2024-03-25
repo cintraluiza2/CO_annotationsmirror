@@ -2,8 +2,8 @@
 import pandas as pd
 import numpy as np
 # Imports Data
-from connection_options.connection import DBConnectionHandler
-from repository.newsClass_repository import NewsClassRepository
+from models.connection_options.connection import DBConnectionHandler
+from models.repository.newsClass_repository import NewsClassRepository
 
 class DataFrame:
     def __init__(self) -> None:

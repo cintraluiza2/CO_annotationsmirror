@@ -4,6 +4,10 @@ from view.widgets.py_message_options import WarningMessageBox, WarningMessageBox
 # IMPORTS DATA
 from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
+# IMPORTS NEWS RATING
+from models.news_rating.dataframe_fuctions import DataFrame
+from models.news_rating.doc_to_vector import DocToVector
+from models.news_rating.model_prediction import ModelPrediction
 
 class TableNewsManager:
     def __init__(self, table=None, table_page=None, show_page_class=None, set_text_class=None, set_title_list=None) -> None:
@@ -30,6 +34,7 @@ class TableNewsManager:
         self.table_page.button_unselect.clicked.connect(self.table.clearSelection)
         self.table.horizontalHeader().sectionClicked.connect(self.on_column_header_clicked) # Colunm Header Clicked
         self.table_page.button_note.clicked.connect(self.on_selection_table)
+        self.table_page.button_train.clicked.connect(self.train_table_news)
     
             
     def table_init(self):
@@ -75,3 +80,21 @@ class TableNewsManager:
         else:
             self.table.sortItems(logical_index, self.toggle_order)
             self.toggle_order = Qt.AscendingOrder
+            
+    def train_table_news(self):
+        df = DataFrame()
+        mp = ModelPrediction()
+        dtv = DocToVector()
+
+        df_news = df.make_data_frame()
+        x, y = dtv.create_XY_vector(df_news, 40, 50)
+        data_best_model = mp.cross_model(x, y, 20)
+
+        name_model, best_model, confidence, standard_deviation = data_best_model
+        best_model.fit(x, y)
+        new_df = mp.automatic_relevance_class(df_news, name_model, best_model, x)
+        automatic_list = new_df['automatic_relevance_class'].astype(int)
+        self.table_init()
+        num_rows = self.table.rowCount()
+        for row in range(0, num_rows):
+            self.table.setItem(row, 4, QTableWidgetItem(str(automatic_list[row])))
