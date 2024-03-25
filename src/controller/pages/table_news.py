@@ -34,7 +34,7 @@ class TableNewsManager:
         self.table_page.button_unselect.clicked.connect(self.table.clearSelection)
         self.table.horizontalHeader().sectionClicked.connect(self.on_column_header_clicked) # Colunm Header Clicked
         self.table_page.button_note.clicked.connect(self.on_selection_table)
-        self.table_page.button_train.clicked.connect(self.train_table_news)
+        # self.table_page.button_train.clicked.connect(self.train_table_news)
     
             
     def table_init(self):
