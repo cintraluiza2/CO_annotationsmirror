@@ -29,12 +29,15 @@ class DocToVector:
         doc_vectors = [model.infer_vector(doc.words) for doc in training_data]
         return doc_vectors
     
-    def create_X_vector(self, df_news, vector_size, epochs):
+    def create_XY_vector(self, df_news, vector_size, epochs):
         # Create document vectors for articles
         X_article = self.__create_X_vector_doc2vec(df_news, "article", vector_size, epochs)
         # Create document vectors for titles
         X_title = self.__create_X_vector_doc2vec(df_news, "title", vector_size, epochs)
         # Concatenate article and title vectors horizontally
         X = np.concatenate((X_article, X_title),axis=1)
-        return X
+        Y = df_news['manual_relevance_class'] # Classes de 0 para rejeitado e 1 para aceito
+        
+        return X, Y
+
     
