@@ -23,7 +23,7 @@ class LoginWindow(QDialog):
         
         # DB Variables
         self.__db_handle = DBConnectionHandler()
-        self.__db_handle.connect_to_db()
+        self.init_connect_mongo_db()
         self.__db_connection = self.__db_handle.get_db_connection()
         self.__users_repository = UsersRepository(self.__db_connection)
         
@@ -35,6 +35,12 @@ class LoginWindow(QDialog):
         self.ui.butons_access.clicked.connect(self.access_permission)
         
         self.show()
+    
+    def init_connect_mongo_db(self):
+        if not self.__db_handle.connect_to_db():
+            dlg = WarningMessageBox("Atenção", "Sem acesso ao banco de dados!\nAbra o XShell e clique em conectar")
+            dlg.exec()
+            self.init_connect_mongo_db()
         
     def access_permission(self):
         # DATABASE CHECK
