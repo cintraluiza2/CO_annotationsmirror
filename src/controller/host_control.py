@@ -103,6 +103,7 @@ class HostWindow(QMainWindow):
     def show_page_table_class(self):
         self.reset_selection()
         self.ui.button_class.set_active(True)
+        self.table_news.table_init()
         
         self.ui.pages.setCurrentIndex(1)
     

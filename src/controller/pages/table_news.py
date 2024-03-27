@@ -26,7 +26,7 @@ class TableNewsManager:
         # VARIABLES GLOBAL
         self.title_list = []
         self.title_news = ""
-        self.toggle_order = Qt.DescendingOrder
+        self.toggle_order = Qt.AscendingOrder
         self.num_columns = 5
         
         self.table_init()
@@ -38,6 +38,7 @@ class TableNewsManager:
     
             
     def table_init(self):
+        self.toggle_order = Qt.AscendingOrder
         list_news = self.__news_repository.select_many_order_news(optionsReturn={"_id": 0, "publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "certainty_level": 1}, orderFilter='manual_relevance_class', optionsFilter=1)
         itens = len(list_news)
         self.table.setRowCount(itens)
