@@ -1,7 +1,7 @@
 # Import QT Core
 from qt_core import *
 # IMPORTS WIDGETS
-from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption
+from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption, WarningMessageBoxOptionOk
 # IMPORTS VIEWS
 from view.windows.ui_login_window import UiLoginWindow
 # Imports CONTROLLER
@@ -21,12 +21,6 @@ class LoginWindow(QDialog):
     def __init__(self) -> None:
         super().__init__()
         
-        # DB Variables
-        self.__db_handle = DBConnectionHandler()
-        self.init_connect_mongo_db()
-        self.__db_connection = self.__db_handle.get_db_connection()
-        self.__users_repository = UsersRepository(self.__db_connection)
-        
         # Setup Login Window
         self.ui = UiLoginWindow()
         self.ui.setup_ui(self)
@@ -35,12 +29,21 @@ class LoginWindow(QDialog):
         self.ui.butons_access.clicked.connect(self.access_permission)
         
         self.show()
+        
+        # DB Variables
+        self.__db_handle = DBConnectionHandler()
+        self.init_connect_mongo_db()
+        self.__db_connection = self.__db_handle.get_db_connection()
+        self.__users_repository = UsersRepository(self.__db_connection)
+                
     
     def init_connect_mongo_db(self):
         if not self.__db_handle.connect_to_db():
-            dlg = WarningMessageBox("Atenção", "Sem acesso ao banco de dados!\nAbra o XShell e clique em conectar")
-            dlg.exec()
-            self.init_connect_mongo_db()
+            dlg = WarningMessageBoxOptionOk("Atenção", "Sem acesso ao banco de dados!\nAbra o XShell e clique em conectar")
+            if dlg.exec_() == QMessageBox.Ok:
+                self.init_connect_mongo_db()
+            else:
+                exit()
         
     def access_permission(self):
         # DATABASE CHECK
