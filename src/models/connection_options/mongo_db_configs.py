@@ -3,12 +3,12 @@ import os
 
 load_dotenv(override=True)
 
-user = os.getenv('USERNAME_MONGO')
+user = "couser"
 password = os.getenv('PASSWORD_MONGO')
-host = os.getenv('HOST_MONGO')
-port = os.getenv('PORT_MONGO')
-authentication = os.getenv('AUTHENTICATION_MONGO')
-db_name = os.getenv('DB_NAME_MONGO')
+host = "localhost"
+port = "27018"
+authentication = "couser"
+db_name = "couser"
 
 mongo_db_infos = {
     "USERNAME": user,

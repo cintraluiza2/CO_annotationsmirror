@@ -1,5 +1,6 @@
 # Import QT Core
 from qt_core import *
+import sys
 # IMPORTS WIDGETS
 from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption, WarningMessageBoxOptionOk
 # IMPORTS VIEWS
@@ -43,7 +44,8 @@ class LoginWindow(QDialog):
             if dlg.exec_() == QMessageBox.Ok:
                 self.init_connect_mongo_db()
             else:
-                exit()
+                self.close()
+                sys.exit()
         
     def access_permission(self):
         # DATABASE CHECK
