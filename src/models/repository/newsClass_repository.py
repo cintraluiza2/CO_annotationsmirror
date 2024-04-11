@@ -12,7 +12,7 @@ class NewsClassRepository():
     # ------------------ Métodos de Inserção ------------------------
     def insert_document_news(self, document: Dict) -> Dict:
         collection = self.__db_connection.get_collection(self.__collection_name)
-        collection.create_index([("title", ASCENDING)], unique=True)
+        collection.create_index("url", unique=True)
         
         if document['manual_relevance_class'] == '':
             document['manual_relevance_class'] = None
@@ -42,7 +42,7 @@ class NewsClassRepository():
             "pais": None,
             "regiao": None,
             "municipio": None,
-            "coordenados GPS": None,
+            "coordenados_GPS": None,
             "tipo_conflito_armado": None,
             "ator1_nome": None,
             "ator1_cod": None,
