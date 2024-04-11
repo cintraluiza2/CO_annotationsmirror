@@ -1,11 +1,12 @@
 ﻿from pymongo import MongoClient
 from pymongo.errors import ServerSelectionTimeoutError
 import yaml
+import os
 
 class DBConnectionHandler():
     def __init__(self) -> None:
-        with open('mongo_configs.yml', 'r', encoding='utf-8') as file:
-            mongo_db_infos = yaml.safe_load(file)
+        with open('src\\configs.yml', 'r', encoding='utf-8') as file:
+            mongo_db_infos = yaml.safe_load(file)['mongodb']
         
         self.__connection_string = 'mongodb://{}:{}@{}:{}/{}?directConnection=true&serverSelectionTimeoutMS=2000'.format(
             mongo_db_infos["username"],
@@ -15,7 +16,7 @@ class DBConnectionHandler():
             mongo_db_infos["authentication"]
         )
         # self.__connection_string = "mongodb://localhost:27017/"
-        self.__database_name = mongo_db_infos["DB_NAME"]
+        self.__database_name = mongo_db_infos["db_name"]
         self.__client = None
         self.__db_connection = None
 
