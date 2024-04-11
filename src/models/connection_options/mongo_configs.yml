@@ -1,0 +1,7 @@
+﻿mongodb:
+  username: ""
+  password: ""
+  host: ""
+  port: ""
+  authentication: ""
+  db_name: ""
