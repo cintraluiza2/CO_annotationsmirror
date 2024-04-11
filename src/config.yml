@@ -1,7 +1,7 @@
 ﻿mongodb:
   username: ""
   password: ""
-  host: ""
+  host: "localhost"
   port: ""
   authentication: ""
   db_name: ""
@@ -14,5 +14,4 @@ server:
   local_address: "localhost"
   local_port_ssh: 00000
   remote_address: ""
-  remote_port_ssh: 00000
-  
+  remote_port_ssh: 00000 
