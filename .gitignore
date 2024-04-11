@@ -397,6 +397,6 @@ compile_commands.json
 .ionide
 
 ### Ignore Configs ###
-mongo_db_configs.yml
+configs.yml
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,python,pycharm,qml,qtcreator,qt
