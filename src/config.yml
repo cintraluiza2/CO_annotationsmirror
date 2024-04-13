@@ -1,4 +1,4 @@
-﻿mongodb:
+mongodb:
   username: ""
   password: ""
   host: "localhost"
