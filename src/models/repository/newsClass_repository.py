@@ -1,5 +1,7 @@
 ﻿from bson.objectid import ObjectId
 from typing import Dict, List
+# IMPORTS UTILS
+from models.utils.news import News
 # IMPORTS PYMONGO
 from pymongo import ASCENDING
 from pymongo.errors import DuplicateKeyError
@@ -13,51 +15,22 @@ class NewsClassRepository():
     def insert_document_news(self, document: Dict) -> Dict:
         collection = self.__db_connection.get_collection(self.__collection_name)
         collection.create_index("url", unique=True)
-        
-        if document['manual_relevance_class'] == '':
-            document['manual_relevance_class'] = None
-        else:
-            document['manual_relevance_class'] = int(document['manual_relevance_class'])
-            
-        registre = {
-            "keyword": document['keyword'],
-            "acquisition_date": document['acquisition_date'],
-            "publication_date": document['publication_date'],
-            "last_update": document['last_update'],
-            "newspaper": document['newspaper'],
-            "url": document['url'],
-            "title": document["title"],
-            "article": document['article'],
-            "tags": document['tags'],
-            "manual_relevance_class": document['manual_relevance_class'],
-            "automatic_relevance_class": None,
-            "relevance_model": None,
-            "relevance_classification_date": None,
-            "id_evento": None,
-            "resumo": None,
-            "data_evento": None,
-            "quant_mortes": None,
-            "tipo_droga": None,
-            "quant_droga": None,
-            "pais": None,
-            "regiao": None,
-            "municipio": None,
-            "coordenados_GPS": None,
-            "tipo_conflito_armado": None,
-            "ator1_nome": None,
-            "ator1_cod": None,
-            "ator2_nome": None,
-            "ator2_cod": None,
-            "tipo_relacao_entre_atores": None
-        }
+        registre = News(**document)
+        registre.set_keys()
         try:
-            collection.insert_one(registre)
+            collection.insert_one(registre.get_dict())
         except DuplicateKeyError:
             return False
         
         return registre
 
-    def insert_list_of_documents_news(self, list_of_documents: List[Dict]) -> List[Dict]:
+    def insert_list_of_documents_news(self, documents: List[Dict]) -> List[Dict]:
+        list_of_documents = []
+        for d in documents:
+            n = News(**d)
+            n.set_keys()
+            list_of_documents.append(n.get_dict())
+            
         collection = self.__db_connection.get_collection(self.__collection_name)
         collection.insert_many(list_of_documents)
         return list_of_documents
