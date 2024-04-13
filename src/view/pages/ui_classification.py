@@ -1,6 +1,6 @@
 from qt_core import *
 # IMPORTS WIDGETS
-from view.widgets.py_push_button import PyPushButtonGUI, PyPushButtonIcon
+from view.widgets.py_push_button import PyPushButtonGUI, PyPushButtonIcon, PyPushButtonGUIIcon
 # IMPORTS STYLE
 from view.widgets.style_css import text_box_class_style
 
@@ -40,12 +40,11 @@ class UiClassification(object):
         self.frame_buttons.setMaximumHeight(50)
         
         # BUTTONS TEXT
-        self.button_back = PyPushButtonIcon(icon_path="arrow_return.svg", btn_color="transparent", btn_hover="transparent", btn_pressed="transparent", icon_color="#1B4269")
-        self.button_back.setMinimumWidth(50)
-        self.button_back.setMaximumWidth(50)
-        self.button_accept = PyPushButtonGUI("Accept", width=300, border_radius=20, font_family="Roboto", font_size=13, btn_color="#77966D", btn_hover="#566C4F", btn_pressed="#3B4A36")
-        self.button_rejected = PyPushButtonGUI("Rejected", width=300, border_radius=20, font_family="Roboto", font_size=13, btn_color="#941C2F", btn_hover="#8B1A2B", btn_pressed="#470E16")
-        
+        self.button_back = PyPushButtonGUIIcon(width=200, border_radius=20, icon_path="arrow_return.svg", text="Previous", btn_color="#1B4269", btn_hover="#1B5A69", btn_pressed="#3E5369", icon_color="white")
+        self.button_finish = PyPushButtonGUI("Finish", width=200, border_radius=20, font_family="Roboto", font_size=13, btn_color="#77966D", btn_hover="#566C4F", btn_pressed="#3B4A36")
+        self.button_cancel = PyPushButtonGUI("Cancel", width=200, border_radius=20, font_family="Roboto", font_size=13, btn_color="#941C2F", btn_hover="#8B1A2B", btn_pressed="#470E16")
+        self.button_next = PyPushButtonGUIIcon(width=200, minimum_width=320, border_radius=20, icon_path="arrow_next.svg", text="Next", btn_color="#1B4269", btn_hover="#1B5A69", btn_pressed="#3E5369", icon_color="white")
+                
 # -------------------------------------------------------------------- LAYOUTS
         # CREATE LAYOUT MAIN
         self.main_layout = QVBoxLayout(self.central_frame)
@@ -71,8 +70,9 @@ class UiClassification(object):
         
         # IN BUTTONS LAYOUT
         self.buttons_layout.addWidget(self.button_back)
-        self.buttons_layout.addWidget(self.button_accept)
-        self.buttons_layout.addWidget(self.button_rejected)
+        self.buttons_layout.addWidget(self.button_finish)
+        self.buttons_layout.addWidget(self.button_cancel)
+        self.buttons_layout.addWidget(self.button_next)
         
         # --------- SET CENTRAL WIDGET ------------
         parent.addWidget(self.central_frame)

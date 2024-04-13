@@ -157,3 +157,50 @@ class PyPushButtonGUI(QPushButton):
 
         self.setStyleSheet(style)
         
+class PyPushButtonGUIIcon(PyPushButtonGUI):
+    def __init__(self, text="", height=40, width=50, text_padding=0, border_radius=0, text_color="#FFFFFF", btn_color="#1B4269", btn_hover="#2563A0", btn_pressed="#133557", font_size=12, font_family="Arial", icon_path = "", icon_color = "#FFFFFF", is_active = False, minimum_width = 50):
+        super().__init__(text, height, width, text_padding, border_radius, text_color, btn_color, btn_hover, btn_pressed, font_size, font_family)
+        
+        self.icon_path = icon_path
+        self.icon_color = icon_color
+        self.is_active = is_active
+        self.minimum_width = minimum_width
+        
+        # ------------------------------------------------- Draw Image ----------------------------------------------
+    def paintEvent(self, event) -> None:
+        # Return Default Style
+        QPushButton.paintEvent(self, event)
+        
+        # Painter
+        qp = QPainter()
+        qp.begin(self)
+        qp.setRenderHint(QPainter.Antialiasing)
+        qp.setPen(Qt.NoPen)
+        
+        # Rectangulo
+        rect = QRect(0, 0, self.minimum_width, self.height())
+        
+        self.draw_icon(qp, self.icon_path, rect, self.icon_color)
+        
+        qp.end()
+        
+    def draw_icon(self, qp, image, rect, color):
+        # Format Path
+        app_path = os.path.abspath(os.getcwd())
+        folder = "resources/images/icons"
+        path = os.path.join(app_path, folder)
+        icon_path = os.path.normpath(os.path.join(path, image))
+        
+        # Draw Icon
+        icon = QPixmap(icon_path)
+        painter = QPainter(icon)
+        painter.setCompositionMode(QPainter.CompositionMode_SourceIn)
+        painter.fillRect(icon.rect(), color)
+        qp.drawPixmap(
+            (rect.width() - icon.width()) / 2,
+            (rect.height() - icon.height()) / 2,
+            icon
+        )
+        
+        painter.end()
+        
