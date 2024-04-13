@@ -90,12 +90,12 @@ class UiMainWindow(object):
         self.pages = QStackedWidget()
         self.pages.setStyleSheet("font-family: Roboto; font-size: 12pt; background-color: #FFFFFF")
         # TABLE NEWS PAGE
-        self.table_news_page = UiTableNews()
-        self.table_news_page.setup_ui(self.pages)
         
         # CLASSIFICATION PAGE
         self.classification_page = UiClassification()
         self.classification_page.setup_ui(self.pages)
+        self.table_news_page = UiTableNews()
+        self.table_news_page.setup_ui(self.pages)
         
 # -------------------------------------------------------------------- LAYOUTS
         # Layoyt Main Window
@@ -154,7 +154,7 @@ class UiMainWindow(object):
         self.left_menu_bottom_layout.addWidget(self.button_exit)
         
         # Add widgets content 
-        self.content_layout.addWidget(self.top_bar)
+        # self.content_layout.addWidget(self.top_bar) Desativar o TopBar
         self.content_layout.addWidget(self.pages)
         
         # Add to top bar
