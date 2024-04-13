@@ -5,6 +5,7 @@ mongodb:
   port: ""
   authentication: ""
   db_name: ""
+  db_name: "couser"
 
 server:
   ip_server: ""
