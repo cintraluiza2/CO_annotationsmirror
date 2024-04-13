@@ -9,8 +9,8 @@ class UiLoginWindow(object):
             parent.setObjectName("parent")
         
         # SET INITIAL PARAMETERS
-        parent.setWindowTitle("Login - QTSorting Hat")
-        parent.setWindowIcon(QIcon('resources/images/icons/qt.svg'))
+        parent.setWindowTitle("Login - OrgaExtractor")
+        parent.setWindowIcon(QIcon('resources/images/icons/icon_logo.svg'))
         parent.resize(700, 600)
         parent.setMaximumSize(700, 600)
         parent.setMinimumSize(700, 600)
