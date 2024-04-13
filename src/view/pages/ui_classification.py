@@ -62,9 +62,63 @@ class UiClassification(object):
         
         # FRAME EXTRACTION
         self.frame_extraction = QFrame()
-        self.frame_extraction.setMinimumHeight(300)
-        self.frame_extraction.setMaximumHeight(300)
-
+        self.frame_extraction.setMinimumHeight(310)
+        self.frame_extraction.setMaximumHeight(310)
+        
+        # ---------------- Itens Frame Extraction
+        # Radions Buttons
+        self.groupBox = QGroupBox()
+        self.groupBox.setStyleSheet("border: none")
+        self.button_accept_news = QRadioButton("Aceitar", self.groupBox)
+        self.button_reject_news = QRadioButton("Rejeitar", self.groupBox)
+        self.button_accept_news.setChecked(True)
+        # Geographic Data
+        self.frame_geo = QFrame()
+        self.frame_geo.setStyleSheet("""QLabel {background-color: transparent; max-width: 5em}""")
+        self.label_country = QLabel("País:")
+        self.combo_country = QComboBox()
+        self.combo_country.addItem("Brasil")
+        self.label_region = QLabel("Região:")
+        self.combo_region = QComboBox()
+        self.combo_region.addItem("Brasil")
+        self.label_city = QLabel("Município:")
+        self.combo_city = QComboBox()
+        self.combo_city.addItem("Brasil")
+        self.label_date_event = QLabel("Data do Evento:")
+        self.label_date_event.setStyleSheet("max-width: 6em")
+        self.input_date_event = QDateEdit()
+        self.input_date_event.setDisplayFormat("dd/MM/yyyy")
+        # News data
+        self.frame_news_data = QFrame()
+        self.frame_news_data.setStyleSheet("""QLabel {background-color: transparent; max-width: 7em}""")
+        self.label_deaths = QLabel("Quant. de Mortes:")
+        self.input_deaths = QSpinBox()
+        self.input_deaths.setMinimum(0)
+        self.label_conflict = QLabel("Conflito Armado: ")
+        self.combo_conflict = QComboBox()
+        self.combo_conflict.addItem("Não")
+        self.combo_conflict.addItem("Sim")
+        self.label_type_narcotic = QLabel("Tipo de Droga:")
+        self.combo_type_narcotic = QComboBox()
+        self.combo_type_narcotic.addItem("Nenhuma")
+        self.label_qty_narcotic = QLabel("Quant. de Drogas:")
+        self.input_qty_narcotic = QSpinBox()
+        self.input_qty_narcotic.setMinimum(0)
+        # Conflict Data
+        self.frame_conflit_data = QFrame()
+        self.frame_conflit_data.setStyleSheet("""QLabel {background-color: transparent; max-width: 7em}""")
+        self.label_actor = QLabel("Ator:")
+        self.combo_actor = QComboBox()
+        self.combo_actor.addItem("Primeiro Ator")  
+        self.combo_actor.addItem("Segundo Ator")  
+        self.label_name_actor = QLabel("Nome do Ator:")
+        self.name_actor = QLineEdit()
+        # Type Relation
+        self.frame_type_relation = QFrame()
+        self.frame_type_relation.setStyleSheet("""QLabel {background-color: transparent; max-width: 7em}""")
+        self.label_type_relation = QLabel("Tipo de Relação:")
+        self.combo_tyoe_relation = QComboBox()
+        
         # BUTTONS FRAME
         self.frame_buttons = QFrame()
         self.frame_buttons.setMinimumHeight(50)
@@ -92,6 +146,21 @@ class UiClassification(object):
         self.infos_layout.setContentsMargins(0, 0, 0, 0)
         self.infos_layout.setSpacing(10)
         
+        # Extraction Layout
+        self.extraction_layout = QVBoxLayout(self.frame_extraction)
+        self.extraction_layout.setContentsMargins(10, 15, 10, 10)
+        
+        # Layouts Extraction
+        self.geographic_layout = QHBoxLayout(self.frame_geo)    
+        self.geographic_layout.setSpacing(15)
+        self.news_data_layout = QHBoxLayout(self.frame_news_data)
+        self.conflit_data_layout = QHBoxLayout(self.frame_conflit_data)
+        self.type_relation_layout = QHBoxLayout(self.frame_type_relation)
+        
+        # RadioBoxLayout
+        self.radio_layout = QHBoxLayout(self.groupBox)
+        self.radio_layout.setSpacing(0)
+        
         # BUTTONS LAYOUT
         self.buttons_layout = QHBoxLayout(self.frame_buttons)
 
@@ -116,6 +185,42 @@ class UiClassification(object):
         self.box_layout.addWidget(self.text_box_article)
         self.box_layout.addWidget(self.frame_extraction)
         
+        # IN EXTRATION LAYOUT
+        self.radio_layout.addWidget(self.button_accept_news)
+        self.radio_layout.addWidget(self.button_reject_news)
+        self.extraction_layout.addWidget(self.groupBox)
+        self.extraction_layout.addWidget(self.frame_geo)
+        self.extraction_layout.addWidget(self.frame_news_data)
+        self.extraction_layout.addWidget(self.frame_conflit_data)
+        self.extraction_layout.addWidget(self.frame_type_relation)
+        
+        # IN GEOGRAPHIC LAYOUT
+        self.geographic_layout.addWidget(self.label_country)
+        self.geographic_layout.addWidget(self.combo_country)
+        self.geographic_layout.addWidget(self.label_region)
+        self.geographic_layout.addWidget(self.combo_region)
+        self.geographic_layout.addWidget(self.label_city)
+        self.geographic_layout.addWidget(self.combo_city)
+        self.geographic_layout.addWidget(self.label_date_event)
+        self.geographic_layout.addWidget(self.input_date_event)
+        
+        # IN NEWS DATA
+        self.news_data_layout.addWidget(self.label_deaths)
+        self.news_data_layout.addWidget(self.input_deaths)
+        self.news_data_layout.addWidget(self.label_conflict)
+        self.news_data_layout.addWidget(self.combo_conflict)
+        self.news_data_layout.addWidget(self.label_type_narcotic)
+        self.news_data_layout.addWidget(self.combo_type_narcotic)
+        self.news_data_layout.addWidget(self.label_qty_narcotic)
+        self.news_data_layout.addWidget(self.input_qty_narcotic)
+        
+        # IN CONFLIT DATA
+        self.conflit_data_layout.addWidget(self.label_actor)
+        self.conflit_data_layout.addWidget(self.combo_actor)
+        self.conflit_data_layout.addWidget(self.label_name_actor)
+        self.conflit_data_layout.addWidget(self.name_actor)
+        self.type_relation_layout.addWidget(self.label_type_relation)
+        self.type_relation_layout.addWidget(self.combo_tyoe_relation)
         
         # IN BUTTONS LAYOUT
         self.buttons_layout.addWidget(self.button_back)
