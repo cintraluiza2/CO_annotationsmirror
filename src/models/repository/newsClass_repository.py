@@ -13,7 +13,17 @@ class NewsClassRepository():
 
     # ------------------ Métodos de Inserção ------------------------
     def insert_document_news(self, document: Dict) -> Dict:
-        collection = self.__db_connection.get_collection(self.__collection_name)
+        """
+        Insert a document into the newsData collection
+
+        Args:
+            document (Dict): Receives the news in dictionary format with the URL as the unique key
+
+        Returns:
+            False: Insertion failed
+            True: Insertion successful
+        """
+        collection = self.__db_connection.get_collection(self.__collection_name) # Estabelece conexão
         collection.create_index("url", unique=True)
         registre = News(**document)
         registre.set_keys()
@@ -22,18 +32,33 @@ class NewsClassRepository():
         except DuplicateKeyError:
             return False
         
-        return registre
+        return True
 
     def insert_list_of_documents_news(self, documents: List[Dict]) -> List[Dict]:
+        """
+        Inserts a list of documents into the newsData collection.
+
+        Args:
+            document (List[Dict]): Receives a list with news in dictionary format with the URL as the unique key.
+
+        Returns:
+            DuplicateKeyError: Duplicate key
+            False: Insertion failed.
+            True: Insertion successful.
+        """
         list_of_documents = []
         for d in documents:
             n = News(**d)
             n.set_keys()
             list_of_documents.append(n.get_dict())
-            
-        collection = self.__db_connection.get_collection(self.__collection_name)
-        collection.insert_many(list_of_documents)
-        return list_of_documents
+        try:
+            collection = self.__db_connection.get_collection(self.__collection_name)
+            collection.insert_many(list_of_documents)
+        except DuplicateKeyError as e:
+            return e
+        except:
+            return False
+        return True
 
     # ------------------ Métodos de Busca ------------------------
     def select_one_news(self, title, optionsReturn={"_id": 0}) -> Dict:
