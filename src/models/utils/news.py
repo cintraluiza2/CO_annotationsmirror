@@ -15,7 +15,7 @@
             "tags": None,
             "manual_relevance_class": None,
             "automatic_relevance_class": None,
-            "confidence": None, 
+            "confidence_relevance_class": None, 
             "relevance_model": None,
             "relevance_classification_date": None,
             "id_evento": None,
