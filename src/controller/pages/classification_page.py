@@ -4,6 +4,8 @@ from view.widgets.py_message_options import WarningMessageBox, WarningMessageBox
 # IMPORTS DATA
 from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
+# IMPORTS DATA GEO
+from models.utils.geo_reference import GeoReference
 
 class ClassificationManager:
     def __init__(self, classification, show_page_table_class) -> None:
@@ -22,7 +24,16 @@ class ClassificationManager:
         self.actor1 = ""
         self.actor2 = ""
         self.bool_save = False
-                
+        
+        # INIT COMBOBOX
+        self.geo = GeoReference()
+        self.dict_geo = self.geo.geo_country()
+        self.classification.init_combo_box(self.classification.combo_country, self.dict_geo)
+        self.classification.combo_country.currentIndexChanged.connect(self.check_selected_country)
+        self.classification.combo_region.currentIndexChanged.connect(self.check_selected_region)
+        self.disable_widgets()
+        
+        # BUTTONS EXTRACTION        
         self.classification.combo_actor.currentIndexChanged.connect(self.name_actor)
         self.classification.name_actor.editingFinished.connect(self.edit_actor)
         self.classification.button_reject_news.clicked.connect(self.disable_widgets)
@@ -61,15 +72,23 @@ class ClassificationManager:
         # self.set_text_class()
         
     def save_infos(self):
+        """
+            Salvar as informações extraidas do texto.
+        """
         accept_res = int(self.classification.button_accept_news.isChecked())
         if accept_res:
+            country = self.classification.combo_country.currentData()
+            region = self.classification.combo_region.currentData()
+            city = self.classification.combo_city.currentData()
             data_event = self.classification.input_date_event.text()
             deaths = int(self.classification.input_deaths.text())
             conflict = self.classification.combo_conflict.currentIndex()
             type_narcotic = self.classification.combo_type_narcotic.currentIndex()
             actor_1 = self.actor1
             actor_2 = self.actor2
-        
+            
+            edit = {"manual_relevance_class": accept_res, "data_evento": data_event, "quant_mortes": deaths, "tipo_conflito_armado": conflict, "pais": country, "regiao": region, "municipio": city, "ator1_nome": actor_1, "ator2_nome": actor_2, "tipo_droga": type_narcotic}
+            self.__news_repository.edit_registry_news(self.title_news, edit)
 
     def back_table_page(self):
         dlg = WarningMessageBoxOption(title="Question", txt="Just to confirm, you would like to return?")
@@ -79,6 +98,9 @@ class ClassificationManager:
             self.show_page_table_class()
             
     def name_actor(self):
+        """
+            Atualizar o QLabel do nome do Ator.
+        """
         selected_text = self.classification.combo_actor.currentText()
         # Atualizando o QLineEdit
         if selected_text == "Primeiro Ator":
@@ -89,6 +111,9 @@ class ClassificationManager:
             self.classification.name_actor.clear()
             
     def edit_actor(self):
+        """
+            Recuperar o nome do Ator digitado.
+        """
         selected_id = self.classification.combo_actor.currentIndex()
         text_name = self.classification.name_actor.text()
         if not selected_id:
@@ -104,3 +129,21 @@ class ClassificationManager:
         for widget in self.classification.frame_extraction.findChildren(QFrame):
             widget.setEnabled(True)
             
+    def check_selected_country(self, index):
+        selected_country = self.classification.combo_country.currentText()
+        if selected_country == "Brasil":
+            self.classification.combo_region.setEnabled(True)
+            self.dict_geo = self.geo.geo_region_br()
+            self.classification.init_combo_box(self.classification.combo_region, self.dict_geo)
+        else:
+            self.classification.combo_city.clear()
+            self.classification.combo_region.clear()
+            self.classification.combo_region.setEnabled(False)
+            self.classification.combo_city.setEnabled(False)
+            
+    def check_selected_region(self, index):
+        self.classification.combo_city.clear()
+        self.classification.combo_city.setEnabled(True)
+        self.dict_geo = self.geo.geo_city_br((index + 1))
+        self.classification.init_combo_box(self.classification.combo_city, self.dict_geo)
+        

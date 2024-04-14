@@ -4,7 +4,7 @@ from view.widgets.py_push_button import PyPushButtonGUI, PyPushButtonIcon, PyPus
 # IMPORTS STYLE
 from view.widgets.style_css import text_box_class_style
 # IMPORTS DATA
-from models.utils.data import data_combo_conflict, data_type_narcotic, data_actor
+from models.utils.data import *
 
 class UiClassification(object):
         def setup_ui(self, parent):
@@ -73,19 +73,17 @@ class UiClassification(object):
                 self.groupBox.setStyleSheet("border: none")
                 self.button_accept_news = QRadioButton("Aceitar", self.groupBox)
                 self.button_reject_news = QRadioButton("Rejeitar", self.groupBox)
-                # self.button_accept_news.setChecked(True)
                 # Geographic Data
                 self.frame_geo = QFrame()
                 self.frame_geo.setStyleSheet("""QLabel {background-color: transparent; max-width: 5em}""")
-                self.label_country = QLabel("País:")
+                self.label_country = QLabel("País:") # Combo box País
                 self.combo_country = QComboBox()
-                self.combo_country.addItem("Brasil")
                 self.label_region = QLabel("Região:")
                 self.combo_region = QComboBox()
-                self.combo_region.addItem("Brasil")
+                self.combo_region.setEnabled(False)
                 self.label_city = QLabel("Município:")
                 self.combo_city = QComboBox()
-                self.combo_city.addItem("Brasil")
+                self.combo_city.setEnabled(False)
                 self.label_date_event = QLabel("Data do Evento:")
                 self.label_date_event.setStyleSheet("max-width: 6em")
                 self.input_date_event = QDateEdit()
