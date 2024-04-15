@@ -39,7 +39,7 @@ class UiTableNews(object):
         # Define o modo de redimensionamento de todas as colunas para Qt.Fixed
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)  # Seleção de linha inteira
-        self.table.setSelectionMode(QTableWidget.MultiSelection)  # Seleção de várias linhas
+        # self.table.setSelectionMode(QTableWidget.MultiSelection)  # Seleção de várias linhas
         # Definição do Header
         self.table.setHorizontalHeaderLabels(["Publication", "News", "Title", "Human", "Machine", "Level"])
         # Impede a edição de todas as células da tabela

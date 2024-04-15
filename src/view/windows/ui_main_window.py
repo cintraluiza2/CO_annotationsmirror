@@ -92,10 +92,10 @@ class UiMainWindow(object):
         # TABLE NEWS PAGE
         
         # CLASSIFICATION PAGE
-        self.classification_page = UiClassification()
-        self.classification_page.setup_ui(self.pages)
         self.table_news_page = UiTableNews()
         self.table_news_page.setup_ui(self.pages)
+        self.classification_page = UiClassification()
+        self.classification_page.setup_ui(self.pages)
         
 # -------------------------------------------------------------------- LAYOUTS
         # Layoyt Main Window

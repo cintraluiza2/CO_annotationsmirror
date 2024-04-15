@@ -11,6 +11,7 @@ class GeoReference:
         response = requests.get(self.__link_paises).json()
         for pais in response:
             data[pais['pais-nome']] = pais['pais-M49']
+        data['Outros'] = 0
         
         return data
     
