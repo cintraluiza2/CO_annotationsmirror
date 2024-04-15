@@ -21,6 +21,7 @@ class ClassificationManager:
         # VARIABLES GLOBAL
         self.title_list = []
         self.title_news = ""
+        self.title_select = ""
         self.actor1 = ""
         self.actor2 = ""
         self.bool_save = False
@@ -29,6 +30,7 @@ class ClassificationManager:
         self.geo = GeoReference()
         self.dict_geo = self.geo.geo_country()
         self.classification.init_combo_box(self.classification.combo_country, self.dict_geo)
+        
         self.classification.combo_country.currentIndexChanged.connect(self.check_selected_country)
         self.classification.combo_region.currentIndexChanged.connect(self.check_selected_region)
         self.disable_widgets()
@@ -36,40 +38,60 @@ class ClassificationManager:
         # BUTTONS EXTRACTION        
         self.classification.combo_actor.currentIndexChanged.connect(self.name_actor)
         self.classification.name_actor.editingFinished.connect(self.edit_actor)
-        self.classification.button_reject_news.clicked.connect(self.disable_widgets)
         self.classification.button_accept_news.clicked.connect(self.enabled_widgets)
+        self.classification.button_reject_news.clicked.connect(self.disable_widgets)
         
-        # self.classification.button_accept.clicked.connect(self.accept_news)
-        # self.classification.button_rejected.clicked.connect(self.rejected_news)
-        self.classification.button_finish.clicked.connect(self.save_infos)
+        
+        self.classification.button_back.clicked.connect(self.back_news)
+        self.classification.button_next.clicked.connect(self.next_news)
+        self.classification.button_finish.clicked.connect(self.finish_class)
         self.classification.button_cancel.clicked.connect(self.back_table_page)
         
-    def set_title_list(self, title_list):
+    def set_title_list(self, title_list, title_select):
         self.title_list = title_list
+        self.title_select = title_select
         
     def set_text_class(self):
         if self.title_list:
-            title_news = self.title_list.pop()
-            news = self.__news_repository.select_one_news(title={"$regex": title_news}, optionsReturn={"title": 1, "article": 1})
-            text_news = news["article"]
+            title_news = self.title_list[self.title_select]
+            news = self.__news_repository.select_one_news(title={"$regex": title_news}, optionsReturn={"title": 1, "article": 1, "manual_relevance_class": 1, "publication_date": 1, "last_update": 1, "automatic_relevance_class": 1, "confidence_relevance_class": 1})
+            
+            mapping = {0: 'rejeite', 1: 'aceite', None: None}
             self.title_news = news["title"]
+            publication_news = news["publication_date"]
+            update_news = news['last_update']
+            automatic_news = mapping.get(news['automatic_relevance_class'])
+            manual_news = news['manual_relevance_class']
+            confidence_news = news['confidence_relevance_class']
+            text_news = news["article"]
+            
+            if manual_news: self.classification.button_accept_news.setChecked(True) 
+            else: self.classification.button_reject_news.setChecked(True)
+            
             self.classification.title_article.setText(title_news)
+            self.classification.data_publication.setText(publication_news)
+            data = QDate.fromString(publication_news, "dd-MM-yyyy")
+            self.classification.input_date_event.setDate(data)
+            self.classification.data_update.setText(update_news)
+            self.classification.machine_class.setText(automatic_news)
+            self.classification.confidence_machine.setText(confidence_news)
             self.classification.text_box_article.setText(text_news)
+            
         else:
             dlg = WarningMessageBox(title="Information", txt="The news classification process has been completed.")
             dlg.setIcon(QMessageBox.Information)
             dlg.exec()
             self.show_page_table_class()
             
-    def accept_news(self):
-        edit = {"manual_relevance_class": 1}
-        self.__news_repository.edit_registry_news(self.title_news, edit)
-        # self.set_text_class()
+    def next_news(self):
+        self.save_infos()
+        self.title_select = self.title_select + 1
+        self.set_text_class()
         
-    def rejected_news(self):
-        edit = {"manual_relevance_class": 0}
-        self.__news_repository.edit_registry_news(self.title_news, edit)
-        # self.set_text_class()
+    def back_news(self):
+        self.save_infos()
+        self.title_select = self.title_select - 1
+        self.set_text_class()
         
     def save_infos(self):
         """
@@ -86,9 +108,18 @@ class ClassificationManager:
             type_narcotic = self.classification.combo_type_narcotic.currentIndex()
             actor_1 = self.actor1
             actor_2 = self.actor2
-            
             edit = {"manual_relevance_class": accept_res, "data_evento": data_event, "quant_mortes": deaths, "tipo_conflito_armado": conflict, "pais": country, "regiao": region, "municipio": city, "ator1_nome": actor_1, "ator2_nome": actor_2, "tipo_droga": type_narcotic}
-            self.__news_repository.edit_registry_news(self.title_news, edit)
+        
+        edit = {"manual_relevance_class": accept_res}
+        self.__news_repository.edit_registry_news(self.title_news, edit)
+            
+    def finish_class(self):
+        dlg = WarningMessageBoxOption(title="Question", txt="Would you like to finish?")
+        dlg.setIcon(QMessageBox.Question)
+        if dlg.exec_() == QMessageBox.Yes:
+            self.save_infos()
+            self.title_list.clear()
+            self.show_page_table_class()
 
     def back_table_page(self):
         dlg = WarningMessageBoxOption(title="Question", txt="Just to confirm, you would like to return?")

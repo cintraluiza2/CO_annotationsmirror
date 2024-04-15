@@ -1,4 +1,5 @@
 ﻿from qt_core import *
+from collections import deque
 # IMPORT WIDGETS
 from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption
 # IMPORTS DATA
@@ -52,25 +53,22 @@ class TableNewsManager:
     def on_selection_table(self):
         selected_items = self.table.selectedItems() # O selectedItems seleciona cada celula
         num_selected = int(len(selected_items) / self.num_columns) # São 5 celulas por ser 5 colunas
+        title_selected = selected_items[2].text()
         
         if num_selected == 0:
             dlg = WarningMessageBoxOption(title="Question", txt="Would you like the system to select the news for you?")
             dlg.setIcon(QMessageBox.Question)
             dlg.exec()
-        elif num_selected >= 5:
-            for i in range(0, num_selected):               
-                row = selected_items[i * self.num_columns].row() # Necessário multiplicar para acessar nova linha
+        else:
+            for row in range(self.table.rowCount()):
                 column_title = self.table.item(row, 2)
                 self.title_list.append(column_title.text())
             
             self.table.clearSelection()
-            self.set_title_list(self.title_list)
+            title_selected_id = self.title_list.index(title_selected)
+            self.set_title_list(self.title_list, title_selected_id)
             self.set_text_class()
             self.show_page_class()
-        else:
-            dlg = WarningMessageBox(title="Information", txt="At least 5 news articles must be selected for the analysis.")
-            dlg.setIcon(QMessageBox.Information)
-            dlg.exec()
 
     def on_column_header_clicked(self, logical_index): # Ordenação da Table
         
