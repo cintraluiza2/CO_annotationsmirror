@@ -23,8 +23,10 @@ class NewsClassRepository():
             False: Insertion failed
             True: Insertion successful
         """
-        collection = self.__db_connection.get_collection(self.__collection_name) # Estabelece conexão
+        collection = self.__db_connection.get_collection(self.__collection_name) # Estabelece conexão com o banco
         collection.create_index("url", unique=True)
+        collection.create_index("id_event", unique=True)
+        document["id_event"] = self.get_count() 
         registre = News(**document)
         registre.set_keys()
         try:
@@ -61,6 +63,12 @@ class NewsClassRepository():
         return True
 
     # ------------------ Métodos de Busca ------------------------
+    def get_count(self):
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        response = collection.count_documents({})
+
+        return response
+    
     def select_one_news(self, title, optionsReturn={"_id": 0}) -> Dict:
         collection = self.__db_connection.get_collection(self.__collection_name)
         response = collection.find_one({"title": title}, optionsReturn)
