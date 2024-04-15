@@ -32,7 +32,6 @@ class TableNewsManager:
         
         self.table_init()
         
-        self.table_page.button_unselect.clicked.connect(self.table.clearSelection)
         self.table.horizontalHeader().sectionClicked.connect(self.on_column_header_clicked) # Colunm Header Clicked
         self.table_page.button_note.clicked.connect(self.on_selection_table)
         # self.table_page.button_train.clicked.connect(self.train_table_news)
@@ -53,13 +52,13 @@ class TableNewsManager:
     def on_selection_table(self):
         selected_items = self.table.selectedItems() # O selectedItems seleciona cada celula
         num_selected = int(len(selected_items) / self.num_columns) # São 5 celulas por ser 5 colunas
-        title_selected = selected_items[2].text()
         
         if num_selected == 0:
-            dlg = WarningMessageBoxOption(title="Question", txt="Would you like the system to select the news for you?")
-            dlg.setIcon(QMessageBox.Question)
+            dlg = WarningMessageBox(title="Attention!", txt="Annotation requires the selection of a news article.")
+            dlg.setIcon(QMessageBox.Warning)
             dlg.exec()
         else:
+            title_selected = selected_items[2].text()
             for row in range(self.table.rowCount()):
                 column_title = self.table.item(row, 2)
                 self.title_list.append(column_title.text())
