@@ -60,7 +60,6 @@ class UiTableNews(object):
         # self.frame_buttons.spacing(130)
         # Buttons
         self.button_note = PyPushButtonGUI(text="Note", btn_color="#77966D", btn_hover="#6E9673", btn_pressed="#89966E", border_radius=20, width=187, font_size=13, font_family="Roboto")
-        self.button_unselect = PyPushButtonGUI(text="Unselect", btn_color="#D39854", btn_hover="#D4AA55", btn_pressed="#D48255", border_radius=20, width=187, font_size=13, font_family="Roboto")
         self.button_train = PyPushButtonGUI(text="Train", btn_color="#1B5A69", btn_hover="#1B4269", btn_pressed="#1B695E", border_radius=20, width=187, font_size=13, font_family="Roboto")
         
 # -------------------------------------------------------------------- LAYOUTS
@@ -85,8 +84,6 @@ class UiTableNews(object):
         # self.header_layout.addSpacing(50)
         # IN BUTTONS LAYOUT
         self.buttons_layout.addWidget(self.button_note)
-        self.buttons_layout.addSpacing(120)
-        self.buttons_layout.addWidget(self.button_unselect)
         self.buttons_layout.addSpacing(120)
         self.buttons_layout.addWidget(self.button_train)
         
