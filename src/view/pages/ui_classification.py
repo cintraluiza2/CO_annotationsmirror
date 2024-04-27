@@ -71,8 +71,8 @@ class UiClassification(object):
                 # Radions Buttons
                 self.groupBox = QGroupBox()
                 self.groupBox.setStyleSheet("border: none")
-                self.button_accept_news = QRadioButton("Aceitar", self.groupBox)
-                self.button_reject_news = QRadioButton("Rejeitar", self.groupBox)
+                self.button_accept_news = QRadioButton("Relevante", self.groupBox)
+                self.button_reject_news = QRadioButton("Irrelevante", self.groupBox)
                 # Geographic Data
                 self.frame_geo = QFrame()
                 self.frame_geo.setStyleSheet("""QLabel {background-color: transparent; max-width: 5em}""")
@@ -106,16 +106,16 @@ class UiClassification(object):
                 # Conflict Data
                 self.frame_conflit_data = QFrame()
                 self.frame_conflit_data.setStyleSheet("""QLabel {background-color: transparent; max-width: 9em}""")
-                self.label_actor = QLabel("Ator:")
-                self.combo_actor = QComboBox()
-                self.init_combo_box(self.combo_actor, data_actor)  
-                self.label_name_actor = QLabel("Nome do Primeiro Ator:")
-                self.name_actor = QLineEdit()
+                self.label_name_actor_1 = QLabel("Nome do Primeiro Ator:")
+                self.name_actor_1 = QLineEdit()
+                self.label_name_actor_2 = QLabel("Nome do Segundo Ator:")
+                self.name_actor_2 = QLineEdit()
                 # Type Relation
                 self.frame_type_relation = QFrame()
-                self.frame_type_relation.setStyleSheet("""QLabel {background-color: transparent; max-width: 7em}""")
-                self.label_type_relation = QLabel("Tipo de Relação:")
+                self.frame_type_relation.setStyleSheet("""QLabel {background-color: transparent; max-width: 12em}""")
+                self.label_type_relation = QLabel("Tipo de Relação Entre Atores:")
                 self.combo_type_relation = QComboBox()
+                self.init_combo_box(self.combo_type_relation, data_type_relation)
                 
                 # BUTTONS FRAME
                 self.frame_buttons = QFrame()
@@ -213,10 +213,12 @@ class UiClassification(object):
                 self.news_data_layout.addWidget(self.input_qty_narcotic)
                 
                 # IN CONFLIT DATA
-                self.conflit_data_layout.addWidget(self.label_actor)
-                self.conflit_data_layout.addWidget(self.combo_actor)
-                self.conflit_data_layout.addWidget(self.label_name_actor)
-                self.conflit_data_layout.addWidget(self.name_actor)
+                # self.conflit_data_layout.addWidget(self.label_actor)
+                # self.conflit_data_layout.addWidget(self.combo_actor)
+                self.conflit_data_layout.addWidget(self.label_name_actor_1)
+                self.conflit_data_layout.addWidget(self.name_actor_1)
+                self.conflit_data_layout.addWidget(self.label_name_actor_2)
+                self.conflit_data_layout.addWidget(self.name_actor_2)
                 self.type_relation_layout.addWidget(self.label_type_relation)
                 self.type_relation_layout.addWidget(self.combo_type_relation)
                 
