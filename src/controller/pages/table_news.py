@@ -33,6 +33,7 @@ class TableNewsManager:
         self.table_init()
         
         self.table.horizontalHeader().sectionClicked.connect(self.on_column_header_clicked) # Colunm Header Clicked
+        self.table.cellDoubleClicked.connect(self.on_selection_table)
         self.table_page.button_note.clicked.connect(self.on_selection_table)
         # self.table_page.button_train.clicked.connect(self.train_table_news)
     
