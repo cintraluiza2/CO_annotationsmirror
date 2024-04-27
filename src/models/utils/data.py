@@ -1,4 +1,13 @@
-﻿data_combo_conflict = {
+﻿data_type_relation = {
+    "Rivalidade": 0, 
+    "Competição": 1, 
+    "Cooperação": 2, 
+    "Integração": 3,
+    "Confronto": 4,
+    "Outros": 5
+}
+
+data_combo_conflict = {
     "Não": 0,
     "Sim": 1
 }
