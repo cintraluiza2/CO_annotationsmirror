@@ -38,20 +38,20 @@ class UiClassification(object):
                 self.frame_infos.setMaximumWidth(900)
                 
                 # ------------------------ Intens Infos
-                self.label_publication = QLabel("Publication:")
+                self.label_publication = QLabel("Publicação:")
                 self.label_publication.setStyleSheet("background-color: transparent; max-width: 4.6875em;")
                 self.data_publication = QLabel("00-00-0000")
                 
-                self.label_update = QLabel("Update:")
-                self.label_update.setStyleSheet("background-color: transparent; max-width: 3.125em;")
+                self.label_update = QLabel("Atualização:")
+                self.label_update.setStyleSheet("background-color: transparent; max-width: 5em;")
                 self.data_update = QLabel("00-00-0000")
                 
-                self.label_machine_class = QLabel("Machine Class:")
+                self.label_machine_class = QLabel("Classe da Máquina:")
                 self.label_machine_class.setStyleSheet("background-color: transparent")
-                self.machine_class = QLabel("Accepted")
+                self.machine_class = QLabel("Relevante")
                 self.machine_class.setStyleSheet("max-width: 4.6875em;")
                 
-                self.label_confidence= QLabel("Confidence:")
+                self.label_confidence= QLabel("Confiança:")
                 self.label_confidence.setStyleSheet("background-color: transparent; max-width: 4.6875em;")
                 self.confidence_machine = QLabel("00.00%")
                 self.confidence_machine.setStyleSheet("max-width: 3.75em;")
@@ -123,10 +123,10 @@ class UiClassification(object):
                 self.frame_buttons.setMaximumHeight(50)
                 
                 # BUTTONS TEXT
-                self.button_back = PyPushButtonGUIIcon(width=200, border_radius=20, icon_path="arrow_return.svg", text="Previous", btn_color="#1B4269", btn_hover="#1B5A69", btn_pressed="#3E5369", icon_color="white")
-                self.button_finish = PyPushButtonGUI("Finish", width=200, border_radius=20, font_family="Roboto", font_size=13, btn_color="#77966D", btn_hover="#566C4F", btn_pressed="#3B4A36")
-                self.button_cancel = PyPushButtonGUI("Cancel", width=200, border_radius=20, font_family="Roboto", font_size=13, btn_color="#941C2F", btn_hover="#8B1A2B", btn_pressed="#470E16")
-                self.button_next = PyPushButtonGUIIcon(width=200, minimum_width=320, border_radius=20, icon_path="arrow_next.svg", text="Next", btn_color="#1B4269", btn_hover="#1B5A69", btn_pressed="#3E5369", icon_color="white")
+                self.button_back = PyPushButtonGUIIcon(width=200, border_radius=20, icon_path="arrow_return.svg", text="Anterior", btn_color="#1B4269", btn_hover="#1B5A69", btn_pressed="#3E5369", icon_color="white")
+                self.button_finish = PyPushButtonGUI("Finalizar", width=200, border_radius=20, font_family="Roboto", font_size=13, btn_color="#77966D", btn_hover="#566C4F", btn_pressed="#3B4A36")
+                self.button_cancel = PyPushButtonGUI("Cancelar", width=200, border_radius=20, font_family="Roboto", font_size=13, btn_color="#941C2F", btn_hover="#8B1A2B", btn_pressed="#470E16")
+                self.button_next = PyPushButtonGUIIcon(width=200, minimum_width=320, border_radius=20, icon_path="arrow_next.svg", text="Próxima", btn_color="#1B4269", btn_hover="#1B5A69", btn_pressed="#3E5369", icon_color="white")
                         
         # -------------------------------------------------------------------- LAYOUTS
                 # CREATE LAYOUT MAIN

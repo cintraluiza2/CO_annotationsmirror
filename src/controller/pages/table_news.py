@@ -41,21 +41,25 @@ class TableNewsManager:
     def table_init(self):
         self.toggle_order = Qt.AscendingOrder
         list_news = self.__news_repository.select_many_order_news(optionsReturn={"_id": 0, "publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "certainty_level": 1}, orderFilter='manual_relevance_class', optionsFilter=1)
+        mapping = {0: "Irrelevante", 1: "Relevante", None: "SClasse"}
         itens = len(list_news)
         self.table.setRowCount(itens)
-        for row, text in enumerate(list_news):
-            for column, label in enumerate(text):
-                self.table.setItem(row, column, QTableWidgetItem(str(text[label])))
+        for row, dict_news in enumerate(list_news):
+            dict_news["manual_relevance_class"] = mapping.get(dict_news["manual_relevance_class"])
+            dict_news["automatic_relevance_class"] = mapping.get(dict_news["automatic_relevance_class"])
+            for column, label in enumerate(dict_news):
+                self.table.setItem(row, column, QTableWidgetItem(str(dict_news[label])))
     
         self.table.resizeColumnsToContents()
-        self.table.setColumnWidth(2, 860)
+        self.table.setColumnWidth(2, 790)
+        self.table.setColumnWidth(3, 100)
         
     def on_selection_table(self):
         selected_items = self.table.selectedItems() # O selectedItems seleciona cada celula
         num_selected = int(len(selected_items) / self.num_columns) # São 5 celulas por ser 5 colunas
         
         if num_selected == 0:
-            dlg = WarningMessageBox(title="Attention!", txt="Annotation requires the selection of a news article.")
+            dlg = WarningMessageBox(title="Atenção!", txt="A anotação requer a seleção de um artigo de notícias.")
             dlg.setIcon(QMessageBox.Warning)
             dlg.exec()
         else:

@@ -42,9 +42,9 @@ class UiMainWindow(object):
         self.left_menu_central_frame.setMinimumHeight(50)
         # Central Buttons
         self.button_home = PyPushButtonIcon("Home", is_active=True, icon_path="home.svg")
-        self.button_class = PyPushButtonIcon("Classification", icon_path="class.svg")
-        self.button_extra = PyPushButtonIcon("Extraction", icon_path="extraction.svg")
-        self.button_data = PyPushButtonIcon("Data", icon_path="data.svg")
+        self.button_class = PyPushButtonIcon("Classificação", icon_path="class.svg")
+        self.button_extra = PyPushButtonIcon("Extração", icon_path="extraction.svg")
+        self.button_data = PyPushButtonIcon("Dados", icon_path="data.svg")
         
         # Menu Spacer
         self.left_menu_spacer = QSpacerItem(20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
@@ -54,7 +54,7 @@ class UiMainWindow(object):
         self.left_menu_bottom_frame.setMinimumHeight(50)
         
         # Bottom Buttons
-        self.button_exit = PyPushButtonIcon("Exit", icon_path="exit.svg")
+        self.button_exit = PyPushButtonIcon("Sair", icon_path="exit.svg")
         
         # Label Version
         self.left_menu_label_version = QLabel("v1.0.0")

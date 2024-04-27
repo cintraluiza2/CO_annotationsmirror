@@ -11,6 +11,8 @@ class WarningMessageBoxOption(QMessageBox):
         self.setText(txt)
         self.setIcon(QMessageBox.Warning)
         self.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        self.setButtonText(QMessageBox.Yes, "Sim")
+        self.setButtonText(QMessageBox.Cancel, "Cancelar")
         
 class WarningMessageBoxOptionOk(QMessageBox):
     def __init__(self, title, txt):
@@ -23,6 +25,8 @@ class WarningMessageBoxOptionOk(QMessageBox):
         self.setText(txt)
         self.setIcon(QMessageBox.Warning)
         self.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        self.setButtonText(QMessageBox.Yes, "Sim")
+        self.setButtonText(QMessageBox.Cancel, "Cancelar")
         
 class WarningMessageBox(QMessageBox):
     def __init__(self, title, txt):

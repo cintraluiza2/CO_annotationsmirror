@@ -88,7 +88,7 @@ class ClassificationManager:
             self.classification.combo_type_relation.setCurrentIndex(relationship_atores)
             
         else:
-            dlg = WarningMessageBox(title="Information", txt="The news classification process has been completed.")
+            dlg = WarningMessageBox(title="Informação", txt="O processo de classificação de noticías foi finalizado!")
             dlg.setIcon(QMessageBox.Information)
             dlg.exec()
             self.show_page_table_class()
@@ -131,7 +131,7 @@ class ClassificationManager:
         self.__news_repository.edit_registry_news(self.title_news, edit)
             
     def finish_class(self):
-        dlg = WarningMessageBoxOption(title="Question", txt="Would you like to finish?")
+        dlg = WarningMessageBoxOption(title="Questão", txt="Gostaria de finalizar o processo de anotação? O seu progresso será salvo!")
         dlg.setIcon(QMessageBox.Question)
         if dlg.exec_() == QMessageBox.Yes:
             self.save_infos()
@@ -139,8 +139,9 @@ class ClassificationManager:
             self.show_page_table_class()
 
     def back_table_page(self):
-        dlg = WarningMessageBoxOption(title="Question", txt="Just to confirm, you would like to return?")
-        dlg.setIcon(QMessageBox.Question)
+        dlg = WarningMessageBoxOption(title="Atenção", txt="Gostaria de retornar ao menu inicial?\nO seu progresso será perdido!")
+        dlg.setIcon(QMessageBox.Warning)
+        dlg.setButtonText(QMessageBox.Yes, "Sim")
         if dlg.exec_() == QMessageBox.Yes:
             self.title_list.clear()
             self.show_page_table_class()

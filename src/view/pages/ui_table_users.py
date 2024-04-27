@@ -20,7 +20,7 @@ class UiTableUsers(object):
 # -------------------------------------------------------------------- ITENS/FRAMES
         self.header_frame = QFrame()
         # LABEL
-        self.title_page_news = QLabel("Users")
+        self.title_page_news = QLabel("Usuários")
         self.title_page_news.setStyleSheet("font: 25px")
         self.button_prev = PyPushButtonIcon(icon_path="arrow_left.svg", btn_color="transparent", btn_hover="#E5E5E5", btn_pressed="transparent", icon_color="#374957")
         self.button_prev.setMaximumWidth(50)
@@ -40,7 +40,7 @@ class UiTableUsers(object):
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Fixed)
         self.table.setSelectionBehavior(QTableWidget.SelectRows)  # Seleção de linha inteira
         # Definição do Header
-        self.table.setHorizontalHeaderLabels(["Name", "Email", "User Role", "News articles analyzed", "Notes"])
+        self.table.setHorizontalHeaderLabels(["Nome", "Email", "Função", "Notícias Analisadas", "Notas"])
         # Impede a edição de todas as células da tabela
         self.table.setEditTriggers(QAbstractItemView.NoEditTriggers)
         # Oculta as linhas de divisão de coluna e linha
@@ -64,9 +64,9 @@ class UiTableUsers(object):
         self.frame_buttons.setMaximumHeight(50)
         # self.frame_buttons.spacing(130)
         # Buttons
-        self.button_view_user = PyPushButtonGUI(text="View User", btn_color="#77966D", btn_hover="#6E9673", btn_pressed="#89966E", border_radius=20, width=187, font_size=13, font_family="Roboto")
-        self.button_add_user = PyPushButtonGUI(text="Add User", btn_color="#D39854", btn_hover="#D4AA55", btn_pressed="#D48255", border_radius=20, width=187, font_size=13, font_family="Roboto")
-        self.button_edit_user = PyPushButtonGUI(text="Edit User", btn_color="#1B5A69", btn_hover="#1B4269", btn_pressed="#1B695E", border_radius=20, width=187, font_size=13, font_family="Roboto")
+        self.button_view_user = PyPushButtonGUI(text="Ver Usuário", btn_color="#77966D", btn_hover="#6E9673", btn_pressed="#89966E", border_radius=20, width=187, font_size=13, font_family="Roboto")
+        self.button_add_user = PyPushButtonGUI(text="Adicionar", btn_color="#D39854", btn_hover="#D4AA55", btn_pressed="#D48255", border_radius=20, width=187, font_size=13, font_family="Roboto")
+        self.button_edit_user = PyPushButtonGUI(text="Editar", btn_color="#1B5A69", btn_hover="#1B4269", btn_pressed="#1B695E", border_radius=20, width=187, font_size=13, font_family="Roboto")
         
 # -------------------------------------------------------------------- LAYOUTS
         # MAIN LAYOUT

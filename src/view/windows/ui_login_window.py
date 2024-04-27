@@ -86,19 +86,19 @@ class UiLoginWindow(object):
         self.pass_frame.setMaximumHeight(90)
         
         # Label Pass
-        self.label_pass = QLabel("Password")
+        self.label_pass = QLabel("Senha")
         self.label_pass.setAlignment(Qt.AlignLeft)
         
         # Create LineEdit PassWord
         self.txt_pass_word = QLineEdit()
         self.txt_pass_word.setEchoMode(QLineEdit.Password)
         self.txt_pass_word.show()
-        self.txt_pass_word.setPlaceholderText("8-character passcode")
+        self.txt_pass_word.setPlaceholderText("Senha de 8 caracteres")
         self.txt_pass_word
         self.txt_pass_word.setStyleSheet(style_line_edit)
         
         # BUTTONS
-        self.butons_access = PyPushButtonGUI(text="Access", font_family="Roboto", font_size=13, width=310, border_radius=20)
+        self.butons_access = PyPushButtonGUI(text="Acessar", font_family="Roboto", font_size=13, width=310, border_radius=20)
         
 # ---------------------------------------------------------------------- Layouts
         # CREATE WINDOW LAYOUT

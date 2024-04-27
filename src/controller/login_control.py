@@ -69,12 +69,12 @@ class LoginWindow(QDialog):
             validate_email(user_email)
             response = self.__users_repository.select_user_pass(user_email)
             if not response:
-                dlg = WarningMessageBox(title="Error", txt="Incorrect email or password")
+                dlg = WarningMessageBox(title="Erro", txt="Senha ou Email Incorreto")
                 dlg.exec()
             else:
                 result = bcrypt.checkpw(txt_pass.encode("utf-8"), response["password"])
                 if not result:
-                    dlg = WarningMessageBox(title="Error", txt="Incorrect email or password")
+                    dlg = WarningMessageBox(title="Erro", txt="Senha ou Email Incorreto")
                     dlg.exec()
                 else:
                     role = response["role"]
@@ -86,5 +86,5 @@ class LoginWindow(QDialog):
                     self.close() 
                 
         except EmailNotValidError:
-            dlg = WarningMessageBox(title="Error", txt="Invalid Email")
+            dlg = WarningMessageBox(title="Erro", txt="Email Inválido")
             dlg.exec()

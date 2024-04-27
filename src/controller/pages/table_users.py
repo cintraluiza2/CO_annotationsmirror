@@ -43,7 +43,7 @@ class TableUsersManager:
             for column, label in enumerate(text):
                 if label == "role":
                     if text[label] == 0:
-                        item = QTableWidgetItem(str("Standard"))
+                        item = QTableWidgetItem(str("Padrão"))
                     else:
                         item = QTableWidgetItem(str("Admin"))
                 else:
@@ -77,7 +77,7 @@ class TableUsersManager:
             validate_email(email_txt)
             pass
         except EmailNotValidError as e:
-            dlg = WarningMessageBox(title="Invalid", txt="Invalid email format!")
+            dlg = WarningMessageBox(title="Invalid", txt="Formato de email inválido!")
             dlg.exec()
             
     def toggle_password_visibility(self, btn_show, edit_pass, edit_pass_confirm):
@@ -92,7 +92,7 @@ class TableUsersManager:
             
     def password_equal(self, password, pass_confirm):
         if password.text() != pass_confirm.text():
-            dlg = WarningMessageBox(title="Attention!", txt="Password confirmation failed!")
+            dlg = WarningMessageBox(title="Attention!", txt="A confirmação da senha falhou!")
             password.clear()
             pass_confirm.clear()
             dlg.exec() 
@@ -107,14 +107,14 @@ class TableUsersManager:
         password = user_form.edit_pass.text()
         role = user_form.combo_role.currentIndex()
         if self.__users_repository.insert_user(first_name=first_name, last_name=last_name, email=email, password=password, role=role):
-            dlg = WarningMessageBox(title="Congratulations!", txt="Account created!")
+            dlg = WarningMessageBox(title="Congratulations!", txt="Conta criada!")
             dlg.setIcon(QMessageBox.Information)
             dlg.exec()
             user_form.close()
             self.table.clearContents()
             self.table_init() 
         else:
-            dlg = WarningMessageBox(title="Attention!", txt="Email already in use!")
+            dlg = WarningMessageBox(title="Attention!", txt="Email já em uso!")
             dlg.exec() 
             
 # ---------------------------- Edit User ------------------------------------        
@@ -154,7 +154,7 @@ class TableUsersManager:
             form_user.exec() 
             
         else:
-            dlg = WarningMessageBox(title="Information!", txt="Please! Select a user before editing")
+            dlg = WarningMessageBox(title="Information!", txt="Por favor! Selecione um usuário antes de editar")
             dlg.setIcon(QMessageBox.Information)
             dlg.exec() 
             
@@ -175,7 +175,7 @@ class TableUsersManager:
         password = dialog_pass.edit_pass
         pass_confirm = dialog_pass.edit_pass_confirm
         if self.password_equal(password, pass_confirm):
-            dlg = WarningMessageBoxOption(title="Information!", txt="This action cannot be undone. Click \"Yes\" to proceed with changing your password:")
+            dlg = WarningMessageBoxOption(title="Information!", txt="Essa ação não pode ser desfeita. Clique em \"Sim\" para prosseguir com a alteração da sua senha:")
             dlg.setIcon(QMessageBox.Information)
             if dlg.exec_() == QMessageBox.Yes:
                 password_txt = dialog_pass.edit_pass_confirm.text()
@@ -185,7 +185,7 @@ class TableUsersManager:
             return
             
     def registre_edit(self, edit_form):
-        dlg = WarningMessageBoxOption(title="Information!", txt="This action cannot be undone. Please confirm your choice:")
+        dlg = WarningMessageBoxOption(title="Information!", txt="Essa ação não pode ser desfeita. Por favor confirme sua escolha:")
         dlg.setIcon(QMessageBox.Information)
         if dlg.exec_() == QMessageBox.Yes:
             first_name = self.user_registre['first_name']
@@ -200,7 +200,7 @@ class TableUsersManager:
             self.table_init()
              
     def delete_user(self, edit_form):
-        dlg = WarningMessageBoxOption(title="Information!", txt="Deleting this user will have permanent consequences. Are you sure you want to proceed?")
+        dlg = WarningMessageBoxOption(title="Information!", txt="Excluir este usuário terá consequências permanentes. Tem certeza de que deseja prosseguir?")
         dlg.setIcon(QMessageBox.Information)
         if dlg.exec_() == QMessageBox.Yes:
             self.__users_repository.delete_registry_user(self.user_registre['email'])
