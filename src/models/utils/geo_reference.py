@@ -27,13 +27,24 @@ class GeoReference:
         data['Outros'] = 0
         
         return data
+
+    def geo_state_br(self):
+        with open('src/models/utils/georeferenced_codes/brazil.json', 'r') as arquivo:
+            response = json.load(arquivo)
+            
+        data = {}
+        for item in response:
+            data[item['UF-nome']] = item['UF-id']
+        data['Outros'] = 0
+        
+        return data
     
     def geo_city_br(self, index):
         with open('src/models/utils/georeferenced_codes/brazil.json', 'r') as arquivo:
             response = json.load(arquivo)
         
         # Cria o filtro que só retorna True se o Regiao de x for igual a index.
-        filtro = lambda x: x["regiao-id"] == index
+        filtro = lambda x: x["UF-id"] == index
         response = list(filter(filtro , response))
             
         data = {}
@@ -48,18 +59,33 @@ class GeoReference:
             response = json.load(arquivo)
             
         data = {}
-        for item in response:
+        for item in response["provicias"]:
             data[item['nombre']] = int(item['id'])
+        data['Outros'] = 0
+        
+        return data
+
+    def geo_state_arg(self):
+        with open('src/models/utils/georeferenced_codes/argentina.json', 'r') as arquivo:
+            response = json.load(arquivo)
+            
+        data = {}
+        for item in response:
+            data[item['provincia']['nombre']] = int(item['provincia']['id'])
         data['Outros'] = 0
         
         return data
     
     def geo_city_arg(self, index):
-        response = requests.get(self.__link_city_arg.format(index))
-        response = response.json()
+        with open('src/models/utils/georeferenced_codes/argentina.json', 'r') as arquivo:
+            response = json.load(arquivo)
+
+        # Cria o filtro que só retorna True se o Regiao de x for igual a index.
+        filtro = lambda x: x['provincia']['id'] == str(index)
+        response = list(filter(filtro , response))
         
         data = {}
-        for item in response["municipios"]:
+        for item in response:
             data[item['nombre']] = int(item['id'])
         data['Outros'] = 0
         

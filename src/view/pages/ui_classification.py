@@ -58,9 +58,6 @@ class UiClassification(object):
                 
                 # TEXT ARTICLE
                 self.text_box_article = QTextBrowser()
-                self.text_box_article.setText('''Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dictum at tempor commodo ullamcorper a lacus vestibulum sed arcu. Ornare aenean euismod elementum nisi quis eleifend. Adipiscing at in tellus integer feugiat. In nibh mauris cursus mattis molestie a iaculis at erat. Dictum varius duis at consectetur lorem donec massa sapien. Mi tempus imperdiet nulla malesuada pellentesque elit eget gravida cum. Tempor orci dapibus ultrices in iaculis nunc sed. Eget magna fermentum iaculis eu non diam. Malesuada fames ac turpis egestas integer eget aliquet. Mattis ullamcorper velit sed ullamcorper morbi tincidunt ornare massa eget. Porttitor rhoncus dolor purus non enim praesent elementum. Sit amet mauris commodo quis imperdiet massa. Ultrices in iaculis nunc sed augue lacus. Lorem ipsum dolor sit amet consectetur adipiscing elit pellentesque habitant.
-                In vitae turpis massa sed elementum. Sed blandit libero volutpat sed. Consequat ac felis donec et odio. Mauris cursus mattis molestie a iaculis at. Rhoncus urna neque viverra justo. In aliquam sem fringilla ut morbi. Egestas integer eget aliquet nibh praesent. Suspendisse faucibus interdum posuere lorem ipsum dolor sit amet consectetur. Lectus proin nibh nisl condimentum id. Dignissim cras tincidunt lobortis feugiat vivamus at augue eget. Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Enim ut sem viverra aliquet. Est pellentesque elit ullamcorper dignissim cras tincidunt lobortis. Justo eget magna fermentum iaculis eu. Laoreet id donec ultrices tincidunt arcu. Dignissim convallis aenean et tortor at risus viverra adipiscing at. Euismod in pellentesque massa placerat duis. Fames ac turpis egestas integer eget aliquet. A diam maecenas sed enim ut. Nisi est sit amet facilisis magna etiam.
-                Arcu non sodales neque sodales. Orci nulla pellentesque dignissim enim. Nisi porta lorem mollis aliquam ut porttitor leo. Netus et malesuada fames ac turpis egestas. Gravida quis blandit turpis cursus in hac habitasse. Augue lacus viverra vitae congue eu. Tristique magna sit amet purus gravida quis. Eu turpis egestas pretium aenean pharetra magna ac placerat. Vitae congue mauris rhoncus aenean vel elit scelerisque. Quis varius quam quisque id diam vel quam elementum. Donec massa sapien faucibus et molestie ac. Iaculis at erat pellentesque adipiscing commodo elit at. Tempor id eu nisl nunc mi ipsum faucibus. Consectetur adipiscing elit pellentesque habitant morbi tristique senectus et netus. Quis auctor elit sed vulputate. Magna fermentum iaculis eu non.''')
                 
                 # FRAME EXTRACTION
                 self.frame_extraction = QFrame()
@@ -75,15 +72,24 @@ class UiClassification(object):
                 self.button_reject_news = QRadioButton("Irrelevante", self.groupBox)
                 # Geographic Data
                 self.frame_geo = QFrame()
-                self.frame_geo.setStyleSheet("""QLabel {background-color: transparent; max-width: 5em}""")
+                self.frame_geo.setStyleSheet("""QLabel {background-color: transparent; max-width: 8em}""")
                 self.label_country = QLabel("País:") # Combo box País
                 self.combo_country = QComboBox()
+                self.combo_country.setStyleSheet("max-width: 4.72em")
+
                 self.label_region = QLabel("Região:")
                 self.combo_region = QComboBox()
                 self.combo_region.setEnabled(False)
+
+                self.label_state = QLabel("Estado")
+                self.combo_state = QComboBox()
+                self.combo_state.setEnabled(False)
+
                 self.label_city = QLabel("Município:")
                 self.combo_city = QComboBox()
+                # self.combo_city.setStyleSheet("color: black; min-width: 8em")
                 self.combo_city.setEnabled(False)
+
                 self.label_date_event = QLabel("Data do Evento:")
                 self.label_date_event.setStyleSheet("max-width: 6em")
                 self.input_date_event = QDateEdit()
@@ -213,8 +219,6 @@ class UiClassification(object):
                 self.news_data_layout.addWidget(self.input_qty_narcotic)
                 
                 # IN CONFLIT DATA
-                # self.conflit_data_layout.addWidget(self.label_actor)
-                # self.conflit_data_layout.addWidget(self.combo_actor)
                 self.conflit_data_layout.addWidget(self.label_name_actor_1)
                 self.conflit_data_layout.addWidget(self.name_actor_1)
                 self.conflit_data_layout.addWidget(self.label_name_actor_2)

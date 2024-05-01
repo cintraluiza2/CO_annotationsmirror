@@ -152,7 +152,6 @@ class ClassificationManager:
             widget.setEnabled(False)
     
     def enabled_widgets(self):
-        # print(self.style_widget)
         for widget in self.classification.frame_extraction.findChildren(QFrame):
             widget.setStyleSheet("QLabel{background-color: transparent; color: black; max-width: 12em}")
             widget.setEnabled(True)
@@ -161,30 +160,34 @@ class ClassificationManager:
         self.selected_country = self.classification.combo_country.currentText()
         self.classification.combo_region.setEnabled(True)
         if self.selected_country == "Brasil":
-            self.classification.combo_city.clear()
             self.classification.combo_region.clear()
-            self.dict_geo = self.geo.geo_region_br()
+            self.classification.combo_city.clear()
+            self.dict_geo = self.geo.geo_state_br()
             self.classification.init_combo_box(self.classification.combo_region, self.dict_geo)
+
         elif self.selected_country == "Argentina":
             self.classification.combo_region.clear()
             self.classification.combo_city.clear()
-            self.dict_geo = self.geo.geo_region_arg()
+            self.dict_geo = self.geo.geo_state_arg()
             self.classification.init_combo_box(self.classification.combo_region, self.dict_geo)
         else:
             self.classification.combo_region.clear()
+            self.classification.combo_state.clear()
             self.classification.combo_city.clear()
             self.classification.combo_region.setEnabled(False)
+            self.classification.combo_state.setEnabled(False)
             self.classification.combo_city.setEnabled(False)
             
     def check_selected_region(self, index):
         self.classification.combo_city.clear()
         self.classification.combo_city.setEnabled(True)
         index = self.classification.combo_region.currentData()
+
         if self.selected_country == "Brasil":
             self.dict_geo = self.geo.geo_city_br(index)
-        elif self.selected_country == "Argentina":
+        if self.selected_country == "Argentina":
             self.dict_geo = self.geo.geo_city_arg(index)
-            
+
         self.classification.init_combo_box(self.classification.combo_city, self.dict_geo)
 
     def random_integer_code(self, word):
