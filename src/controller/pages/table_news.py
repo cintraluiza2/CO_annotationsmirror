@@ -41,7 +41,7 @@ class TableNewsManager:
     def table_init(self):
         self.toggle_order = Qt.AscendingOrder
         list_news = self.__news_repository.select_many_order_news(optionsReturn={"_id": 0, "publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "certainty_level": 1}, orderFilter='manual_relevance_class', optionsFilter=1)
-        mapping = {0: "Irrelevante", 1: "Relevante", None: "SClasse"}
+        mapping = {0: "Irrelevante", 1: "Relevante", 2: "Dúvida", None: "SClasse"}
         itens = len(list_news)
         self.table.setRowCount(itens)
         for row, dict_news in enumerate(list_news):

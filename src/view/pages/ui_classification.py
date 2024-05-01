@@ -70,6 +70,7 @@ class UiClassification(object):
                 self.groupBox.setStyleSheet("border: none")
                 self.button_accept_news = QRadioButton("Relevante", self.groupBox)
                 self.button_reject_news = QRadioButton("Irrelevante", self.groupBox)
+                self.button_query = QRadioButton("Dúvida", self.groupBox)
                 # Geographic Data
                 self.frame_geo = QFrame()
                 self.frame_geo.setStyleSheet("""QLabel {background-color: transparent; max-width: 8em}""")
@@ -87,7 +88,6 @@ class UiClassification(object):
 
                 self.label_city = QLabel("Município:")
                 self.combo_city = QComboBox()
-                # self.combo_city.setStyleSheet("color: black; min-width: 8em")
                 self.combo_city.setEnabled(False)
 
                 self.label_date_event = QLabel("Data do Evento:")
@@ -192,6 +192,7 @@ class UiClassification(object):
                 # IN EXTRATION LAYOUT
                 self.radio_layout.addWidget(self.button_accept_news)
                 self.radio_layout.addWidget(self.button_reject_news)
+                self.radio_layout.addWidget(self.button_query)
                 self.extraction_layout.addWidget(self.groupBox)
                 self.extraction_layout.addWidget(self.frame_geo)
                 self.extraction_layout.addWidget(self.frame_news_data)

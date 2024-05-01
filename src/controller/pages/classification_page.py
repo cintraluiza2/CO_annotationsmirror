@@ -54,7 +54,7 @@ class ClassificationManager:
             title_news = self.title_list[self.title_select]
             news = self.__news_repository.select_one_news(title={"$regex": title_news}, optionsReturn={"title": 1, "article": 1, "manual_relevance_class": 1, "publication_date": 1, "last_update": 1, "automatic_relevance_class": 1, "confidence_relevance_class": 1, "tipo_conflito_armado": 1, "ator1_nome": 1, "ator2_nome": 1, "tipo_relacao_entre_atores": 1})
             
-            mapping = {0: 'rejeite', 1: 'aceite', None: None}
+            mapping = {0: 'rejeite', 1: 'aceite', None: "SClasse"}
             self.title_news = news["title"]
             publication_news = news["publication_date"]
             update_news = news['last_update']
@@ -67,9 +67,12 @@ class ClassificationManager:
             actor2 = news['ator2_nome']
             relationship_atores = 0 if news['tipo_relacao_entre_atores'] == None else news['tipo_relacao_entre_atores']
             
-            if manual_news: 
+            if manual_news == 1: 
                 self.classification.button_accept_news.setChecked(True)
                 self.enabled_widgets()
+            elif manual_news == 2:
+                self.classification.button_query.setChecked(True)
+                self.disable_widgets()
             else: 
                 self.classification.button_reject_news.setChecked(True)
                 self.disable_widgets()
@@ -108,6 +111,7 @@ class ClassificationManager:
             Salvar as informações extraidas do texto.
         """
         accept_res = int(self.classification.button_accept_news.isChecked())
+        query = int(self.classification.button_query.isChecked())
         if accept_res:
             country = self.classification.combo_country.currentData()
             region = self.classification.combo_region.currentData()
@@ -126,6 +130,8 @@ class ClassificationManager:
                 cod_actor_2 = self.random_integer_code(actor_2)
             
             edit = {"manual_relevance_class": accept_res, "data_evento": data_event, "quant_mortes": deaths, "tipo_conflito_armado": conflict, "pais": country, "regiao": region, "municipio": city, "ator1_nome": actor_1, "ator1_cod": cod_actor_1, "ator2_nome": actor_2, "ator2_cod": cod_actor_2, "tipo_droga": type_narcotic, "tipo_relacao_entre_atores": type_relation}
+        elif query:
+            edit = {"manual_relevance_class": 2}
         else:
             edit = {"manual_relevance_class": accept_res}
         self.__news_repository.edit_registry_news(self.title_news, edit)
