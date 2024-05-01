@@ -84,8 +84,8 @@ class UiTableNews(object):
         # self.header_layout.addSpacing(50)
         # IN BUTTONS LAYOUT
         self.buttons_layout.addWidget(self.button_note)
-        self.buttons_layout.addSpacing(120)
-        self.buttons_layout.addWidget(self.button_train)
+        # self.buttons_layout.addSpacing(120)
+        # self.buttons_layout.addWidget(self.button_train)
         
         # --------- SET CENTRAL WIDGET ------------
         parent.addWidget(self.central_frame)
