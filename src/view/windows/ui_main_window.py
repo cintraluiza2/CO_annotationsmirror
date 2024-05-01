@@ -57,7 +57,7 @@ class UiMainWindow(object):
         self.button_exit = PyPushButtonIcon("Sair", icon_path="exit.svg")
         
         # Label Version
-        self.left_menu_label_version = QLabel("v1.0.0")
+        self.left_menu_label_version = QLabel("v2.1.0")
         self.left_menu_label_version.setAlignment(Qt.AlignCenter)
         self.left_menu_label_version.setMinimumHeight(30)
         self.left_menu_label_version.setMaximumHeight(30)
