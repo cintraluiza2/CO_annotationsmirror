@@ -18,7 +18,6 @@ from sshtunnel import open_tunnel, BaseSSHTunnelForwarderError
 # sys.stderr = open(os.devnull, 'w')
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
     try:
         with open_tunnel(
             (server_configs['ip_server'], server_configs['port']),
@@ -27,6 +26,7 @@ if __name__ == "__main__":
             local_bind_address=(server_configs['local_address'], server_configs['local_port_ssh']),
             remote_bind_address=(server_configs['remote_address'], server_configs['remote_port_ssh'])
         ) as server:
+            app = QApplication(sys.argv)
             window = LoginWindow()
             sys.exit(app.exec())
     except BaseSSHTunnelForwarderError:
