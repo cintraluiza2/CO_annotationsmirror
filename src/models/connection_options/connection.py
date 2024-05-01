@@ -11,7 +11,7 @@ class DBConnectionHandler():
             mongo_db_infos["port"],
             mongo_db_infos["authentication"]
         )
-        self.__connection_string = "mongodb://localhost:27017/"
+        # self.__connection_string = "mongodb://localhost:27017/"
         self.__database_name = mongo_db_infos["db_name"]
         self.__client = None
         self.__db_connection = None
