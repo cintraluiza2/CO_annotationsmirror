@@ -72,15 +72,22 @@ class NewsClassRepository():
     def select_one_news(self, title, optionsReturn={"_id": 0}) -> Dict:
         collection = self.__db_connection.get_collection(self.__collection_name)
         response = collection.find_one({"title": title}, optionsReturn)
+        if response == None:
+            return False
+        n = News(**response)
+        n.set_keys()
 
-        return response
+        return n.get_dict()
     
     def select_many_news(self, filters=None, optionsReturn={"_id": 0}) -> List[Dict]:
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.find(filters, optionsReturn)
 
         response = []
-        for element in data: response.append(element)
+        for element in data: 
+            n = News(**element)
+            n.set_keys()
+            response.append(n.get_dict())
 
         return response
 
@@ -89,7 +96,10 @@ class NewsClassRepository():
         data = collection.find(filters, optionsReturn).limit(num)
 
         response = []
-        for element in data: response.append(element)
+        for element in data: 
+            n = News(**element)
+            n.set_keys()
+            response.append(n.get_dict())
 
         return response
 
@@ -99,7 +109,10 @@ class NewsClassRepository():
         data = collection.find(filters, optionsReturn).sort([(orderFilter, optionsFilter)])
 
         response = []
-        for element in data: response.append(element)
+        for element in data: 
+            n = News(**element)
+            n.set_keys()
+            response.append(n.get_dict())
 
         return response
 
@@ -108,7 +121,10 @@ class NewsClassRepository():
         data = collection.find({"_id": ObjectId(objId)}, optionsReturn)
 
         response = []
-        for element in data: response.append(element)
+        for element in data: 
+            n = News(**element)
+            n.set_keys()
+            response.append(n.get_dict())
 
         return response
 
