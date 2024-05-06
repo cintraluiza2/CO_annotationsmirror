@@ -154,12 +154,12 @@ class ClassificationManager:
             
     def disable_widgets(self):
         for widget in self.classification.frame_extraction.findChildren(QFrame):
-            widget.setStyleSheet("background-color: transparent; color: #8C8C8C")
+            widget.setStyleSheet("color: #8C8C8C")
             widget.setEnabled(False)
     
     def enabled_widgets(self):
         for widget in self.classification.frame_extraction.findChildren(QFrame):
-            widget.setStyleSheet("QLabel{background-color: transparent; color: black; max-width: 12em}")
+            widget.setStyleSheet("QLabel{background-color: transparent; max-width: 12em}")
             widget.setEnabled(True)
             
     def check_selected_country(self, index):

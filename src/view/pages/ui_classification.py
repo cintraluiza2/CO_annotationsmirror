@@ -5,6 +5,7 @@ from view.widgets.py_push_button import PyPushButtonGUI, PyPushButtonIcon, PyPus
 from view.widgets.style_css import text_box_class_style
 # IMPORTS DATA
 from models.utils.data import *
+import random
 
 class UiClassification(object):
         def setup_ui(self, parent):
@@ -116,6 +117,14 @@ class UiClassification(object):
                 self.name_actor_1 = QLineEdit()
                 self.label_name_actor_2 = QLabel("Nome do Segundo Ator:")
                 self.name_actor_2 = QLineEdit()
+                self.label_latitude = QLabel("Latitude:")
+                self.latitude = QLineEdit()
+                # validator = QDoubleValidator(-90.0, 90.0, 2)
+                # validator.top(90)
+                # validator.bottom(-90) 
+                # self.latitude.setValidator(validator)
+                self.label_longitude = QLabel("Longitude:")
+                self.longitude = QLineEdit()
                 # Type Relation
                 self.frame_type_relation = QFrame()
                 self.frame_type_relation.setStyleSheet("""QLabel {background-color: transparent; max-width: 12em}""")
@@ -224,6 +233,10 @@ class UiClassification(object):
                 self.conflit_data_layout.addWidget(self.name_actor_1)
                 self.conflit_data_layout.addWidget(self.label_name_actor_2)
                 self.conflit_data_layout.addWidget(self.name_actor_2)
+                self.conflit_data_layout.addWidget(self.label_latitude)
+                self.conflit_data_layout.addWidget(self.latitude)
+                self.conflit_data_layout.addWidget(self.label_longitude)
+                self.conflit_data_layout.addWidget(self.longitude)
                 self.type_relation_layout.addWidget(self.label_type_relation)
                 self.type_relation_layout.addWidget(self.combo_type_relation)
                 
