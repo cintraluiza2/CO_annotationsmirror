@@ -11,11 +11,20 @@ class UiClassification(object):
         def setup_ui(self, parent):
                 if not parent.objectName():
                         parent.setObjectName("parent")
-                        parent.resize(800, 600)
+                        parent.setMinimumSize(800, 600)
                 
                 # SET INITIAL PARAMETERS
                 self.central_frame = QFrame()
                 self.central_frame.setStyleSheet("font-family: 'Roboto'; color: black; background-color: #FFFFFF")
+
+                # Obter a geometria da tela
+                desktop = QApplication.desktop()
+                screen_rect = desktop.screenGeometry()
+
+                # VARIBLES GEOMETRIC
+                minimum_width = screen_rect.width()*0.4392
+                maximum_width = screen_rect.width()*0.6588
+                height_buttons = screen_rect.height()*0.065
         # ---------------------------------------------------------------------- ITENS/FRAMES
                 # BOX
                 self.box = QFrame()
@@ -28,15 +37,15 @@ class UiClassification(object):
                 self.title_article.setMargin(5)
                 self.title_article.setMinimumHeight(25)
                 self.title_article.setMaximumHeight(25)
-                self.title_article.setMinimumWidth(600)
-                self.title_article.setMaximumWidth(900)
+                self.title_article.setMinimumWidth(minimum_width)
+                self.title_article.setMaximumWidth(maximum_width)
                 
                 # Frame Infos
                 self.frame_infos = QFrame()
                 self.frame_infos.setMinimumHeight(25)
                 self.frame_infos.setMaximumHeight(25)
-                self.frame_infos.setMinimumWidth(600)
-                self.frame_infos.setMaximumWidth(900)
+                self.frame_infos.setMinimumWidth(minimum_width)
+                self.frame_infos.setMaximumWidth(maximum_width)
                 
                 # ------------------------ Intens Infos
                 self.label_publication = QLabel("Publicação:")
@@ -62,8 +71,6 @@ class UiClassification(object):
                 
                 # FRAME EXTRACTION
                 self.frame_extraction = QFrame()
-                self.frame_extraction.setMinimumHeight(310)
-                self.frame_extraction.setMaximumHeight(310)
                 
                 # ---------------- Itens Frame Extraction
                 # Radions Buttons
@@ -119,10 +126,6 @@ class UiClassification(object):
                 self.name_actor_2 = QLineEdit()
                 self.label_latitude = QLabel("Latitude:")
                 self.latitude = QLineEdit()
-                # validator = QDoubleValidator(-90.0, 90.0, 2)
-                # validator.top(90)
-                # validator.bottom(-90) 
-                # self.latitude.setValidator(validator)
                 self.label_longitude = QLabel("Longitude:")
                 self.longitude = QLineEdit()
                 # Type Relation
@@ -134,8 +137,8 @@ class UiClassification(object):
                 
                 # BUTTONS FRAME
                 self.frame_buttons = QFrame()
-                self.frame_buttons.setMinimumHeight(50)
-                self.frame_buttons.setMaximumHeight(50)
+                self.frame_buttons.setMinimumHeight(height_buttons)
+                self.frame_buttons.setMaximumHeight(height_buttons)
                 
                 # BUTTONS TEXT
                 self.button_back = PyPushButtonGUIIcon(width=200, border_radius=20, icon_path="arrow_return.svg", text="Anterior", btn_color="#1B4269", btn_hover="#1B5A69", btn_pressed="#3E5369", icon_color="white")

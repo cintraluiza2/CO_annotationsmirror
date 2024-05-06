@@ -14,8 +14,7 @@ class UiMainWindow(object):
         # SET INITIAL PARAMETERS
         parent.setWindowTitle('OrgaExtractor')
         parent.setWindowIcon(QIcon('resources/images/icons/icon_logo.svg'))
-        parent.resize(1200, 720)
-        parent.setMinimumSize(960, 540)
+        parent.setMinimumSize(960, 640)
 
         # CREATE CENTRAL WIDGET
         self.central_frame = QFrame()
