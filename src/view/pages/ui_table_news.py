@@ -11,15 +11,11 @@ class UiTableNews(object):
             parent.setObjectName("parent")
             
         # SET INITIAL PARAMETERS
-        parent.setMinimumSize(800, 600)
+        parent.resize(800, 600)
         
         # CREATE CENTRAL WIDGET
         self.central_frame = QFrame()
         self.central_frame.setStyleSheet("font-family: 'Roboto'; color: black; background-color: #FFFFFF")
-
-        # Obter a geometria da tela
-        desktop = QApplication.desktop()
-        screen_rect = desktop.screenGeometry()
         
 # -------------------------------------------------------------------- ITENS/FRAMES
         self.header_frame = QFrame()
@@ -34,9 +30,8 @@ class UiTableNews(object):
         #--------------------------- TABLE -------------------
         self.table = QTableWidget()
         self.table.setMinimumWidth(600)
-        # self.table.setMaximumWidth(1230)
-        self.table.setMaximumWidth(int(screen_rect.width()))
-        self.table.setMaximumHeight(int(screen_rect.height()))  
+        self.table.setMaximumWidth(1230)
+        self.table.setMaximumHeight(600)
         # Size Table
         self.table.setRowCount(50)
         self.table.setColumnCount(6)
