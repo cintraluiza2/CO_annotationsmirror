@@ -1,7 +1,8 @@
-﻿from qt_core import *
+from qt_core import *
 from collections import deque
 # IMPORT WIDGETS
 from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption
+from view.widgets.py_color_delegate import PyColorDelegate
 # IMPORTS DATA
 from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
