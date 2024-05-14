@@ -22,8 +22,8 @@
             "resumo": None,
             "data_evento": None,
             "quant_mortes": None,
-            "tipo_droga": None,
-            "quant_droga": None,
+            "tipo_droga": [0, 0, 0],
+            "quant_droga": [0, 0, 0],
             "pais": None,
             "regiao": None,
             "municipio": None,
@@ -33,7 +33,9 @@
             "ator1_cod": None,
             "ator2_nome": None,
             "ator2_cod": None,
-            "tipo_relacao_entre_atores": None
+            "tipo_relacao_entre_atores": None,
+            "weapons": [],
+            "weapons_codes": []
         }
         
         if hasattr(self, 'manual_relevance_class'):
