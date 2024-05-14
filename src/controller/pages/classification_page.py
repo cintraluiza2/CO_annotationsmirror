@@ -43,6 +43,8 @@ class ClassificationManager:
         # BUTTONS EXTRACTION        
         self.classification.button_accept_news.clicked.connect(self.enabled_widgets)
         self.classification.button_reject_news.clicked.connect(self.disable_widgets)
+        self.classification.btt_add_weapons.clicked.connect(self.add_weapons)
+        self.classification.btt_rmv_weapons.clicked.connect(self.remove_weapons)
         
         # Buttons Action
         self.classification.button_back.clicked.connect(self.back_news)
@@ -50,14 +52,15 @@ class ClassificationManager:
         self.classification.button_finish.clicked.connect(self.finish_class)
         self.classification.button_cancel.clicked.connect(self.back_table_page)
         
-    def set_title_list(self, title_list, title_select):
+    def set_title_list(self, title_list, title_select, model_table):
         self.title_list = title_list
         self.title_select = title_select
+        self.model_table = model_table
         
     def set_text_class(self):
         if self.title_list:
             title_news = self.title_list[self.title_select]
-            news = self.__news_repository.select_one_news(title={"$regex": title_news}, optionsReturn={"title": 1, "article": 1, "manual_relevance_class": 1, "publication_date": 1, "last_update": 1, "automatic_relevance_class": 1, "confidence_relevance_class": 1, "tipo_conflito_armado": 1, "ator1_nome": 1, "ator2_nome": 1, "tipo_relacao_entre_atores": 1})
+            news = self.__news_repository.select_one_news(title={"$regex": title_news}, optionsReturn={"title": 1, "article": 1, "manual_relevance_class": 1, "publication_date": 1, "last_update": 1, "automatic_relevance_class": 1, "confidence_relevance_class": 1, "tipo_droga": 1, "quant_droga": 1, "weapons": 1, "weapons_codes": 1, "tipo_conflito_armado": 1, "ator1_nome": 1, "ator2_nome": 1, "tipo_relacao_entre_atores": 1})
             
             mapping = {0: 'rejeite', 1: 'aceite', None: "SClasse"}
             self.title_news = news["title"]
@@ -71,15 +74,20 @@ class ClassificationManager:
             actor1 = news["ator1_nome"]
             actor2 = news['ator2_nome']
             relationship_atores = 0 if news['tipo_relacao_entre_atores'] == None else news['tipo_relacao_entre_atores']
+            type_narcotic = news['tipo_droga']
+            qty_narcotic = news['quant_droga']
+            weapons = news['weapons']
             
             if manual_news == 1: 
                 self.classification.button_accept_news.setChecked(True)
+                self.classification.button_query.setChecked(False)
                 self.enabled_widgets()
             elif manual_news == 2:
                 self.classification.button_query.setChecked(True)
                 self.disable_widgets()
             else: 
                 self.classification.button_reject_news.setChecked(True)
+                self.classification.button_query.setChecked(False)
                 self.disable_widgets()
             
             self.classification.title_article.setText(title_news)
@@ -91,6 +99,13 @@ class ClassificationManager:
             self.classification.confidence_machine.setText(confidence_news)
             self.classification.text_box_article.setText(text_news)
             self.classification.check_conflict.setChecked(armed_conflict)
+            self.classification.combo_narcotic_1.setCurrentIndex(type_narcotic[0])
+            self.classification.input_qty_narcotic_1.setValue(qty_narcotic[0])
+            self.classification.combo_narcotic_2.setCurrentIndex(type_narcotic[1])
+            self.classification.input_qty_narcotic_2.setValue(qty_narcotic[1])
+            self.classification.combo_narcotic_3.setCurrentIndex(type_narcotic[2])
+            self.classification.input_qty_narcotic_3.setValue(qty_narcotic[2])
+            self.set_list_weapons(weapons)
             self.classification.name_actor_1.setText(actor1)
             self.classification.name_actor_2.setText(actor2)
             self.classification.combo_type_relation.setCurrentIndex(relationship_atores)
@@ -124,22 +139,39 @@ class ClassificationManager:
             data_event = self.classification.input_date_event.text()
             deaths = int(self.classification.input_deaths.text())
             conflict = int(self.classification.check_conflict.isChecked())
-            type_narcotic = self.classification.combo_narcotic_1.currentData()
-            type_relation = self.classification.combo_type_relation.currentData()
+            type_narcotic_1 = self.classification.combo_narcotic_1.currentData()
+            qty_narcotic_1 = self.classification.input_qty_narcotic_1.value()
+            type_narcotic_2 = self.classification.combo_narcotic_2.currentData()
+            qty_narcotic_2 = self.classification.input_qty_narcotic_2.value()
+            type_narcotic_3 = self.classification.combo_narcotic_3.currentData()
+            qty_narcotic_3 = self.classification.input_qty_narcotic_3.value()
+            weapons, weapons_codes = self.get_list_weapons()
             actor_1 = self.classification.name_actor_1.text()
             actor_2 = self.classification.name_actor_2.text()
+            type_relation = self.classification.combo_type_relation.currentData()
             cod_actor_1 = cod_actor_2 = None
             if not (actor_1 == ""):
                 cod_actor_1 = self.random_integer_code(actor_1)
             if not (actor_2 == ""):
                 cod_actor_2 = self.random_integer_code(actor_2)
+                
+            # List type narcotic
+            type_narcotic = [type_narcotic_1, type_narcotic_2, type_narcotic_3]
+            qty_narcotic = [qty_narcotic_1, qty_narcotic_2, qty_narcotic_3]
             
-            edit = {"manual_relevance_class": accept_res, "data_evento": data_event, "quant_mortes": deaths, "tipo_conflito_armado": conflict, "pais": country, "regiao": region, "municipio": city, "ator1_nome": actor_1, "ator1_cod": cod_actor_1, "ator2_nome": actor_2, "ator2_cod": cod_actor_2, "tipo_droga": type_narcotic, "tipo_relacao_entre_atores": type_relation}
+            edit = {"manual_relevance_class": accept_res, "data_evento": data_event, "quant_mortes": deaths, "tipo_conflito_armado": conflict, "pais": country, "regiao": region, "municipio": city,  "tipo_droga": type_narcotic, "quant_droga": qty_narcotic, "weapons": weapons, "weapons_codes": weapons_codes, "ator1_nome": actor_1, "ator1_cod": cod_actor_1, "ator2_nome": actor_2, "ator2_cod": cod_actor_2, "tipo_relacao_entre_atores": type_relation}
         elif query:
             edit = {"manual_relevance_class": 2}
         else:
             edit = {"manual_relevance_class": accept_res}
+            
         self.__news_repository.edit_registry_news(self.title_news, edit)
+        
+        mapping = {0: "Irrelevante", 1: "Relevante", 2: "Dúvida"}
+        new_status = QStandardItem(str(mapping.get(edit["manual_relevance_class"])))
+        new_status.setTextAlignment(Qt.AlignCenter)
+        self.model_table.setItem(self.title_select, 3, new_status)
+        
             
     def finish_class(self):
         dlg = WarningMessageBoxOption(title="Questão", txt="Gostaria de finalizar o processo de anotação? O seu progresso será salvo!")
@@ -198,6 +230,31 @@ class ClassificationManager:
             self.dict_geo = self.geo.geo_city_arg(index)
 
         self.init_combo_box(self.classification.combo_city, self.dict_geo)
+        
+    def add_weapons(self):
+        arm = self.classification.input_weapons.text()
+        self.classification.list_weapons.addItem(arm)
+        
+    def remove_weapons(self):
+        if self.classification.list_weapons.currentItem() is not None:
+            # Remover o item selecionado
+            self.classification.list_weapons.takeItem(self.classification.list_weapons.currentRow())
+        
+    def set_list_weapons(self, weapons):
+        for item in weapons:
+            self.classification.list_weapons.addItem(item)
+        
+    def get_list_weapons(self):
+        items_list = []
+        items_cod_list = []
+        list_widget = self.classification.list_weapons
+        for index in range(list_widget.count()):
+            item = list_widget.item(index).text()
+            item_cod = self.random_integer_code(item)
+            items_list.append(item)
+            items_cod_list.append(item_cod)
+            
+        return items_list, items_cod_list
 
     def random_integer_code(self, word):
         """Gera um número inteiro aleatório com base em uma palavra.
