@@ -80,7 +80,6 @@ class MainWindow(QMainWindow, UiMainWindow):
     def show_page_home(self):
         self.reset_selection()
         self.button_home.set_active(True)
-        self.table_news_manager.populate_table_news()
         
         self.pages.setCurrentIndex(0)
         
