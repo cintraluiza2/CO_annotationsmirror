@@ -1,9 +1,9 @@
 from qt_core import *
 # IMPORT WIDGETS
-from view.widgets.py_push_button import PyPushButtonIcon
+from view.widgets.py_push_button import *
 #IMPORT PAGES
 from view.pages.ui_classification import UiClassification
-from view.pages.ui_table_news import UiTableNews
+from view.pages.ui_pages import Ui_Pages
 
 # Main Window
 class UiMainWindow(object):
@@ -14,8 +14,7 @@ class UiMainWindow(object):
         # SET INITIAL PARAMETERS
         parent.setWindowTitle('OrgaExtractor')
         parent.setWindowIcon(QIcon('resources/images/icons/icon_logo.svg'))
-        parent.resize(1200, 720)
-        parent.setMinimumSize(960, 540)
+        parent.setMinimumSize(1000, 700)
 
         # CREATE CENTRAL WIDGET
         self.central_frame = QFrame()
@@ -57,7 +56,7 @@ class UiMainWindow(object):
         self.button_exit = PyPushButtonIcon("Sair", icon_path="exit.svg")
         
         # Label Version
-        self.left_menu_label_version = QLabel("v2.1.0")
+        self.left_menu_label_version = QLabel("v2.2.0")
         self.left_menu_label_version.setAlignment(Qt.AlignCenter)
         self.left_menu_label_version.setMinimumHeight(30)
         self.left_menu_label_version.setMaximumHeight(30)
@@ -88,14 +87,14 @@ class UiMainWindow(object):
         
         # ------------------------ PAGES ------------------------
         self.pages = QStackedWidget()
-        self.pages.setStyleSheet("font-family: Roboto; font-size: 12pt; background-color: #FFFFFF")
-        # TABLE NEWS PAGE
+        self.pages.setStyleSheet("background-color: #FFFFFF")
+        self.ui_pages = Ui_Pages() 
+        
+        self.ui_pages.setupUi(self.pages)
         
         # CLASSIFICATION PAGE
-        self.table_news_page = UiTableNews()
-        self.table_news_page.setup_ui(self.pages)
-        self.classification_page = UiClassification()
-        self.classification_page.setup_ui(self.pages)
+        # self.classification_page = UiClassification()
+        # self.classification_page.setup_ui(self.pages)
         
 # -------------------------------------------------------------------- LAYOUTS
         # Layoyt Main Window
