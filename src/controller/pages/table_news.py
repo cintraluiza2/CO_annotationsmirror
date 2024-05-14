@@ -76,7 +76,7 @@ class TableNewsManager:
             
             self.table_news.clearSelection()
             title_selected_id = self.title_list.index(title_selected)
-            self.set_title_list(self.title_list, title_selected_id)
+            self.set_title_list(self.title_list, title_selected_id, self.model_table)
             self.set_text_class()
             self.show_page_class()
 
