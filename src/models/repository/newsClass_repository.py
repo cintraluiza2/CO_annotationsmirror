@@ -103,16 +103,19 @@ class NewsClassRepository():
 
         return response
 
-    def select_many_order_news(self, filters=None, optionsReturn={"_id": 0, 'accepted_by': 0}, orderFilter=None, optionsFilter=-1) -> List[
+    def select_many_order_news(self, filters=None, optionsReturn={"_id": 0, 'accepted_by': 0}, orderFilter=None, optionsFilter=-1, model_return=True) -> List[
         Dict]:
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.find(filters, optionsReturn).sort([(orderFilter, optionsFilter)])
 
         response = []
         for element in data: 
-            n = News(**element)
-            n.set_keys()
-            response.append(n.get_dict())
+            if model_return:
+                n = News(**element)
+                n.set_keys()
+                response.append(n.get_dict())
+            else:
+                response.append(element)
 
         return response
 
