@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>748</height>
+    <width>1005</width>
+    <height>902</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -226,7 +226,7 @@ border-radius: 8px</string>
        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Titulo&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
       <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
@@ -1368,7 +1368,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSpinBox" name="spinBox_4">
+                 <widget class="QSpinBox" name="input_qty_narcotic_3">
                   <property name="font">
                    <font>
                     <family>Roboto</family>
@@ -1518,26 +1518,6 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   <property name="sortingEnabled">
                    <bool>true</bool>
                   </property>
-                  <item>
-                   <property name="text">
-                    <string>Fuzil</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Pistola</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Revólverx</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Rifle</string>
-                   </property>
-                  </item>
                  </widget>
                 </item>
                </layout>
@@ -1800,6 +1780,19 @@ QPushButton::pressed {
           <string>Finalizar</string>
          </property>
         </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
         <widget class="QPushButton" name="button_cancel">

@@ -643,13 +643,13 @@ class Ui_Pages(object):
 
         self.horizontalLayout_8.addWidget(self.label_23)
 
-        self.spinBox_4 = QSpinBox(self.groupBox_narcotic_3)
-        self.spinBox_4.setObjectName(u"spinBox_4")
-        self.spinBox_4.setFont(font3)
-        self.spinBox_4.setStyleSheet(u"background-color: #FFFFFF; ")
-        self.spinBox_4.setMaximum(100000)
+        self.input_qty_narcotic_3 = QSpinBox(self.groupBox_narcotic_3)
+        self.input_qty_narcotic_3.setObjectName(u"input_qty_narcotic_3")
+        self.input_qty_narcotic_3.setFont(font3)
+        self.input_qty_narcotic_3.setStyleSheet(u"background-color: #FFFFFF; ")
+        self.input_qty_narcotic_3.setMaximum(100000)
 
-        self.horizontalLayout_8.addWidget(self.spinBox_4)
+        self.horizontalLayout_8.addWidget(self.input_qty_narcotic_3)
 
 
         self.verticalLayout_4.addWidget(self.groupBox_narcotic_3)
@@ -697,10 +697,6 @@ class Ui_Pages(object):
         self.horizontalLayout_16.addWidget(self.btt_rmv_weapons)
 
         self.list_weapons = QListWidget(self.frame_5)
-        QListWidgetItem(self.list_weapons)
-        QListWidgetItem(self.list_weapons)
-        QListWidgetItem(self.list_weapons)
-        QListWidgetItem(self.list_weapons)
         self.list_weapons.setObjectName(u"list_weapons")
         sizePolicy8.setHeightForWidth(self.list_weapons.sizePolicy().hasHeightForWidth())
         self.list_weapons.setSizePolicy(sizePolicy8)
@@ -985,24 +981,11 @@ class Ui_Pages(object):
         self.groupBox_narcotic_3.setTitle("")
         self.label_22.setText(QCoreApplication.translate("Pages", u"Tipo de Droga", None))
         self.label_23.setText(QCoreApplication.translate("Pages", u"Quantidade", None))
-        self.spinBox_4.setSuffix(QCoreApplication.translate("Pages", u"g", None))
+        self.input_qty_narcotic_3.setSuffix(QCoreApplication.translate("Pages", u"g", None))
         self.label_10.setText(QCoreApplication.translate("Pages", u"Armas Aprendidas:", None))
         self.input_weapons.setText("")
         self.btt_add_weapons.setText(QCoreApplication.translate("Pages", u"Adicionar", None))
         self.btt_rmv_weapons.setText(QCoreApplication.translate("Pages", u"Remover", None))
-
-        __sortingEnabled = self.list_weapons.isSortingEnabled()
-        self.list_weapons.setSortingEnabled(False)
-        ___qlistwidgetitem = self.list_weapons.item(0)
-        ___qlistwidgetitem.setText(QCoreApplication.translate("Pages", u"Fuzil", None));
-        ___qlistwidgetitem1 = self.list_weapons.item(1)
-        ___qlistwidgetitem1.setText(QCoreApplication.translate("Pages", u"Pistola", None));
-        ___qlistwidgetitem2 = self.list_weapons.item(2)
-        ___qlistwidgetitem2.setText(QCoreApplication.translate("Pages", u"Rev\u00f3lverx", None));
-        ___qlistwidgetitem3 = self.list_weapons.item(3)
-        ___qlistwidgetitem3.setText(QCoreApplication.translate("Pages", u"Rifle", None));
-        self.list_weapons.setSortingEnabled(__sortingEnabled)
-
         self.name_actor_1.setPlaceholderText(QCoreApplication.translate("Pages", u"Primeiro Ator", None))
         self.name_actor_2.setPlaceholderText(QCoreApplication.translate("Pages", u"Segundo Ator", None))
         self.label_type_relation.setText(QCoreApplication.translate("Pages", u"Rela\u00e7\u00e3o Entre Atores", None))
