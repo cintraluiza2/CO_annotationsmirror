@@ -156,4 +156,12 @@ class NewsClassRepository():
 
         return data.deleted_count
     
-    
+    # ------------------ Métodos de Atualização ------------------------
+    def replace_one_registry_news(self, title: str, registry) -> bool:
+        try:
+            collection = self.__db_connection.get_collection(self.__collection_name)
+            collection.replace_one({"title": title}, registry)
+            return True
+        except:
+            return False
+
