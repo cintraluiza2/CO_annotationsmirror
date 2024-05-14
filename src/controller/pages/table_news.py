@@ -1,4 +1,4 @@
-from qt_core import *
+﻿from qt_core import *
 from collections import deque
 # IMPORT WIDGETS
 from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption
@@ -12,8 +12,8 @@ from models.repository.newsClass_repository import NewsClassRepository
 # from models.news_rating.model_prediction import ModelPrediction
 
 class TableNewsManager:
-    def __init__(self, table=None, table_page=None, show_page_class=None, set_text_class=None, set_title_list=None) -> None:
-        self.table = table
+    def __init__(self, table_news=None, table_page=None, show_page_class=None, set_text_class=None, set_title_list=None) -> None:
+        self.table_news = table_news
         self.table_page = table_page
         self.show_page_class = show_page_class
         self.set_title_list = set_title_list
@@ -25,51 +25,56 @@ class TableNewsManager:
         self.__db_connection = self.__db_handle.get_db_connection()
         self.__news_repository = NewsClassRepository(self.__db_connection)
         
+        
         # VARIABLES GLOBAL
         self.title_list = []
         self.title_news = ""
         self.toggle_order = Qt.AscendingOrder
         self.num_columns = 5
         
-        self.table_init()
+        # TABLE MODEL NEWS
+        self.model_table = QStandardItemModel()
+        self.model_table.setHorizontalHeaderLabels(["Publication Date", "Newspaper", "Title", "Manual Relevance", "Automatic Relevance", "Certainty Level"])
+        self.table_news.setModel(self.model_table)
+        self.table_news.setItemDelegate(PyColorDelegate(self.table_news))
+        # Definir a ordem de classificação na QTableView
         
-        self.table.horizontalHeader().sectionClicked.connect(self.on_column_header_clicked) # Colunm Header Clicked
-        self.table.cellDoubleClicked.connect(self.on_selection_table)
+        self.populate_table_news()
+        
+        self.table_news.doubleClicked.connect(self.on_selection_table)
         self.table_page.button_note.clicked.connect(self.on_selection_table)
         # self.table_page.button_train.clicked.connect(self.train_table_news)
     
             
-    def table_init(self):
-        self.toggle_order = Qt.AscendingOrder
-        list_news = self.__news_repository.select_many_order_news(optionsReturn={"_id": 0, "publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "certainty_level": 1}, orderFilter='manual_relevance_class', optionsFilter=1)
+    def populate_table_news(self):
+        list_news = self.__news_repository.select_many_order_news(optionsReturn={"_id": 0, "publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "certainty_level": 1}, orderFilter='manual_relevance_class', optionsFilter=1, model_return=False)
         mapping = {0: "Irrelevante", 1: "Relevante", 2: "Dúvida", None: "SClasse"}
-        itens = len(list_news)
-        self.table.setRowCount(itens)
+                
         for row, dict_news in enumerate(list_news):
             dict_news["manual_relevance_class"] = mapping.get(dict_news["manual_relevance_class"])
             dict_news["automatic_relevance_class"] = mapping.get(dict_news["automatic_relevance_class"])
             for column, label in enumerate(dict_news):
-                self.table.setItem(row, column, QTableWidgetItem(str(dict_news[label])))
-    
-        self.table.resizeColumnsToContents()
-        self.table.setColumnWidth(2, 790)
-        self.table.setColumnWidth(3, 100)
+                item = QStandardItem(str(dict_news[label]))
+                if not column == 2:
+                    item.setTextAlignment(Qt.AlignCenter)
+                self.model_table.setItem(row, column, item)
+                
+        self.table_news.setColumnWidth(2, 570)
         
     def on_selection_table(self):
-        selected_items = self.table.selectedItems() # O selectedItems seleciona cada celula
-        num_selected = int(len(selected_items) / self.num_columns) # São 5 celulas por ser 5 colunas
-        
+        selected_items = self.table_news.selectedIndexes() # O selectedItems seleciona cada celula
+        num_selected = len(selected_items) // self.num_columns  # Cada linha é representada por self.num_columns células
         if num_selected == 0:
             dlg = WarningMessageBox(title="Atenção!", txt="A anotação requer a seleção de um artigo de notícias.")
             dlg.setIcon(QMessageBox.Warning)
             dlg.exec()
         else:
-            title_selected = selected_items[2].text()
-            for row in range(self.table.rowCount()):
-                column_title = self.table.item(row, 2)
+            title_selected = selected_items[2].data()
+            for row in range(self.model_table.rowCount()):
+                column_title = self.model_table.item(row, 2)
                 self.title_list.append(column_title.text())
             
-            self.table.clearSelection()
+            self.table_news.clearSelection()
             title_selected_id = self.title_list.index(title_selected)
             self.set_title_list(self.title_list, title_selected_id)
             self.set_text_class()

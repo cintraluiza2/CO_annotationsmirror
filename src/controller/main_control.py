@@ -17,13 +17,12 @@ from controller.pages.classification_page import ClassificationManager
 
 # ----------------------------Main Window--------------------------
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow, UiMainWindow):
     def __init__(self) -> None:
-        super().__init__()
+        super(MainWindow, self).__init__()
 
         # Setup Main Window
-        self.ui = UiMainWindow()
-        self.ui.setup_ui(self)
+        self.setup_ui(self)
         
         # VARIABLES GLOBAL
         self.title_list = []
@@ -31,31 +30,29 @@ class MainWindow(QMainWindow):
         self.toggle_order = Qt.DescendingOrder
         
         # CLASSIFICATION
-        self.classification = self.ui.classification_page
-        self.classification_maneger = ClassificationManager(self.classification, self.show_page_home)
+        self.classification_maneger = ClassificationManager(self.ui_pages, self.show_page_home)
         
         # TABLE PAGE
-        self.table_page = self.ui.table_news_page
-        self.table = self.table_page.table
-        self.table_news = TableNewsManager(self.table, self.table_page, self.show_page_class, self.classification_maneger.set_text_class, self.classification_maneger.set_title_list)
+        self.table_page = self.ui_pages
+        self.table_news_manager = TableNewsManager(self.table_page.table_news, self.table_page, self.show_page_class, self.classification_maneger.set_text_class, self.classification_maneger.set_title_list)
                 
         # Toggle Button
-        self.ui.toggle_button_menu.clicked.connect(self.toggle_button)
+        self.toggle_button_menu.clicked.connect(self.toggle_button)
         
         # BUTTON HOME / TABLE
-        self.ui.button_home.clicked.connect(self.show_page_home)
+        self.button_home.clicked.connect(self.show_page_home)
         
         # BUTTON CLASSIFICATION
         # self.ui.button_class.clicked.connect(self.show_page_table_class)
         
         # BUTTON EXIT
-        self.ui.button_exit.clicked.connect(self.show_dialog_exit)
+        self.button_exit.clicked.connect(self.show_dialog_exit)
 
         self.show()
 
 # ---------------------------------------------------------------------------------------- Methods
     def reset_selection(self):
-        for button in self.ui.left_menu.findChildren(QPushButton):
+        for button in self.left_menu.findChildren(QPushButton):
             try:
                 button.set_active(False)
             except:
@@ -64,7 +61,7 @@ class MainWindow(QMainWindow):
     # BUTTONS ACTIONS
     def toggle_button(self):
         # Get Menu Width
-        menu_width = self.ui.left_menu.width()
+        menu_width = self.left_menu.width()
 
         # Check Width
         width = 50
@@ -72,7 +69,7 @@ class MainWindow(QMainWindow):
             width = 160
 
         # Start Animation
-        self.animation = QPropertyAnimation(self.ui.left_menu, b"minimumWidth")
+        self.animation = QPropertyAnimation(self.left_menu, b"minimumWidth")
         self.animation.setStartValue(menu_width)
         self.animation.setEndValue(width)
         self.animation.setDuration(300)
@@ -82,23 +79,23 @@ class MainWindow(QMainWindow):
     
     def show_page_home(self):
         self.reset_selection()
-        self.ui.button_home.set_active(True)
-        self.table_news.table_init()
+        self.button_home.set_active(True)
+        self.table_news_manager.populate_table_news()
         
-        self.ui.pages.setCurrentIndex(0)
+        self.pages.setCurrentIndex(0)
         
     def show_page_table_class(self):
         self.reset_selection()
-        self.ui.button_class.set_active(True)
-        self.table_news.table_init()
+        self.button_class.set_active(True)
+        self.table_news_manager.populate_table_news()
         
-        self.ui.pages.setCurrentIndex(0)
+        self.pages.setCurrentIndex(0)
     
     def show_page_class(self):
         self.reset_selection()
-        self.ui.button_class.set_active(True)
+        self.button_class.set_active(True)
         
-        self.ui.pages.setCurrentIndex(1)
+        self.pages.setCurrentIndex(1)
         
     def show_dialog_exit(self):        
         dlg = WarningMessageBoxOption(title="Attention!", txt="Do you want to close the app?")
