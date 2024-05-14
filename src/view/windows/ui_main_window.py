@@ -2,7 +2,6 @@ from qt_core import *
 # IMPORT WIDGETS
 from view.widgets.py_push_button import *
 #IMPORT PAGES
-from view.pages.ui_classification import UiClassification
 from view.pages.ui_pages import Ui_Pages
 
 # Main Window
