@@ -6,6 +6,7 @@ from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
 # IMPORTS DATA GEO
 from models.utils.geo_reference import GeoReference
+from models.utils.data import *
 # IMPORTS RANDOM
 import hashlib
 import random
@@ -30,7 +31,11 @@ class ClassificationManager:
         # INIT COMBOBOX
         self.geo = GeoReference()
         self.dict_geo = self.geo.geo_country()
-        self.classification.init_combo_box(self.classification.combo_country, self.dict_geo)
+        self.init_combo_box(self.classification.combo_country, self.dict_geo)
+        self.init_combo_box(self.classification.combo_narcotic_1, data_type_narcotic)
+        self.init_combo_box(self.classification.combo_narcotic_2, data_type_narcotic)
+        self.init_combo_box(self.classification.combo_narcotic_3, data_type_narcotic)
+        self.init_combo_box(self.classification.combo_type_relation, data_type_relation)
         
         self.classification.combo_country.currentIndexChanged.connect(self.check_selected_country)
         self.classification.combo_region.currentIndexChanged.connect(self.check_selected_region)
@@ -85,7 +90,7 @@ class ClassificationManager:
             self.classification.machine_class.setText(automatic_news)
             self.classification.confidence_machine.setText(confidence_news)
             self.classification.text_box_article.setText(text_news)
-            self.classification.combo_conflict.setCurrentIndex(armed_conflict)
+            self.classification.check_conflict.setChecked(armed_conflict)
             self.classification.name_actor_1.setText(actor1)
             self.classification.name_actor_2.setText(actor2)
             self.classification.combo_type_relation.setCurrentIndex(relationship_atores)
@@ -118,8 +123,8 @@ class ClassificationManager:
             city = self.classification.combo_city.currentData()
             data_event = self.classification.input_date_event.text()
             deaths = int(self.classification.input_deaths.text())
-            conflict = self.classification.combo_conflict.currentIndex()
-            type_narcotic = self.classification.combo_type_narcotic.currentData()
+            conflict = int(self.classification.check_conflict.isChecked())
+            type_narcotic = self.classification.combo_narcotic_1.currentData()
             type_relation = self.classification.combo_type_relation.currentData()
             actor_1 = self.classification.name_actor_1.text()
             actor_2 = self.classification.name_actor_2.text()
@@ -159,7 +164,7 @@ class ClassificationManager:
     
     def enabled_widgets(self):
         for widget in self.classification.frame_extraction.findChildren(QFrame):
-            widget.setStyleSheet("QLabel{background-color: transparent; max-width: 12em}")
+            widget.setStyleSheet("QLabel{background-color: transparent;}")
             widget.setEnabled(True)
             
     def check_selected_country(self, index):
@@ -169,19 +174,17 @@ class ClassificationManager:
             self.classification.combo_region.clear()
             self.classification.combo_city.clear()
             self.dict_geo = self.geo.geo_state_br()
-            self.classification.init_combo_box(self.classification.combo_region, self.dict_geo)
+            self.init_combo_box(self.classification.combo_region, self.dict_geo)
 
         elif self.selected_country == "Argentina":
             self.classification.combo_region.clear()
             self.classification.combo_city.clear()
             self.dict_geo = self.geo.geo_state_arg()
-            self.classification.init_combo_box(self.classification.combo_region, self.dict_geo)
+            self.init_combo_box(self.classification.combo_region, self.dict_geo)
         else:
             self.classification.combo_region.clear()
-            self.classification.combo_state.clear()
             self.classification.combo_city.clear()
             self.classification.combo_region.setEnabled(False)
-            self.classification.combo_state.setEnabled(False)
             self.classification.combo_city.setEnabled(False)
             
     def check_selected_region(self, index):
@@ -194,7 +197,7 @@ class ClassificationManager:
         if self.selected_country == "Argentina":
             self.dict_geo = self.geo.geo_city_arg(index)
 
-        self.classification.init_combo_box(self.classification.combo_city, self.dict_geo)
+        self.init_combo_box(self.classification.combo_city, self.dict_geo)
 
     def random_integer_code(self, word):
         """Gera um número inteiro aleatório com base em uma palavra.
@@ -222,4 +225,8 @@ class ClassificationManager:
         rand_number = random.randint(1, 100000000)
 
         return rand_number
+    
+    def init_combo_box(self, combo_box, data):
+                for key, value in data.items():
+                        combo_box.addItem(key, value)
         
