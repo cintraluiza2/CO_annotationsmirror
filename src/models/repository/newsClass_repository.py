@@ -103,7 +103,7 @@ class NewsClassRepository():
 
         return response
 
-    def select_many_order_news(self, filters=None, optionsReturn={"_id": 0, 'accepted_by': 0}, orderFilter=None, optionsFilter=-1, model_return=True) -> List[
+    def select_many_order_news(self, filters=None, optionsReturn={"_id": 0}, orderFilter=None, optionsFilter=-1, model_return=True) -> List[
         Dict]:
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.find(filters, optionsReturn).sort([(orderFilter, optionsFilter)])
@@ -165,3 +165,6 @@ class NewsClassRepository():
         except:
             return False
 
+    def test(self):
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        return collection.find()

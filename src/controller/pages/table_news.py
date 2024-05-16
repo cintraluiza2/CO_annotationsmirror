@@ -1,5 +1,4 @@
 ﻿from qt_core import *
-from collections import deque
 # IMPORT WIDGETS
 from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption
 from view.widgets.py_color_delegate import PyColorDelegate
@@ -39,27 +38,39 @@ class TableNewsManager:
         self.table_news.setItemDelegate(PyColorDelegate(self.table_news))
         # Definir a ordem de classificação na QTableView
         
-        self.populate_table_news()
-        
         self.table_news.doubleClicked.connect(self.on_selection_table)
         self.table_page.button_note.clicked.connect(self.on_selection_table)
         # self.table_page.button_train.clicked.connect(self.train_table_news)
     
             
     def populate_table_news(self):
-        list_news = self.__news_repository.select_many_order_news(optionsReturn={"_id": 0, "publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "certainty_level": 1}, orderFilter='manual_relevance_class', optionsFilter=1, model_return=False)
-        mapping = {0: "Irrelevante", 1: "Relevante", 2: "Dúvida", None: "SClasse"}
-                
-        for row, dict_news in enumerate(list_news):
-            dict_news["manual_relevance_class"] = mapping.get(dict_news["manual_relevance_class"])
-            dict_news["automatic_relevance_class"] = mapping.get(dict_news["automatic_relevance_class"])
-            for column, label in enumerate(dict_news):
-                item = QStandardItem(str(dict_news[label]))
-                if not column == 2:
-                    item.setTextAlignment(Qt.AlignCenter)
-                self.model_table.setItem(row, column, item)
-                
-        self.table_news.setColumnWidth(2, 570)
+        try:
+            list_news = self.__news_repository.select_many_order_news(optionsReturn={"_id": 0, "publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "certainty_level": 1}, orderFilter='manual_relevance_class', optionsFilter=1, model_return=False)
+            mapping = {0: "Irrelevante", 1: "Relevante", 2: "Dúvida", None: "SClasse"}
+                    
+            for row, dict_news in enumerate(list_news):
+                try:
+                    dict_news["manual_relevance_class"] = mapping.get(dict_news["manual_relevance_class"])
+                except KeyError:
+                    dict_news["manual_relevance_class"] = None
+                    dict_news["manual_relevance_class"] = mapping.get(dict_news["manual_relevance_class"])
+                try:
+                    dict_news["automatic_relevance_class"] = mapping.get(dict_news["automatic_relevance_class"])
+                except KeyError:
+                    dict_news["automatic_relevance_class"] = None
+                    dict_news["automatic_relevance_class"] = mapping.get(dict_news["automatic_relevance_class"])
+                    
+                for column, label in enumerate(dict_news):
+                    item = QStandardItem(str(dict_news[label]))
+                    if not column == 2:
+                        item.setTextAlignment(Qt.AlignCenter)
+                    self.model_table.setItem(row, column, item)
+                    
+            self.table_news.setColumnWidth(2, 570)
+            
+            return True
+        except:
+            return False
         
     def on_selection_table(self):
         selected_items = self.table_news.selectedIndexes() # O selectedItems seleciona cada celula

@@ -13,6 +13,8 @@
             "title": None,
             "article": None,
             "tags": None,
+            "accepted_by": None,
+            "gangs": None,
             "manual_relevance_class": None,
             "automatic_relevance_class": None,
             "confidence_relevance_class": None, 
