@@ -77,7 +77,7 @@ class ClassificationManager:
             type_narcotic = news['tipo_droga']
             qty_narcotic = news['quant_droga']
             weapons = news['weapons']
-            
+
             if manual_news == 1: 
                 self.classification.button_accept_news.setChecked(True)
                 self.classification.button_query.setChecked(False)

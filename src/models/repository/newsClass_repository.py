@@ -157,14 +157,14 @@ class NewsClassRepository():
         return data.deleted_count
     
     # ------------------ Métodos de Atualização ------------------------
-    def replace_one_registry_news(self, title: str, registry) -> bool:
+    def replace_one_registry_news(self, title, registry) -> bool:
         try:
             collection = self.__db_connection.get_collection(self.__collection_name)
-            collection.replace_one({"title": title}, registry)
+            collection.replace_one({"_id": ObjectId(title)}, registry)
             return True
-        except:
-            return False
+        except Exception as e:
+            return e
 
     def test(self):
         collection = self.__db_connection.get_collection(self.__collection_name)
-        return collection.find()
+        return collection.find({"tipo_droga": None})

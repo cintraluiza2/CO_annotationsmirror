@@ -66,12 +66,12 @@ class TableNewsManager:
                         item.setTextAlignment(Qt.AlignCenter)
                     self.model_table.setItem(row, column, item)
                     
-            self.table_news.setColumnWidth(2, 570)
-            
+            self.table_news.setColumnWidth(2, 570)            
             return True
-        except:
+        except Exception as e:
+            print("Erro ao popular tabela de notícias:", e)
             return False
-        
+            
     def on_selection_table(self):
         selected_items = self.table_news.selectedIndexes() # O selectedItems seleciona cada celula
         num_selected = len(selected_items) // self.num_columns  # Cada linha é representada por self.num_columns células

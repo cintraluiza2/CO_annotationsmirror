@@ -2,7 +2,7 @@
 # Import QT Core
 from qt_core import *
 import sys
-import random
+import requests
 # Import Windows
 from view.windows.ui_main_window import UiMainWindow
 # IMPORT WIDGETS
@@ -12,9 +12,6 @@ from view.widgets.dialogs.py_progress_data_base import UiProgressDataBase
 from models.connection_options.connection import DBConnectionHandler
 from models.repository.newsClass_repository import NewsClassRepository
 from models.repository.users_repository import UsersRepository
-from config import server_configs
-from sshtunnel import open_tunnel, BaseSSHTunnelForwarderError
-
 from controller.pages.table_news import TableNewsManager
 from controller.pages.classification_page import ClassificationManager
 
@@ -52,27 +49,22 @@ class MainWindow(QMainWindow, UiMainWindow):
         # BUTTON EXIT
         self.button_exit.clicked.connect(self.show_dialog_exit)
 
-        dlg = UiProgressDataBase(self.table_news_manager.populate_table_news, self.__connect_server)
-        self.progress = dlg.ui.progress_data_base.value()
-        if self.progress == 100:
-            self.show()
-        else:
-            sys.exit(self.close())
+        self.show()
+        self.table_news_manager.populate_table_news()
+        # if self.progress == 100:
+        # else:
+        #     sys.exit(self.close())
 
-# ---------------------------------------------------------------------------------------- Methods
-    def __connect_server(self):
+# ---------------------------------------------------------------------------------------- Methods        
+    def erro_connect(self):
             try:
-                SSH_TIMEOUT = 15
-                with open_tunnel(
-                (server_configs['ip_server'], server_configs['port']),
-                ssh_username=server_configs['username'],
-                ssh_password=server_configs['password'],
-                local_bind_address=(server_configs['local_address'], server_configs['local_port_ssh']),
-                remote_bind_address=(server_configs['remote_address'], server_configs['remote_port_ssh'])
-                ) as server:
-                    self.server = server
-            except:
-                return False 
+                # Tente fazer uma solicitação GET para um site conhecido para verificar rede
+                requests.get("http://www.google.com", timeout=5)
+                dlg = WarningMessageBox("Atenção", "Sem acesso ao banco de dados. Tente novamente mais tarde!\nSe o erro persistir, entre em contato com o suporte!")
+            except requests.ConnectionError:
+                dlg = WarningMessageBox("Atenção", "Sem acesso à rede!\nVerifique sua conexão com a internet.")
+            dlg.exec()
+            sys.exit(self.close())    
             
     def reset_selection(self):
         for button in self.left_menu.findChildren(QPushButton):
