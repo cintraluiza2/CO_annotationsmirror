@@ -854,13 +854,13 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>100</width>
+                    <width>150</width>
                     <height>0</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>50</width>
+                    <width>280</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -873,42 +873,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   <property name="styleSheet">
                    <string notr="true">background-color: #FFFFFF; </string>
                   </property>
-                  <property name="placeholderText">
-                   <string>Latitude</string>
+                  <property name="inputMask">
+                   <string/>
                   </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLineEdit" name="longitude">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>50</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <family>Roboto</family>
-                    <pointsize>12</pointsize>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">background-color: #FFFFFF; </string>
+                  <property name="text">
+                   <string/>
                   </property>
                   <property name="placeholderText">
-                   <string>Longitude</string>
+                   <string>Latitude, Longitude</string>
                   </property>
                  </widget>
                 </item>
@@ -928,7 +900,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>120</width>
+                    <width>80</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -942,7 +914,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    <string notr="true">background-color: rgba(255, 255, 255, 0.8);</string>
                   </property>
                   <property name="text">
-                   <string>Local Padrão</string>
+                   <string>Padrão</string>
                   </property>
                  </widget>
                 </item>
@@ -962,7 +934,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>100</width>
+                    <width>80</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -976,7 +948,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    <string notr="true">background-color: rgba(255, 255, 255, 0.8);</string>
                   </property>
                   <property name="text">
-                   <string>Abrir Maps</string>
+                   <string>Maps</string>
                   </property>
                  </widget>
                 </item>
@@ -996,7 +968,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>120</width>
+                    <width>80</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -1010,7 +982,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    <string notr="true">background-color: rgba(255, 255, 255, 0.8);</string>
                   </property>
                   <property name="text">
-                   <string>Pesquisar Local</string>
+                   <string>Pesquisar</string>
                   </property>
                  </widget>
                 </item>

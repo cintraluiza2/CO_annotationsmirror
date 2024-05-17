@@ -8,19 +8,7 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QCheckBox, QComboBox,
-    QDateEdit, QFrame, QGroupBox, QHBoxLayout,
-    QHeaderView, QLabel, QLineEdit, QListView,
-    QListWidget, QListWidgetItem, QPushButton, QRadioButton,
-    QSizePolicy, QSpacerItem, QSpinBox, QStackedWidget,
-    QTableView, QTextBrowser, QVBoxLayout, QWidget)
+from qt_core import *
 
 class Ui_Pages(object):
     def setupUi(self, Pages):
@@ -451,30 +439,19 @@ class Ui_Pages(object):
         self.latitude.setObjectName(u"latitude")
         sizePolicy4.setHeightForWidth(self.latitude.sizePolicy().hasHeightForWidth())
         self.latitude.setSizePolicy(sizePolicy4)
-        self.latitude.setMinimumSize(QSize(100, 0))
-        self.latitude.setMaximumSize(QSize(50, 16777215))
+        self.latitude.setMinimumSize(QSize(150, 0))
+        self.latitude.setMaximumSize(QSize(280, 16777215))
         self.latitude.setFont(font1)
         self.latitude.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_5.addWidget(self.latitude)
-
-        self.longitude = QLineEdit(self.frame_8)
-        self.longitude.setObjectName(u"longitude")
-        sizePolicy3.setHeightForWidth(self.longitude.sizePolicy().hasHeightForWidth())
-        self.longitude.setSizePolicy(sizePolicy3)
-        self.longitude.setMinimumSize(QSize(100, 0))
-        self.longitude.setMaximumSize(QSize(50, 16777215))
-        self.longitude.setFont(font1)
-        self.longitude.setStyleSheet(u"background-color: #FFFFFF; ")
-
-        self.horizontalLayout_5.addWidget(self.longitude)
 
         self.button_geo_city = QPushButton(self.frame_8)
         self.button_geo_city.setObjectName(u"button_geo_city")
         sizePolicy7.setHeightForWidth(self.button_geo_city.sizePolicy().hasHeightForWidth())
         self.button_geo_city.setSizePolicy(sizePolicy7)
         self.button_geo_city.setMinimumSize(QSize(0, 0))
-        self.button_geo_city.setMaximumSize(QSize(120, 16777215))
+        self.button_geo_city.setMaximumSize(QSize(80, 16777215))
         self.button_geo_city.setFont(font1)
         self.button_geo_city.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
@@ -485,7 +462,7 @@ class Ui_Pages(object):
         sizePolicy7.setHeightForWidth(self.button_maps.sizePolicy().hasHeightForWidth())
         self.button_maps.setSizePolicy(sizePolicy7)
         self.button_maps.setMinimumSize(QSize(0, 0))
-        self.button_maps.setMaximumSize(QSize(100, 16777215))
+        self.button_maps.setMaximumSize(QSize(80, 16777215))
         self.button_maps.setFont(font1)
         self.button_maps.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
@@ -496,7 +473,7 @@ class Ui_Pages(object):
         sizePolicy7.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
         self.pushButton_3.setSizePolicy(sizePolicy7)
         self.pushButton_3.setMinimumSize(QSize(0, 0))
-        self.pushButton_3.setMaximumSize(QSize(120, 16777215))
+        self.pushButton_3.setMaximumSize(QSize(80, 16777215))
         self.pushButton_3.setFont(font1)
         self.pushButton_3.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
@@ -1019,11 +996,12 @@ class Ui_Pages(object):
         self.label_country.setText(QCoreApplication.translate("Pages", u"Pa\u00eds", None))
         self.label_region.setText(QCoreApplication.translate("Pages", u"Regi\u00e3o", None))
         self.label_city.setText(QCoreApplication.translate("Pages", u"Munic\u00edpio", None))
-        self.latitude.setPlaceholderText(QCoreApplication.translate("Pages", u"Latitude", None))
-        self.longitude.setPlaceholderText(QCoreApplication.translate("Pages", u"Longitude", None))
-        self.button_geo_city.setText(QCoreApplication.translate("Pages", u"Local Padr\u00e3o", None))
-        self.button_maps.setText(QCoreApplication.translate("Pages", u"Abrir Maps", None))
-        self.pushButton_3.setText(QCoreApplication.translate("Pages", u"Pesquisar Local", None))
+        self.latitude.setInputMask("")
+        self.latitude.setText("")
+        self.latitude.setPlaceholderText(QCoreApplication.translate("Pages", u"Latitude, Longitude", None))
+        self.button_geo_city.setText(QCoreApplication.translate("Pages", u"Padr\u00e3o", None))
+        self.button_maps.setText(QCoreApplication.translate("Pages", u"Maps", None))
+        self.pushButton_3.setText(QCoreApplication.translate("Pages", u"Pesquisar", None))
         self.label_date_event.setText(QCoreApplication.translate("Pages", u"Data", None))
         self.label_conflict.setText(QCoreApplication.translate("Pages", u"Houve Conflito", None))
         self.check_conflict.setText(QCoreApplication.translate("Pages", u"Sim", None))
@@ -1051,5 +1029,9 @@ class Ui_Pages(object):
         self.button_finish.setText(QCoreApplication.translate("Pages", u"Finalizar", None))
         self.button_cancel.setText(QCoreApplication.translate("Pages", u"Cancelar", None))
         self.button_next.setText("")
+        
+        expr_regu = QRegularExpressionValidator(QRegularExpression(r"^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$"))
+        
+        self.latitude.setValidator(expr_regu)
     # retranslateUi
 
