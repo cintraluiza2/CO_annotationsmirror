@@ -40,6 +40,7 @@ class TableNewsManager:
         
         self.table_news.doubleClicked.connect(self.on_selection_table)
         self.table_page.button_note.clicked.connect(self.on_selection_table)
+        self.table_page.button_sync.clicked.connect(self.populate_table_news)
         # self.table_page.button_train.clicked.connect(self.train_table_news)
     
             
@@ -67,10 +68,9 @@ class TableNewsManager:
                     self.model_table.setItem(row, column, item)
                     
             self.table_news.setColumnWidth(2, 570)            
-            return True
         except Exception as e:
             print("Erro ao popular tabela de notícias:", e)
-            return False
+
             
     def on_selection_table(self):
         selected_items = self.table_news.selectedIndexes() # O selectedItems seleciona cada celula
