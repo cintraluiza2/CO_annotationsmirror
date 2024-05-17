@@ -29,7 +29,7 @@
             "pais": None,
             "regiao": None,
             "municipio": None,
-            "coordenados_GPS": None,
+            "coordenadas_GPS": {"type": "Point", "coordinates": [0, 0]},
             "tipo_conflito_armado": None,
             "ator1_nome": None,
             "ator1_cod": None,
