@@ -69,9 +69,13 @@ class NewsClassRepository():
 
         return response
     
-    def select_one_news(self, title, optionsReturn={"_id": 0}) -> Dict:
+    def find_all(self):
         collection = self.__db_connection.get_collection(self.__collection_name)
-        response = collection.find_one({"title": title}, optionsReturn)
+        return collection.find()
+    
+    def select_one_news(self, id_news, optionsReturn={"_id": 0}) -> Dict:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        response = collection.find_one({"id_event": id_news}, optionsReturn)
         if response == None:
             return False
         n = News(**response)
@@ -132,9 +136,9 @@ class NewsClassRepository():
         return response
 
     # ------------------ Métodos de Edição ------------------------
-    def edit_registry_news(self, title: str, parameterEditing: Dict = None) -> int:
+    def edit_registry_news(self, id, parameterEditing: Dict = None) -> int:
         collection = self.__db_connection.get_collection(self.__collection_name)
-        data = collection.update_one({"title": title},
+        data = collection.update_one({"id_event": id},
                                      {"$set": parameterEditing})
         return data.modified_count
 
@@ -164,7 +168,3 @@ class NewsClassRepository():
             return True
         except Exception as e:
             return e
-
-    def test(self):
-        collection = self.__db_connection.get_collection(self.__collection_name)
-        return collection.find({"tipo_droga": None})
