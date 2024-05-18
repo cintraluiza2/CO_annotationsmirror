@@ -30,7 +30,7 @@ class ClassificationManager:
         
         # INIT COMBOBOX
         self.geo = GeoReference()
-        self.dict_geo = self.geo.geo_country()
+        self.dict_geo = self.geo.get_geo_country()
         self.init_combo_box(self.classification.combo_country, self.dict_geo)
         self.init_combo_box(self.classification.combo_narcotic_1, data_type_narcotic)
         self.init_combo_box(self.classification.combo_narcotic_2, data_type_narcotic)
@@ -40,6 +40,7 @@ class ClassificationManager:
         # CONNECT CURRENT COMBO BOX
         self.classification.combo_country.currentIndexChanged.connect(self.check_selected_country)
         self.classification.combo_region.currentIndexChanged.connect(self.check_selected_region)
+        self.classification.button_geo_city.clicked.connect(self.active_button_geo)
         
         # BUTTONS EXTRACTION        
         self.classification.button_accept_news.clicked.connect(self.enabled_widgets)
@@ -61,7 +62,7 @@ class ClassificationManager:
     def set_text_class(self):
         if self.title_list:
             title_news = self.title_list[self.title_select]
-            news = self.__news_repository.select_one_news(title={"$regex": title_news}, optionsReturn={"title": 1, "article": 1, "manual_relevance_class": 1, "publication_date": 1, "last_update": 1, "automatic_relevance_class": 1, "confidence_relevance_class": 1, "tipo_droga": 1, "quant_droga": 1, "weapons": 1, "weapons_codes": 1, "tipo_conflito_armado": 1, "ator1_nome": 1, "ator2_nome": 1, "tipo_relacao_entre_atores": 1})
+            news = self.__news_repository.select_one_news(title={"$regex": title_news}, optionsReturn={"title": 1, "article": 1, "manual_relevance_class": 1, "publication_date": 1, "last_update": 1, "automatic_relevance_class": 1, "confidence_relevance_class": 1, "pais": 1, "regiao": 1, "municipio": 1, "coordenadas_GPS": 1, "tipo_droga": 1, "quant_droga": 1, "weapons": 1, "weapons_codes": 1, "tipo_conflito_armado": 1, "ator1_nome": 1, "ator2_nome": 1, "tipo_relacao_entre_atores": 1})
             
             mapping = {0: 'rejeite', 1: 'aceite', None: "SClasse"}
             self.title_news = news["title"]
@@ -78,6 +79,11 @@ class ClassificationManager:
             type_narcotic = news['tipo_droga']
             qty_narcotic = news['quant_droga']
             weapons = news['weapons']
+            pais = 0 if news["pais"] == None else int(news["pais"])
+            regiao = 0 if news["regiao"] == None else int(news["regiao"])
+            municipio = 0 if news["municipio"] == None else int(news["municipio"])
+            coordenadas_GPS = news['coordenadas_GPS']
+            lati, long = coordenadas_GPS['coordinates']
 
             if manual_news == 1: 
                 self.classification.button_accept_news.setChecked(True)
@@ -94,6 +100,10 @@ class ClassificationManager:
             self.classification.title_article.setText(title_news)
             self.classification.data_publication.setText(publication_news)
             data = QDate.fromString(publication_news, "dd-MM-yyyy")
+            self.classification.combo_country.currentData(pais)
+            self.classification.combo_region.currentData(regiao)
+            self.classification.combo_city.currentData(municipio)
+            if lati != 0 and long != 0: self.classification.latitude.setText(f"{lati}, {long}")
             self.classification.input_date_event.setDate(data)
             self.classification.data_update.setText(update_news)
             self.classification.machine_class.setText(automatic_news)
@@ -137,6 +147,11 @@ class ClassificationManager:
             country = self.classification.combo_country.currentData()
             region = self.classification.combo_region.currentData()
             city = self.classification.combo_city.currentData()
+            lati_long_txt = self.classification.latitude.text()
+            if lati_long_txt == '':
+                lati, long = self.geo.get_lati_long(country, region, city)
+            else:
+                lati, long = lati_long_txt.split(',')
             data_event = self.classification.input_date_event.text()
             deaths = int(self.classification.input_deaths.text())
             conflict = int(self.classification.check_conflict.isChecked())
@@ -160,7 +175,9 @@ class ClassificationManager:
             type_narcotic = [type_narcotic_1, type_narcotic_2, type_narcotic_3]
             qty_narcotic = [qty_narcotic_1, qty_narcotic_2, qty_narcotic_3]
             
-            edit = {"manual_relevance_class": accept_res, "data_evento": data_event, "quant_mortes": deaths, "tipo_conflito_armado": conflict, "pais": country, "regiao": region, "municipio": city,  "tipo_droga": type_narcotic, "quant_droga": qty_narcotic, "weapons": weapons, "weapons_codes": weapons_codes, "ator1_nome": actor_1, "ator1_cod": cod_actor_1, "ator2_nome": actor_2, "ator2_cod": cod_actor_2, "tipo_relacao_entre_atores": type_relation}
+            coordenadas_GPS = {"type": "Point", "coordinates": [float(lati), float(long)]}
+            
+            edit = {"manual_relevance_class": accept_res, "data_evento": data_event, "quant_mortes": deaths, "tipo_conflito_armado": conflict, "pais": country, "regiao": region, "municipio": city, "coordenadas_GPS": coordenadas_GPS,  "tipo_droga": type_narcotic, "quant_droga": qty_narcotic, "weapons": weapons, "weapons_codes": weapons_codes, "ator1_nome": actor_1, "ator1_cod": cod_actor_1, "ator2_nome": actor_2, "ator2_cod": cod_actor_2, "tipo_relacao_entre_atores": type_relation}
         elif query:
             edit = {"manual_relevance_class": 2}
         else:
@@ -206,7 +223,7 @@ class ClassificationManager:
         self.selected_country = self.classification.combo_country.currentText()
         self.classification.combo_region.setEnabled(True)
         
-        self.dict_geo = self.geo.geo_state(self.selected_country)
+        self.dict_geo = self.geo.get_geo_state(self.selected_country)
         
         if self.dict_geo: # Se a lista não estiver vazia
             self.init_combo_box(self.classification.combo_region, self.dict_geo)
@@ -218,7 +235,7 @@ class ClassificationManager:
         self.classification.combo_city.clear()
         self.classification.combo_city.setEnabled(True)
         index = self.classification.combo_region.currentData()
-        self.dict_geo = self.geo.geo_city(index)
+        self.dict_geo = self.geo.get_geo_city(index)
 
         if self.dict_geo:
             self.init_combo_box(self.classification.combo_city, self.dict_geo)
@@ -276,6 +293,16 @@ class ClassificationManager:
         rand_number = random.randint(1, 100000000)
 
         return rand_number
+    
+    def active_button_geo(self):
+        country = self.classification.combo_country.currentData()
+        region = self.classification.combo_region.currentData()
+        city = self.classification.combo_city.currentData()
+    
+        lati, long = self.geo.get_lati_long(country, region, city)
+        
+        if lati != 0 and long != 0: self.classification.latitude.setText(f"{lati}, {long}")
+        
     
     def init_combo_box(self, combo_box, data):
                 for key, value in data.items():

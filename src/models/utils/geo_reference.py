@@ -5,7 +5,7 @@ class GeoReference:
     def __init__(self) -> None:
         self.path_dir =  "src/models/utils/georeferenced_codes/"
         
-    def geo_country(self):
+    def get_geo_country(self):
         data = {}
         path_json = path.join(self.path_dir, 'countries.json')
         with open(path_json, 'r') as arquivo:
@@ -17,7 +17,7 @@ class GeoReference:
 
         return data
 
-    def geo_state(self, country: str):
+    def get_geo_state(self, country: str):
         path_json = path.join(self.path_dir, 'states.json')
         with open(path_json, 'r') as arquivo:
             response = json.load(arquivo)
@@ -31,7 +31,7 @@ class GeoReference:
         return data
 
     
-    def geo_city(self, index):
+    def get_geo_city(self, index):
         path_json = path.join(self.path_dir, 'cities.json')
         with open(path_json, 'r') as arquivo:
             response = json.load(arquivo)
@@ -43,3 +43,34 @@ class GeoReference:
         data['Outros'] = 0
         
         return data
+    
+    def get_lati_long(self, country_id, state_id, city_id):
+        if city_id:
+            path_json = path.join(self.path_dir, 'cities.json')
+            with open(path_json, 'r') as arquivo:
+                response = json.load(arquivo)
+                
+            for city in response:
+                if city['id'] == city_id:
+                    return (city['latitude'], city['longitude'])
+                
+        if state_id:
+            path_json = path.join(self.path_dir, 'states.json')
+            with open(path_json, 'r') as arquivo:
+                response = json.load(arquivo)
+                
+            for state in response:
+                if state['id'] == state_id:
+                    return (state['latitude'], state['longitude'])
+        
+        if country_id:
+            path_json = path.join(self.path_dir, 'countries.json')
+            with open(path_json, 'r') as arquivo:
+                response = json.load(arquivo)
+                
+            for country in response:
+                if int(country['numeric_code']) == country_id:
+                    return (country['latitude'], country['longitude'])
+        
+        
+        return (0, 0)
