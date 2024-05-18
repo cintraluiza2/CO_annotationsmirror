@@ -8,15 +8,10 @@ from config import server_configs
 from qt_core import *
 # Import Main Window
 from controller.main_control import *
-from controller.login_control import *
-from controller.host_control import *
 # Imports SSHTUNNEL
 from sshtunnel import open_tunnel, BaseSSHTunnelForwarderError
 
 # -----------------------Main ---------------------------
-# Redireciona a saída de erro para o dispositivo nulo
-# sys.stderr = open(os.devnull, 'w')
-
 if __name__ == "__main__":
     try:
         with open_tunnel(
