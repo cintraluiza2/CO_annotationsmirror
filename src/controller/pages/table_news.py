@@ -29,11 +29,11 @@ class TableNewsManager:
         self.title_list = []
         self.title_news = ""
         self.toggle_order = Qt.AscendingOrder
-        self.num_columns = 5
+        self.num_columns = 6
         
         # TABLE MODEL NEWS
         self.model_table = QStandardItemModel()
-        self.model_table.setHorizontalHeaderLabels(["Publication Date", "Newspaper", "Title", "Manual Relevance", "Automatic Relevance", "Certainty Level"])
+        self.model_table.setHorizontalHeaderLabels(["Data de Publicação", "Jornal", "Título", "Relevância Manual", "Relevância Automática", "Nível de Certeza", "ID"])
         self.table_news.setModel(self.model_table)
         self.table_news.setItemDelegate(PyColorDelegate(self.table_news))
         # Definir a ordem de classificação na QTableView
@@ -46,7 +46,7 @@ class TableNewsManager:
             
     def populate_table_news(self):
         try:
-            list_news = self.__news_repository.select_many_order_news(optionsReturn={"_id": 0, "publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "certainty_level": 1}, orderFilter='manual_relevance_class', optionsFilter=1, model_return=False)
+            list_news = self.__news_repository.select_many_order_news(optionsReturn={"_id": 0,"publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "id_event": 1, "certainty_level": 1}, orderFilter='manual_relevance_class', optionsFilter=1, model_return=False)
             mapping = {0: "Irrelevante", 1: "Relevante", 2: "Dúvida", None: "SClasse"}
                     
             for row, dict_news in enumerate(list_news):
@@ -63,9 +63,16 @@ class TableNewsManager:
                     
                 for column, label in enumerate(dict_news):
                     item = QStandardItem(str(dict_news[label]))
+                    if label == 'publication_date': self.model_table.setItem(row, 0, item)
+                    if label == 'newspaper': self.model_table.setItem(row, 1, item)
+                    if label == 'title': self.model_table.setItem(row, 2, item)
+                    if label == 'manual_relevance_class': self.model_table.setItem(row, 3, item)
+                    if label == 'automatic_relevance_class': self.model_table.setItem(row, 4, item)
+                    if label == 'certainty_level': self.model_table.setItem(row, 5, item)                 
+                    if label == 'id_event': self.model_table.setItem(row, 6, item)                    
+                                  
                     if not column == 2:
-                        item.setTextAlignment(Qt.AlignCenter)
-                    self.model_table.setItem(row, column, item)
+                        item.setTextAlignment(Qt.AlignCenter)                        
                     
             self.table_news.setColumnWidth(2, 570)            
         except Exception as e:
@@ -80,10 +87,10 @@ class TableNewsManager:
             dlg.setIcon(QMessageBox.Warning)
             dlg.exec()
         else:
-            title_selected = selected_items[2].data()
+            title_selected = int(selected_items[6].data())
             for row in range(self.model_table.rowCount()):
-                column_title = self.model_table.item(row, 2)
-                self.title_list.append(column_title.text())
+                column_title = self.model_table.item(row, 6)
+                self.title_list.append(int(column_title.text()))
             
             self.table_news.clearSelection()
             title_selected_id = self.title_list.index(title_selected)
