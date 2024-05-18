@@ -21,6 +21,7 @@
             "relevance_model": None,
             "relevance_classification_date": None,
             "id_event": None,
+            "certainty_level": None,
             "resumo": None,
             "data_evento": None,
             "quant_mortes": None,
