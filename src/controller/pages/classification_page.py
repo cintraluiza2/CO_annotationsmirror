@@ -37,6 +37,7 @@ class ClassificationManager:
         self.init_combo_box(self.classification.combo_narcotic_3, data_type_narcotic)
         self.init_combo_box(self.classification.combo_type_relation, data_type_relation)
         
+        # CONNECT CURRENT COMBO BOX
         self.classification.combo_country.currentIndexChanged.connect(self.check_selected_country)
         self.classification.combo_region.currentIndexChanged.connect(self.check_selected_region)
         
@@ -200,22 +201,16 @@ class ClassificationManager:
             widget.setEnabled(True)
             
     def check_selected_country(self, index):
+        self.classification.combo_region.clear()
+        self.classification.combo_city.clear()
         self.selected_country = self.classification.combo_country.currentText()
         self.classification.combo_region.setEnabled(True)
-        if self.selected_country == "Brasil":
-            self.classification.combo_region.clear()
-            self.classification.combo_city.clear()
-            self.dict_geo = self.geo.geo_state_br()
-            self.init_combo_box(self.classification.combo_region, self.dict_geo)
-
-        elif self.selected_country == "Argentina":
-            self.classification.combo_region.clear()
-            self.classification.combo_city.clear()
-            self.dict_geo = self.geo.geo_state_arg()
+        
+        self.dict_geo = self.geo.geo_state(self.selected_country)
+        
+        if self.dict_geo: # Se a lista não estiver vazia
             self.init_combo_box(self.classification.combo_region, self.dict_geo)
         else:
-            self.classification.combo_region.clear()
-            self.classification.combo_city.clear()
             self.classification.combo_region.setEnabled(False)
             self.classification.combo_city.setEnabled(False)
             
@@ -223,13 +218,12 @@ class ClassificationManager:
         self.classification.combo_city.clear()
         self.classification.combo_city.setEnabled(True)
         index = self.classification.combo_region.currentData()
+        self.dict_geo = self.geo.geo_city(index)
 
-        if self.selected_country == "Brasil":
-            self.dict_geo = self.geo.geo_city_br(index)
-        if self.selected_country == "Argentina":
-            self.dict_geo = self.geo.geo_city_arg(index)
-
-        self.init_combo_box(self.classification.combo_city, self.dict_geo)
+        if self.dict_geo:
+            self.init_combo_box(self.classification.combo_city, self.dict_geo)
+        else:
+            self.classification.combo_city.setEnabled(False)
         
     def add_weapons(self):
         arm = self.classification.input_weapons.text()
