@@ -1,8 +1,6 @@
 # ----------------------------Imports--------------------------
 # Imports Modules
 import sys
-import os
-import yaml
 from config import server_configs
 # Import QT Core
 from qt_core import *
@@ -22,9 +20,9 @@ if __name__ == "__main__":
             remote_bind_address=(server_configs['remote_address'], server_configs['remote_port_ssh'])
         ) as server:
             app = QApplication(sys.argv)
-            window = LoginWindow()
+            window = MainWindow()
             sys.exit(app.exec())
     except BaseSSHTunnelForwarderError:
-        window = LoginWindow()
+        window = MainWindow()
         window.erro_connect()
         
