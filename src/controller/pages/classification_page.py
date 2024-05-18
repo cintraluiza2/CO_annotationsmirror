@@ -24,7 +24,7 @@ class ClassificationManager:
         
         # VARIABLES GLOBAL
         self.title_list = []
-        self.title_news = ""
+        self.id_news = -1
         self.title_select = ""
         self.bool_save = False
         
@@ -62,10 +62,11 @@ class ClassificationManager:
     def set_text_class(self):
         if self.title_list:
             title_news = self.title_list[self.title_select]
-            news = self.__news_repository.select_one_news(title={"$regex": title_news}, optionsReturn={"title": 1, "article": 1, "manual_relevance_class": 1, "publication_date": 1, "last_update": 1, "automatic_relevance_class": 1, "confidence_relevance_class": 1, "pais": 1, "regiao": 1, "municipio": 1, "coordenadas_GPS": 1, "tipo_droga": 1, "quant_droga": 1, "weapons": 1, "weapons_codes": 1, "tipo_conflito_armado": 1, "ator1_nome": 1, "ator2_nome": 1, "tipo_relacao_entre_atores": 1})
+            self.id_news = title_news
+            news = self.__news_repository.select_one_news(self.id_news, optionsReturn={"title": 1, "article": 1, "manual_relevance_class": 1, "publication_date": 1, "last_update": 1, "automatic_relevance_class": 1, "confidence_relevance_class": 1, "pais": 1, "regiao": 1, "municipio": 1, "coordenadas_GPS": 1, "tipo_droga": 1, "quant_droga": 1, "weapons": 1, "weapons_codes": 1, "tipo_conflito_armado": 1, "ator1_nome": 1, "ator2_nome": 1, "tipo_relacao_entre_atores": 1})
             
             mapping = {0: 'rejeite', 1: 'aceite', None: "SClasse"}
-            self.title_news = news["title"]
+            title_news = news["title"]
             publication_news = news["publication_date"]
             update_news = news['last_update']
             automatic_news = mapping.get(news['automatic_relevance_class'])
@@ -104,6 +105,7 @@ class ClassificationManager:
             self.classification.combo_region.currentData(regiao)
             self.classification.combo_city.currentData(municipio)
             if lati != 0 and long != 0: self.classification.latitude.setText(f"{lati}, {long}")
+            else: self.classification.latitude.setText("")
             self.classification.input_date_event.setDate(data)
             self.classification.data_update.setText(update_news)
             self.classification.machine_class.setText(automatic_news)
@@ -183,7 +185,7 @@ class ClassificationManager:
         else:
             edit = {"manual_relevance_class": accept_res}
             
-        self.__news_repository.edit_registry_news(self.title_news, edit)
+        self.__news_repository.edit_registry_news(self.id_news, edit)
         
         mapping = {0: "Irrelevante", 1: "Relevante", 2: "Dúvida"}
         new_status = QStandardItem(str(mapping.get(edit["manual_relevance_class"])))
