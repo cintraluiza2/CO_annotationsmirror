@@ -10,9 +10,10 @@ class NewsClassRepository():
     def __init__(self, db_connection) -> None:
         self.__collection_name = "newsData"
         self.__db_connection = db_connection
+        self.collection = self.__db_connection.get_collection(self.__collection_name)
 
     # ------------------ Métodos de Inserção ------------------------
-    def insert_document_news(self, document: Dict) -> Dict:
+    def insert_document_news(self, document: Dict, model_active=True) -> Dict:
         """
         Insert a document into the newsData collection
 
@@ -27,8 +28,9 @@ class NewsClassRepository():
         collection.create_index("url", unique=True)
         collection.create_index("id_event", unique=True)
         document["id_event"] = self.get_count() 
+        if model_active:
+            registre.set_keys()
         registre = News(**document)
-        registre.set_keys()
         try:
             collection.insert_one(registre.get_dict())
         except DuplicateKeyError:
@@ -161,10 +163,15 @@ class NewsClassRepository():
         return data.deleted_count
     
     # ------------------ Métodos de Atualização ------------------------
-    def replace_one_registry_news(self, title, registry) -> bool:
+    def replace_one_registry_news(self, id, registry) -> bool:
         try:
             collection = self.__db_connection.get_collection(self.__collection_name)
-            collection.replace_one({"_id": ObjectId(title)}, registry)
+            print(registry)
+            collection.replace_one({"_id": ObjectId(id)}, registry)
             return True
         except Exception as e:
             return e
+        
+    def update_one_registry_news(self, id, registry):
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        collection.update_one({"_id": ObjectId(id)}, {"$set": registry})
