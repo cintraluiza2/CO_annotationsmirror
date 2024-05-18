@@ -459,6 +459,7 @@ class Ui_Pages(object):
 
         self.button_maps = QPushButton(self.frame_8)
         self.button_maps.setObjectName(u"button_maps")
+        self.button_maps.setEnabled(False)
         sizePolicy7.setHeightForWidth(self.button_maps.sizePolicy().hasHeightForWidth())
         self.button_maps.setSizePolicy(sizePolicy7)
         self.button_maps.setMinimumSize(QSize(0, 0))
@@ -468,16 +469,17 @@ class Ui_Pages(object):
 
         self.horizontalLayout_5.addWidget(self.button_maps)
 
-        self.pushButton_3 = QPushButton(self.frame_8)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        sizePolicy7.setHeightForWidth(self.pushButton_3.sizePolicy().hasHeightForWidth())
-        self.pushButton_3.setSizePolicy(sizePolicy7)
-        self.pushButton_3.setMinimumSize(QSize(0, 0))
-        self.pushButton_3.setMaximumSize(QSize(80, 16777215))
-        self.pushButton_3.setFont(font1)
-        self.pushButton_3.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
+        self.button_pesquisar = QPushButton(self.frame_8)
+        self.button_pesquisar.setObjectName(u"button_pesquisar")
+        self.button_pesquisar.setEnabled(False)
+        sizePolicy7.setHeightForWidth(self.button_pesquisar.sizePolicy().hasHeightForWidth())
+        self.button_pesquisar.setSizePolicy(sizePolicy7)
+        self.button_pesquisar.setMinimumSize(QSize(0, 0))
+        self.button_pesquisar.setMaximumSize(QSize(80, 16777215))
+        self.button_pesquisar.setFont(font1)
+        self.button_pesquisar.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
-        self.horizontalLayout_5.addWidget(self.pushButton_3)
+        self.horizontalLayout_5.addWidget(self.button_pesquisar)
 
 
         self.verticalLayout_4.addWidget(self.frame_8)
@@ -1001,7 +1003,7 @@ class Ui_Pages(object):
         self.latitude.setPlaceholderText(QCoreApplication.translate("Pages", u"Latitude, Longitude", None))
         self.button_geo_city.setText(QCoreApplication.translate("Pages", u"Padr\u00e3o", None))
         self.button_maps.setText(QCoreApplication.translate("Pages", u"Maps", None))
-        self.pushButton_3.setText(QCoreApplication.translate("Pages", u"Pesquisar", None))
+        self.button_pesquisar.setText(QCoreApplication.translate("Pages", u"Pesquisar", None))
         self.label_date_event.setText(QCoreApplication.translate("Pages", u"Data", None))
         self.label_conflict.setText(QCoreApplication.translate("Pages", u"Houve Conflito", None))
         self.check_conflict.setText(QCoreApplication.translate("Pages", u"Sim", None))

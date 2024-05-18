@@ -920,6 +920,9 @@ li.checked::marker { content: &quot;\2612&quot;; }
                 </item>
                 <item>
                  <widget class="QPushButton" name="button_maps">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                     <horstretch>0</horstretch>
@@ -953,7 +956,10 @@ li.checked::marker { content: &quot;\2612&quot;; }
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton_3">
+                 <widget class="QPushButton" name="button_pesquisar">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                     <horstretch>0</horstretch>
