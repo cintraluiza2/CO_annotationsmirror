@@ -2,7 +2,7 @@ from qt_core import *
 
 def calculate_color(model, row):
     value = model.index(row, 3).data()
-    if (value == 'Dúvida') or (value == None):
+    if (value == 'Dúvida'):
         color = QColor("#D4AA7B")
         return QBrush(color)
     elif value == 'Relevante':
@@ -12,7 +12,8 @@ def calculate_color(model, row):
         color = QColor("#C2707A")
         return QBrush(color)
     else:
-        return QBrush(Qt.white)
+        color = QColor("#E5E5E5")
+        return QBrush(color)
 
 
 class PyColorDelegate(QStyledItemDelegate):
