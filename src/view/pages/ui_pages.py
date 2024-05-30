@@ -39,36 +39,6 @@ class Ui_Pages(object):
 
         self.horizontalLayout_9.addWidget(self.title_page_news)
 
-        self.button_sync = QPushButton(self.frame_10)
-        self.button_sync.setObjectName(u"button_sync")
-        sizePolicy = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.button_sync.sizePolicy().hasHeightForWidth())
-        self.button_sync.setSizePolicy(sizePolicy)
-        self.button_sync.setMinimumSize(QSize(150, 25))
-        font1 = QFont()
-        font1.setFamilies([u"Roboto"])
-        font1.setPointSize(12)
-        self.button_sync.setFont(font1)
-        self.button_sync.setStyleSheet(u"QPushButton{\n"
-"            color: #FFFFFF;\n"
-"            background-color: #1B4269;\n"
-"            text-align: center;\n"
-"            border: solid;\n"
-"            border-radius: 12px;\n"
-"}\n"
-"\n"
-" QPushButton::hover{\n"
-"            background-color: #1B5A69;\n"
-"}\n"
-"\n"
-"QPushButton::pressed {\n"
-"            background-color: #3E5369;\n"
-"}")
-
-        self.horizontalLayout_9.addWidget(self.button_sync)
-
         self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Maximum, QSizePolicy.Minimum)
 
         self.horizontalLayout_9.addItem(self.horizontalSpacer_6)
@@ -78,98 +48,114 @@ class Ui_Pages(object):
 
         self.frame_11 = QFrame(self.table_news_page)
         self.frame_11.setObjectName(u"frame_11")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.frame_11.sizePolicy().hasHeightForWidth())
-        self.frame_11.setSizePolicy(sizePolicy1)
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_11.sizePolicy().hasHeightForWidth())
+        self.frame_11.setSizePolicy(sizePolicy)
+        self.frame_11.setStyleSheet(u"background-color: rgb(229, 229, 229);\n"
+"border: solid;\n"
+"border-radius: 12px;")
         self.frame_11.setFrameShape(QFrame.StyledPanel)
         self.frame_11.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_19 = QHBoxLayout(self.frame_11)
         self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
         self.label_3 = QLabel(self.frame_11)
         self.label_3.setObjectName(u"label_3")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy2)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout_19.addWidget(self.label_3)
 
         self.lineEdit = QLineEdit(self.frame_11)
         self.lineEdit.setObjectName(u"lineEdit")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
-        self.lineEdit.setSizePolicy(sizePolicy3)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
+        self.lineEdit.setSizePolicy(sizePolicy2)
+        self.lineEdit.setStyleSheet(u"background-color: rgb(255, 255, 255);")
 
         self.horizontalLayout_19.addWidget(self.lineEdit)
 
         self.label_5 = QLabel(self.frame_11)
         self.label_5.setObjectName(u"label_5")
-        sizePolicy2.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
-        self.label_5.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
+        self.label_5.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout_19.addWidget(self.label_5)
 
         self.combo_filter_year = QComboBox(self.frame_11)
-        self.combo_filter_year.addItem("")
         self.combo_filter_year.setObjectName(u"combo_filter_year")
-        sizePolicy3.setHeightForWidth(self.combo_filter_year.sizePolicy().hasHeightForWidth())
-        self.combo_filter_year.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.combo_filter_year.sizePolicy().hasHeightForWidth())
+        self.combo_filter_year.setSizePolicy(sizePolicy2)
+        font1 = QFont()
+        font1.setPointSize(10)
+        self.combo_filter_year.setFont(font1)
+        self.combo_filter_year.setStyleSheet(u"background-color: rgb(255, 255, 255);")
 
         self.horizontalLayout_19.addWidget(self.combo_filter_year)
 
         self.combo_filter_month = QComboBox(self.frame_11)
-        self.combo_filter_month.addItem("")
         self.combo_filter_month.setObjectName(u"combo_filter_month")
-        sizePolicy3.setHeightForWidth(self.combo_filter_month.sizePolicy().hasHeightForWidth())
-        self.combo_filter_month.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.combo_filter_month.sizePolicy().hasHeightForWidth())
+        self.combo_filter_month.setSizePolicy(sizePolicy2)
+        self.combo_filter_month.setFont(font1)
+        self.combo_filter_month.setStyleSheet(u"background-color: rgb(255, 255, 255);")
 
         self.horizontalLayout_19.addWidget(self.combo_filter_month)
 
         self.combo_filter_day = QComboBox(self.frame_11)
-        self.combo_filter_day.addItem("")
         self.combo_filter_day.setObjectName(u"combo_filter_day")
-        sizePolicy3.setHeightForWidth(self.combo_filter_day.sizePolicy().hasHeightForWidth())
-        self.combo_filter_day.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.combo_filter_day.sizePolicy().hasHeightForWidth())
+        self.combo_filter_day.setSizePolicy(sizePolicy2)
+        self.combo_filter_day.setFont(font1)
+        self.combo_filter_day.setStyleSheet(u"background-color: rgb(255, 255, 255);")
 
         self.horizontalLayout_19.addWidget(self.combo_filter_day)
 
         self.label_7 = QLabel(self.frame_11)
         self.label_7.setObjectName(u"label_7")
-        sizePolicy2.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
-        self.label_7.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
+        self.label_7.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout_19.addWidget(self.label_7)
 
         self.comboBox_relevance = QComboBox(self.frame_11)
         self.comboBox_relevance.setObjectName(u"comboBox_relevance")
-        sizePolicy3.setHeightForWidth(self.comboBox_relevance.sizePolicy().hasHeightForWidth())
-        self.comboBox_relevance.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.comboBox_relevance.sizePolicy().hasHeightForWidth())
+        self.comboBox_relevance.setSizePolicy(sizePolicy2)
+        self.comboBox_relevance.setFont(font1)
+        self.comboBox_relevance.setStyleSheet(u"background-color: rgb(255, 255, 255);")
 
         self.horizontalLayout_19.addWidget(self.comboBox_relevance)
 
         self.label_4 = QLabel(self.frame_11)
         self.label_4.setObjectName(u"label_4")
-        sizePolicy2.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
-        self.label_4.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy1)
 
         self.horizontalLayout_19.addWidget(self.label_4)
 
         self.comboBox_news = QComboBox(self.frame_11)
         self.comboBox_news.setObjectName(u"comboBox_news")
-        sizePolicy3.setHeightForWidth(self.comboBox_news.sizePolicy().hasHeightForWidth())
-        self.comboBox_news.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.comboBox_news.sizePolicy().hasHeightForWidth())
+        self.comboBox_news.setSizePolicy(sizePolicy2)
+        self.comboBox_news.setFont(font1)
+        self.comboBox_news.setStyleSheet(u"background-color: rgb(255, 255, 255);")
 
         self.horizontalLayout_19.addWidget(self.comboBox_news)
 
         self.button_filter = QPushButton(self.frame_11)
         self.button_filter.setObjectName(u"button_filter")
-        sizePolicy.setHeightForWidth(self.button_filter.sizePolicy().hasHeightForWidth())
-        self.button_filter.setSizePolicy(sizePolicy)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.button_filter.sizePolicy().hasHeightForWidth())
+        self.button_filter.setSizePolicy(sizePolicy3)
         self.button_filter.setMinimumSize(QSize(80, 25))
         font2 = QFont()
         font2.setPointSize(12)
@@ -288,7 +274,10 @@ class Ui_Pages(object):
         self.title_article.setMinimumSize(QSize(600, 0))
         self.title_article.setSizeIncrement(QSize(0, 0))
         self.title_article.setBaseSize(QSize(0, 0))
-        self.title_article.setFont(font1)
+        font5 = QFont()
+        font5.setFamilies([u"Roboto"])
+        font5.setPointSize(12)
+        self.title_article.setFont(font5)
         self.title_article.setStyleSheet(u"background-color: #FFFFFF; \n"
 "border-radius: 8px")
         self.title_article.setLineWidth(1)
@@ -309,14 +298,14 @@ class Ui_Pages(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.label_publication = QLabel(self.frame_2)
         self.label_publication.setObjectName(u"label_publication")
-        self.label_publication.setFont(font1)
+        self.label_publication.setFont(font5)
         self.label_publication.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.label_publication)
 
         self.data_publication = QLabel(self.frame_2)
         self.data_publication.setObjectName(u"data_publication")
-        self.data_publication.setFont(font1)
+        self.data_publication.setFont(font5)
         self.data_publication.setStyleSheet(u"background-color: #FFFFFF;\n"
 "border-radius: 7px;")
         self.data_publication.setAlignment(Qt.AlignCenter)
@@ -325,14 +314,14 @@ class Ui_Pages(object):
 
         self.label_update = QLabel(self.frame_2)
         self.label_update.setObjectName(u"label_update")
-        self.label_update.setFont(font1)
+        self.label_update.setFont(font5)
         self.label_update.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.label_update)
 
         self.data_update = QLabel(self.frame_2)
         self.data_update.setObjectName(u"data_update")
-        self.data_update.setFont(font1)
+        self.data_update.setFont(font5)
         self.data_update.setStyleSheet(u"background-color: #FFFFFF;\n"
 "border-radius: 7px;")
         self.data_update.setAlignment(Qt.AlignCenter)
@@ -341,14 +330,14 @@ class Ui_Pages(object):
 
         self.label_6 = QLabel(self.frame_2)
         self.label_6.setObjectName(u"label_6")
-        self.label_6.setFont(font1)
+        self.label_6.setFont(font5)
         self.label_6.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.label_6)
 
         self.machine_class = QLabel(self.frame_2)
         self.machine_class.setObjectName(u"machine_class")
-        self.machine_class.setFont(font1)
+        self.machine_class.setFont(font5)
         self.machine_class.setStyleSheet(u"background-color: #FFFFFF;\n"
 "border-radius: 7px;")
         self.machine_class.setAlignment(Qt.AlignCenter)
@@ -357,14 +346,14 @@ class Ui_Pages(object):
 
         self.label_confidence = QLabel(self.frame_2)
         self.label_confidence.setObjectName(u"label_confidence")
-        self.label_confidence.setFont(font1)
+        self.label_confidence.setFont(font5)
         self.label_confidence.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.label_confidence)
 
         self.confidence_machine = QLabel(self.frame_2)
         self.confidence_machine.setObjectName(u"confidence_machine")
-        self.confidence_machine.setFont(font1)
+        self.confidence_machine.setFont(font5)
         self.confidence_machine.setStyleSheet(u"background-color: #FFFFFF;\n"
 "border-radius: 7px;")
         self.confidence_machine.setAlignment(Qt.AlignCenter)
@@ -376,8 +365,8 @@ class Ui_Pages(object):
 
         self.frame_4 = QFrame(self.classification_page)
         self.frame_4.setObjectName(u"frame_4")
-        sizePolicy3.setHeightForWidth(self.frame_4.sizePolicy().hasHeightForWidth())
-        self.frame_4.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.frame_4.sizePolicy().hasHeightForWidth())
+        self.frame_4.setSizePolicy(sizePolicy2)
         self.frame_4.setFrameShape(QFrame.StyledPanel)
         self.frame_4.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_14 = QHBoxLayout(self.frame_4)
@@ -389,9 +378,9 @@ class Ui_Pages(object):
         sizePolicy7.setVerticalStretch(0)
         sizePolicy7.setHeightForWidth(self.text_box_article.sizePolicy().hasHeightForWidth())
         self.text_box_article.setSizePolicy(sizePolicy7)
-        font5 = QFont()
-        font5.setFamilies([u"Roboto"])
-        self.text_box_article.setFont(font5)
+        font6 = QFont()
+        font6.setFamilies([u"Roboto"])
+        self.text_box_article.setFont(font6)
         self.text_box_article.setAutoFillBackground(False)
         self.text_box_article.setStyleSheet(u"QTextBrowser {\n"
 "        background-color: #FFFFFF; \n"
@@ -410,7 +399,7 @@ class Ui_Pages(object):
         sizePolicy5.setHeightForWidth(self.frame_infos.sizePolicy().hasHeightForWidth())
         self.frame_infos.setSizePolicy(sizePolicy5)
         self.frame_infos.setMaximumSize(QSize(16777215, 16777215))
-        self.frame_infos.setFont(font1)
+        self.frame_infos.setFont(font5)
         self.frame_infos.setStyleSheet(u"")
         self.frame_infos.setFrameShape(QFrame.StyledPanel)
         self.frame_infos.setFrameShadow(QFrame.Raised)
@@ -418,9 +407,9 @@ class Ui_Pages(object):
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.frame_class = QFrame(self.frame_infos)
         self.frame_class.setObjectName(u"frame_class")
-        sizePolicy1.setHeightForWidth(self.frame_class.sizePolicy().hasHeightForWidth())
-        self.frame_class.setSizePolicy(sizePolicy1)
-        self.frame_class.setFont(font1)
+        sizePolicy.setHeightForWidth(self.frame_class.sizePolicy().hasHeightForWidth())
+        self.frame_class.setSizePolicy(sizePolicy)
+        self.frame_class.setFont(font5)
         self.frame_class.setFrameShape(QFrame.StyledPanel)
         self.frame_class.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_3 = QHBoxLayout(self.frame_class)
@@ -432,17 +421,17 @@ class Ui_Pages(object):
         self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
         self.button_accept_news = QRadioButton(self.groupBox)
         self.button_accept_news.setObjectName(u"button_accept_news")
-        sizePolicy.setHeightForWidth(self.button_accept_news.sizePolicy().hasHeightForWidth())
-        self.button_accept_news.setSizePolicy(sizePolicy)
-        self.button_accept_news.setFont(font1)
+        sizePolicy3.setHeightForWidth(self.button_accept_news.sizePolicy().hasHeightForWidth())
+        self.button_accept_news.setSizePolicy(sizePolicy3)
+        self.button_accept_news.setFont(font5)
 
         self.horizontalLayout_15.addWidget(self.button_accept_news)
 
         self.button_reject_news = QRadioButton(self.groupBox)
         self.button_reject_news.setObjectName(u"button_reject_news")
-        sizePolicy.setHeightForWidth(self.button_reject_news.sizePolicy().hasHeightForWidth())
-        self.button_reject_news.setSizePolicy(sizePolicy)
-        self.button_reject_news.setFont(font1)
+        sizePolicy3.setHeightForWidth(self.button_reject_news.sizePolicy().hasHeightForWidth())
+        self.button_reject_news.setSizePolicy(sizePolicy3)
+        self.button_reject_news.setFont(font5)
 
         self.horizontalLayout_15.addWidget(self.button_reject_news)
 
@@ -451,9 +440,9 @@ class Ui_Pages(object):
 
         self.button_query = QCheckBox(self.frame_class)
         self.button_query.setObjectName(u"button_query")
-        sizePolicy.setHeightForWidth(self.button_query.sizePolicy().hasHeightForWidth())
-        self.button_query.setSizePolicy(sizePolicy)
-        self.button_query.setFont(font1)
+        sizePolicy3.setHeightForWidth(self.button_query.sizePolicy().hasHeightForWidth())
+        self.button_query.setSizePolicy(sizePolicy3)
+        self.button_query.setFont(font5)
 
         self.horizontalLayout_3.addWidget(self.button_query)
 
@@ -467,69 +456,69 @@ class Ui_Pages(object):
         sizePolicy8.setVerticalStretch(0)
         sizePolicy8.setHeightForWidth(self.frame_extraction.sizePolicy().hasHeightForWidth())
         self.frame_extraction.setSizePolicy(sizePolicy8)
-        font6 = QFont()
-        font6.setFamilies([u"Roboto"])
-        font6.setPointSize(14)
-        self.frame_extraction.setFont(font6)
+        font7 = QFont()
+        font7.setFamilies([u"Roboto"])
+        font7.setPointSize(14)
+        self.frame_extraction.setFont(font7)
         self.frame_extraction.setFrameShape(QFrame.StyledPanel)
         self.frame_extraction.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.frame_extraction)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.frame_6 = QFrame(self.frame_extraction)
         self.frame_6.setObjectName(u"frame_6")
-        sizePolicy2.setHeightForWidth(self.frame_6.sizePolicy().hasHeightForWidth())
-        self.frame_6.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.frame_6.sizePolicy().hasHeightForWidth())
+        self.frame_6.setSizePolicy(sizePolicy1)
         self.frame_6.setFrameShape(QFrame.StyledPanel)
         self.frame_6.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_4 = QHBoxLayout(self.frame_6)
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.label_country = QLabel(self.frame_6)
         self.label_country.setObjectName(u"label_country")
-        self.label_country.setFont(font1)
+        self.label_country.setFont(font5)
 
         self.horizontalLayout_4.addWidget(self.label_country)
 
         self.combo_country = QComboBox(self.frame_6)
         self.combo_country.setObjectName(u"combo_country")
-        sizePolicy.setHeightForWidth(self.combo_country.sizePolicy().hasHeightForWidth())
-        self.combo_country.setSizePolicy(sizePolicy)
+        sizePolicy3.setHeightForWidth(self.combo_country.sizePolicy().hasHeightForWidth())
+        self.combo_country.setSizePolicy(sizePolicy3)
         self.combo_country.setMinimumSize(QSize(150, 0))
         self.combo_country.setMaximumSize(QSize(150, 16777215))
-        self.combo_country.setFont(font1)
+        self.combo_country.setFont(font5)
         self.combo_country.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_4.addWidget(self.combo_country)
 
         self.label_region = QLabel(self.frame_6)
         self.label_region.setObjectName(u"label_region")
-        self.label_region.setFont(font1)
+        self.label_region.setFont(font5)
 
         self.horizontalLayout_4.addWidget(self.label_region)
 
         self.combo_region = QComboBox(self.frame_6)
         self.combo_region.setObjectName(u"combo_region")
-        sizePolicy.setHeightForWidth(self.combo_region.sizePolicy().hasHeightForWidth())
-        self.combo_region.setSizePolicy(sizePolicy)
+        sizePolicy3.setHeightForWidth(self.combo_region.sizePolicy().hasHeightForWidth())
+        self.combo_region.setSizePolicy(sizePolicy3)
         self.combo_region.setMinimumSize(QSize(150, 0))
         self.combo_region.setMaximumSize(QSize(150, 16777215))
-        self.combo_region.setFont(font1)
+        self.combo_region.setFont(font5)
         self.combo_region.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_4.addWidget(self.combo_region)
 
         self.label_city = QLabel(self.frame_6)
         self.label_city.setObjectName(u"label_city")
-        self.label_city.setFont(font1)
+        self.label_city.setFont(font5)
 
         self.horizontalLayout_4.addWidget(self.label_city)
 
         self.combo_city = QComboBox(self.frame_6)
         self.combo_city.setObjectName(u"combo_city")
-        sizePolicy.setHeightForWidth(self.combo_city.sizePolicy().hasHeightForWidth())
-        self.combo_city.setSizePolicy(sizePolicy)
+        sizePolicy3.setHeightForWidth(self.combo_city.sizePolicy().hasHeightForWidth())
+        self.combo_city.setSizePolicy(sizePolicy3)
         self.combo_city.setMinimumSize(QSize(150, 0))
         self.combo_city.setMaximumSize(QSize(150, 16777215))
-        self.combo_city.setFont(font1)
+        self.combo_city.setFont(font5)
         self.combo_city.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_4.addWidget(self.combo_city)
@@ -539,19 +528,19 @@ class Ui_Pages(object):
 
         self.frame_8 = QFrame(self.frame_extraction)
         self.frame_8.setObjectName(u"frame_8")
-        sizePolicy1.setHeightForWidth(self.frame_8.sizePolicy().hasHeightForWidth())
-        self.frame_8.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.frame_8.sizePolicy().hasHeightForWidth())
+        self.frame_8.setSizePolicy(sizePolicy)
         self.frame_8.setFrameShape(QFrame.StyledPanel)
         self.frame_8.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_5 = QHBoxLayout(self.frame_8)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.latitude = QLineEdit(self.frame_8)
         self.latitude.setObjectName(u"latitude")
-        sizePolicy3.setHeightForWidth(self.latitude.sizePolicy().hasHeightForWidth())
-        self.latitude.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.latitude.sizePolicy().hasHeightForWidth())
+        self.latitude.setSizePolicy(sizePolicy2)
         self.latitude.setMinimumSize(QSize(150, 0))
         self.latitude.setMaximumSize(QSize(280, 16777215))
-        self.latitude.setFont(font1)
+        self.latitude.setFont(font5)
         self.latitude.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_5.addWidget(self.latitude)
@@ -562,7 +551,7 @@ class Ui_Pages(object):
         self.button_geo_city.setSizePolicy(sizePolicy8)
         self.button_geo_city.setMinimumSize(QSize(0, 0))
         self.button_geo_city.setMaximumSize(QSize(80, 16777215))
-        self.button_geo_city.setFont(font1)
+        self.button_geo_city.setFont(font5)
         self.button_geo_city.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
         self.horizontalLayout_5.addWidget(self.button_geo_city)
@@ -574,7 +563,7 @@ class Ui_Pages(object):
         self.button_maps.setSizePolicy(sizePolicy8)
         self.button_maps.setMinimumSize(QSize(0, 0))
         self.button_maps.setMaximumSize(QSize(80, 16777215))
-        self.button_maps.setFont(font1)
+        self.button_maps.setFont(font5)
         self.button_maps.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
         self.horizontalLayout_5.addWidget(self.button_maps)
@@ -586,7 +575,7 @@ class Ui_Pages(object):
         self.pushButton_3.setSizePolicy(sizePolicy8)
         self.pushButton_3.setMinimumSize(QSize(0, 0))
         self.pushButton_3.setMaximumSize(QSize(80, 16777215))
-        self.pushButton_3.setFont(font1)
+        self.pushButton_3.setFont(font5)
         self.pushButton_3.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
         self.horizontalLayout_5.addWidget(self.pushButton_3)
@@ -596,25 +585,25 @@ class Ui_Pages(object):
 
         self.frame_9 = QFrame(self.frame_extraction)
         self.frame_9.setObjectName(u"frame_9")
-        sizePolicy1.setHeightForWidth(self.frame_9.sizePolicy().hasHeightForWidth())
-        self.frame_9.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.frame_9.sizePolicy().hasHeightForWidth())
+        self.frame_9.setSizePolicy(sizePolicy)
         self.frame_9.setFrameShape(QFrame.StyledPanel)
         self.frame_9.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_6 = QHBoxLayout(self.frame_9)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
         self.label_date_event = QLabel(self.frame_9)
         self.label_date_event.setObjectName(u"label_date_event")
-        sizePolicy2.setHeightForWidth(self.label_date_event.sizePolicy().hasHeightForWidth())
-        self.label_date_event.setSizePolicy(sizePolicy2)
-        self.label_date_event.setFont(font1)
+        sizePolicy1.setHeightForWidth(self.label_date_event.sizePolicy().hasHeightForWidth())
+        self.label_date_event.setSizePolicy(sizePolicy1)
+        self.label_date_event.setFont(font5)
 
         self.horizontalLayout_6.addWidget(self.label_date_event)
 
         self.input_date_event = QDateEdit(self.frame_9)
         self.input_date_event.setObjectName(u"input_date_event")
-        sizePolicy.setHeightForWidth(self.input_date_event.sizePolicy().hasHeightForWidth())
-        self.input_date_event.setSizePolicy(sizePolicy)
-        self.input_date_event.setFont(font1)
+        sizePolicy3.setHeightForWidth(self.input_date_event.sizePolicy().hasHeightForWidth())
+        self.input_date_event.setSizePolicy(sizePolicy3)
+        self.input_date_event.setFont(font5)
         self.input_date_event.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_6.addWidget(self.input_date_event)
@@ -625,18 +614,18 @@ class Ui_Pages(object):
 
         self.label_conflict = QLabel(self.frame_9)
         self.label_conflict.setObjectName(u"label_conflict")
-        sizePolicy2.setHeightForWidth(self.label_conflict.sizePolicy().hasHeightForWidth())
-        self.label_conflict.setSizePolicy(sizePolicy2)
-        self.label_conflict.setFont(font1)
+        sizePolicy1.setHeightForWidth(self.label_conflict.sizePolicy().hasHeightForWidth())
+        self.label_conflict.setSizePolicy(sizePolicy1)
+        self.label_conflict.setFont(font5)
 
         self.horizontalLayout_6.addWidget(self.label_conflict)
 
         self.check_conflict = QCheckBox(self.frame_9)
         self.check_conflict.setObjectName(u"check_conflict")
         self.check_conflict.setEnabled(True)
-        sizePolicy.setHeightForWidth(self.check_conflict.sizePolicy().hasHeightForWidth())
-        self.check_conflict.setSizePolicy(sizePolicy)
-        self.check_conflict.setFont(font1)
+        sizePolicy3.setHeightForWidth(self.check_conflict.sizePolicy().hasHeightForWidth())
+        self.check_conflict.setSizePolicy(sizePolicy3)
+        self.check_conflict.setFont(font5)
 
         self.horizontalLayout_6.addWidget(self.check_conflict)
 
@@ -646,17 +635,17 @@ class Ui_Pages(object):
 
         self.label_deaths = QLabel(self.frame_9)
         self.label_deaths.setObjectName(u"label_deaths")
-        sizePolicy2.setHeightForWidth(self.label_deaths.sizePolicy().hasHeightForWidth())
-        self.label_deaths.setSizePolicy(sizePolicy2)
-        self.label_deaths.setFont(font1)
+        sizePolicy1.setHeightForWidth(self.label_deaths.sizePolicy().hasHeightForWidth())
+        self.label_deaths.setSizePolicy(sizePolicy1)
+        self.label_deaths.setFont(font5)
 
         self.horizontalLayout_6.addWidget(self.label_deaths)
 
         self.input_deaths = QSpinBox(self.frame_9)
         self.input_deaths.setObjectName(u"input_deaths")
-        sizePolicy.setHeightForWidth(self.input_deaths.sizePolicy().hasHeightForWidth())
-        self.input_deaths.setSizePolicy(sizePolicy)
-        self.input_deaths.setFont(font1)
+        sizePolicy3.setHeightForWidth(self.input_deaths.sizePolicy().hasHeightForWidth())
+        self.input_deaths.setSizePolicy(sizePolicy3)
+        self.input_deaths.setFont(font5)
         self.input_deaths.setStyleSheet(u"background-color: #FFFFFF; ")
         self.input_deaths.setMaximum(1000)
 
@@ -667,8 +656,8 @@ class Ui_Pages(object):
 
         self.groupBox_narcotic_1 = QGroupBox(self.frame_extraction)
         self.groupBox_narcotic_1.setObjectName(u"groupBox_narcotic_1")
-        sizePolicy1.setHeightForWidth(self.groupBox_narcotic_1.sizePolicy().hasHeightForWidth())
-        self.groupBox_narcotic_1.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.groupBox_narcotic_1.sizePolicy().hasHeightForWidth())
+        self.groupBox_narcotic_1.setSizePolicy(sizePolicy)
         self.groupBox_narcotic_1.setStyleSheet(u"")
         self.groupBox_narcotic_1.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
         self.groupBox_narcotic_1.setFlat(True)
@@ -678,30 +667,30 @@ class Ui_Pages(object):
         self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
         self.label_type_narcotic = QLabel(self.groupBox_narcotic_1)
         self.label_type_narcotic.setObjectName(u"label_type_narcotic")
-        sizePolicy2.setHeightForWidth(self.label_type_narcotic.sizePolicy().hasHeightForWidth())
-        self.label_type_narcotic.setSizePolicy(sizePolicy2)
-        self.label_type_narcotic.setFont(font1)
+        sizePolicy1.setHeightForWidth(self.label_type_narcotic.sizePolicy().hasHeightForWidth())
+        self.label_type_narcotic.setSizePolicy(sizePolicy1)
+        self.label_type_narcotic.setFont(font5)
 
         self.horizontalLayout_18.addWidget(self.label_type_narcotic)
 
         self.combo_narcotic_1 = QComboBox(self.groupBox_narcotic_1)
         self.combo_narcotic_1.setObjectName(u"combo_narcotic_1")
-        self.combo_narcotic_1.setFont(font1)
+        self.combo_narcotic_1.setFont(font5)
         self.combo_narcotic_1.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_18.addWidget(self.combo_narcotic_1)
 
         self.label_qty_narcotic = QLabel(self.groupBox_narcotic_1)
         self.label_qty_narcotic.setObjectName(u"label_qty_narcotic")
-        sizePolicy2.setHeightForWidth(self.label_qty_narcotic.sizePolicy().hasHeightForWidth())
-        self.label_qty_narcotic.setSizePolicy(sizePolicy2)
-        self.label_qty_narcotic.setFont(font1)
+        sizePolicy1.setHeightForWidth(self.label_qty_narcotic.sizePolicy().hasHeightForWidth())
+        self.label_qty_narcotic.setSizePolicy(sizePolicy1)
+        self.label_qty_narcotic.setFont(font5)
 
         self.horizontalLayout_18.addWidget(self.label_qty_narcotic)
 
         self.input_qty_narcotic_1 = QSpinBox(self.groupBox_narcotic_1)
         self.input_qty_narcotic_1.setObjectName(u"input_qty_narcotic_1")
-        self.input_qty_narcotic_1.setFont(font1)
+        self.input_qty_narcotic_1.setFont(font5)
         self.input_qty_narcotic_1.setStyleSheet(u"background-color: #FFFFFF; ")
         self.input_qty_narcotic_1.setMaximum(100000)
 
@@ -712,8 +701,8 @@ class Ui_Pages(object):
 
         self.groupBox_narcotic_2 = QGroupBox(self.frame_extraction)
         self.groupBox_narcotic_2.setObjectName(u"groupBox_narcotic_2")
-        sizePolicy1.setHeightForWidth(self.groupBox_narcotic_2.sizePolicy().hasHeightForWidth())
-        self.groupBox_narcotic_2.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.groupBox_narcotic_2.sizePolicy().hasHeightForWidth())
+        self.groupBox_narcotic_2.setSizePolicy(sizePolicy)
         self.groupBox_narcotic_2.setFlat(True)
         self.groupBox_narcotic_2.setCheckable(True)
         self.groupBox_narcotic_2.setChecked(False)
@@ -721,30 +710,30 @@ class Ui_Pages(object):
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.label_20 = QLabel(self.groupBox_narcotic_2)
         self.label_20.setObjectName(u"label_20")
-        sizePolicy2.setHeightForWidth(self.label_20.sizePolicy().hasHeightForWidth())
-        self.label_20.setSizePolicy(sizePolicy2)
-        self.label_20.setFont(font1)
+        sizePolicy1.setHeightForWidth(self.label_20.sizePolicy().hasHeightForWidth())
+        self.label_20.setSizePolicy(sizePolicy1)
+        self.label_20.setFont(font5)
 
         self.horizontalLayout_7.addWidget(self.label_20)
 
         self.combo_narcotic_2 = QComboBox(self.groupBox_narcotic_2)
         self.combo_narcotic_2.setObjectName(u"combo_narcotic_2")
-        self.combo_narcotic_2.setFont(font1)
+        self.combo_narcotic_2.setFont(font5)
         self.combo_narcotic_2.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_7.addWidget(self.combo_narcotic_2)
 
         self.label_21 = QLabel(self.groupBox_narcotic_2)
         self.label_21.setObjectName(u"label_21")
-        sizePolicy2.setHeightForWidth(self.label_21.sizePolicy().hasHeightForWidth())
-        self.label_21.setSizePolicy(sizePolicy2)
-        self.label_21.setFont(font1)
+        sizePolicy1.setHeightForWidth(self.label_21.sizePolicy().hasHeightForWidth())
+        self.label_21.setSizePolicy(sizePolicy1)
+        self.label_21.setFont(font5)
 
         self.horizontalLayout_7.addWidget(self.label_21)
 
         self.input_qty_narcotic_2 = QSpinBox(self.groupBox_narcotic_2)
         self.input_qty_narcotic_2.setObjectName(u"input_qty_narcotic_2")
-        self.input_qty_narcotic_2.setFont(font1)
+        self.input_qty_narcotic_2.setFont(font5)
         self.input_qty_narcotic_2.setStyleSheet(u"background-color: #FFFFFF; ")
         self.input_qty_narcotic_2.setMaximum(100000)
 
@@ -755,8 +744,8 @@ class Ui_Pages(object):
 
         self.groupBox_narcotic_3 = QGroupBox(self.frame_extraction)
         self.groupBox_narcotic_3.setObjectName(u"groupBox_narcotic_3")
-        sizePolicy1.setHeightForWidth(self.groupBox_narcotic_3.sizePolicy().hasHeightForWidth())
-        self.groupBox_narcotic_3.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.groupBox_narcotic_3.sizePolicy().hasHeightForWidth())
+        self.groupBox_narcotic_3.setSizePolicy(sizePolicy)
         self.groupBox_narcotic_3.setFlat(True)
         self.groupBox_narcotic_3.setCheckable(True)
         self.groupBox_narcotic_3.setChecked(False)
@@ -764,30 +753,30 @@ class Ui_Pages(object):
         self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.label_22 = QLabel(self.groupBox_narcotic_3)
         self.label_22.setObjectName(u"label_22")
-        sizePolicy2.setHeightForWidth(self.label_22.sizePolicy().hasHeightForWidth())
-        self.label_22.setSizePolicy(sizePolicy2)
-        self.label_22.setFont(font1)
+        sizePolicy1.setHeightForWidth(self.label_22.sizePolicy().hasHeightForWidth())
+        self.label_22.setSizePolicy(sizePolicy1)
+        self.label_22.setFont(font5)
 
         self.horizontalLayout_8.addWidget(self.label_22)
 
         self.combo_narcotic_3 = QComboBox(self.groupBox_narcotic_3)
         self.combo_narcotic_3.setObjectName(u"combo_narcotic_3")
-        self.combo_narcotic_3.setFont(font1)
+        self.combo_narcotic_3.setFont(font5)
         self.combo_narcotic_3.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_8.addWidget(self.combo_narcotic_3)
 
         self.label_23 = QLabel(self.groupBox_narcotic_3)
         self.label_23.setObjectName(u"label_23")
-        sizePolicy2.setHeightForWidth(self.label_23.sizePolicy().hasHeightForWidth())
-        self.label_23.setSizePolicy(sizePolicy2)
-        self.label_23.setFont(font1)
+        sizePolicy1.setHeightForWidth(self.label_23.sizePolicy().hasHeightForWidth())
+        self.label_23.setSizePolicy(sizePolicy1)
+        self.label_23.setFont(font5)
 
         self.horizontalLayout_8.addWidget(self.label_23)
 
         self.input_qty_narcotic_3 = QSpinBox(self.groupBox_narcotic_3)
         self.input_qty_narcotic_3.setObjectName(u"input_qty_narcotic_3")
-        self.input_qty_narcotic_3.setFont(font1)
+        self.input_qty_narcotic_3.setFont(font5)
         self.input_qty_narcotic_3.setStyleSheet(u"background-color: #FFFFFF; ")
         self.input_qty_narcotic_3.setMaximum(100000)
 
@@ -809,7 +798,7 @@ class Ui_Pages(object):
         self.label_10.setObjectName(u"label_10")
         sizePolicy5.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
         self.label_10.setSizePolicy(sizePolicy5)
-        self.label_10.setFont(font1)
+        self.label_10.setFont(font5)
 
         self.horizontalLayout_16.addWidget(self.label_10)
 
@@ -824,26 +813,26 @@ class Ui_Pages(object):
 
         self.btt_add_weapons = QPushButton(self.frame_5)
         self.btt_add_weapons.setObjectName(u"btt_add_weapons")
-        sizePolicy.setHeightForWidth(self.btt_add_weapons.sizePolicy().hasHeightForWidth())
-        self.btt_add_weapons.setSizePolicy(sizePolicy)
+        sizePolicy3.setHeightForWidth(self.btt_add_weapons.sizePolicy().hasHeightForWidth())
+        self.btt_add_weapons.setSizePolicy(sizePolicy3)
         self.btt_add_weapons.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
         self.horizontalLayout_16.addWidget(self.btt_add_weapons)
 
         self.btt_rmv_weapons = QPushButton(self.frame_5)
         self.btt_rmv_weapons.setObjectName(u"btt_rmv_weapons")
-        sizePolicy.setHeightForWidth(self.btt_rmv_weapons.sizePolicy().hasHeightForWidth())
-        self.btt_rmv_weapons.setSizePolicy(sizePolicy)
+        sizePolicy3.setHeightForWidth(self.btt_rmv_weapons.sizePolicy().hasHeightForWidth())
+        self.btt_rmv_weapons.setSizePolicy(sizePolicy3)
         self.btt_rmv_weapons.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
         self.horizontalLayout_16.addWidget(self.btt_rmv_weapons)
 
         self.list_weapons = QListWidget(self.frame_5)
         self.list_weapons.setObjectName(u"list_weapons")
-        sizePolicy2.setHeightForWidth(self.list_weapons.sizePolicy().hasHeightForWidth())
-        self.list_weapons.setSizePolicy(sizePolicy2)
+        sizePolicy1.setHeightForWidth(self.list_weapons.sizePolicy().hasHeightForWidth())
+        self.list_weapons.setSizePolicy(sizePolicy1)
         self.list_weapons.setMaximumSize(QSize(150, 200))
-        self.list_weapons.setFont(font1)
+        self.list_weapons.setFont(font5)
         self.list_weapons.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.list_weapons.setProperty("isWrapping", False)
         self.list_weapons.setResizeMode(QListView.Fixed)
@@ -876,7 +865,7 @@ class Ui_Pages(object):
         sizePolicy9.setVerticalStretch(0)
         sizePolicy9.setHeightForWidth(self.name_actor_1.sizePolicy().hasHeightForWidth())
         self.name_actor_1.setSizePolicy(sizePolicy9)
-        self.name_actor_1.setFont(font1)
+        self.name_actor_1.setFont(font5)
         self.name_actor_1.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_10.addWidget(self.name_actor_1)
@@ -892,7 +881,7 @@ class Ui_Pages(object):
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
         self.name_actor_2 = QLineEdit(self.frame_14)
         self.name_actor_2.setObjectName(u"name_actor_2")
-        self.name_actor_2.setFont(font1)
+        self.name_actor_2.setFont(font5)
         self.name_actor_2.setStyleSheet(u"background-color: #FFFFFF; ")
         self.name_actor_2.setClearButtonEnabled(False)
 
@@ -903,8 +892,8 @@ class Ui_Pages(object):
 
         self.frame_15 = QFrame(self.frame_7)
         self.frame_15.setObjectName(u"frame_15")
-        sizePolicy1.setHeightForWidth(self.frame_15.sizePolicy().hasHeightForWidth())
-        self.frame_15.setSizePolicy(sizePolicy1)
+        sizePolicy.setHeightForWidth(self.frame_15.sizePolicy().hasHeightForWidth())
+        self.frame_15.setSizePolicy(sizePolicy)
         self.frame_15.setFrameShape(QFrame.StyledPanel)
         self.frame_15.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_12 = QHBoxLayout(self.frame_15)
@@ -913,7 +902,7 @@ class Ui_Pages(object):
         self.label_type_relation.setObjectName(u"label_type_relation")
         sizePolicy6.setHeightForWidth(self.label_type_relation.sizePolicy().hasHeightForWidth())
         self.label_type_relation.setSizePolicy(sizePolicy6)
-        self.label_type_relation.setFont(font1)
+        self.label_type_relation.setFont(font5)
 
         self.horizontalLayout_12.addWidget(self.label_type_relation)
 
@@ -921,7 +910,7 @@ class Ui_Pages(object):
         self.combo_type_relation.setObjectName(u"combo_type_relation")
         sizePolicy6.setHeightForWidth(self.combo_type_relation.sizePolicy().hasHeightForWidth())
         self.combo_type_relation.setSizePolicy(sizePolicy6)
-        self.combo_type_relation.setFont(font1)
+        self.combo_type_relation.setFont(font5)
         self.combo_type_relation.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_12.addWidget(self.combo_type_relation)
@@ -949,8 +938,8 @@ class Ui_Pages(object):
         self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
         self.button_back = QPushButton(self.frame_3)
         self.button_back.setObjectName(u"button_back")
-        sizePolicy.setHeightForWidth(self.button_back.sizePolicy().hasHeightForWidth())
-        self.button_back.setSizePolicy(sizePolicy)
+        sizePolicy3.setHeightForWidth(self.button_back.sizePolicy().hasHeightForWidth())
+        self.button_back.setSizePolicy(sizePolicy3)
         self.button_back.setMinimumSize(QSize(150, 40))
         self.button_back.setFont(font4)
         self.button_back.setStyleSheet(u"QPushButton{\n"
@@ -969,7 +958,7 @@ class Ui_Pages(object):
 "            background-color: #3E5369;\n"
 "}")
         icon = QIcon()
-        icon.addFile(u"../../../resources/images/icons/arrow_return.svg", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u"./resources/images/icons/arrow_return.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.button_back.setIcon(icon)
         self.button_back.setIconSize(QSize(24, 24))
 
@@ -1033,8 +1022,8 @@ class Ui_Pages(object):
 
         self.button_next = QPushButton(self.frame_3)
         self.button_next.setObjectName(u"button_next")
-        sizePolicy.setHeightForWidth(self.button_next.sizePolicy().hasHeightForWidth())
-        self.button_next.setSizePolicy(sizePolicy)
+        sizePolicy3.setHeightForWidth(self.button_next.sizePolicy().hasHeightForWidth())
+        self.button_next.setSizePolicy(sizePolicy3)
         self.button_next.setMinimumSize(QSize(150, 40))
         self.button_next.setFont(font4)
         self.button_next.setStyleSheet(u"QPushButton{\n"
@@ -1053,7 +1042,7 @@ class Ui_Pages(object):
 "            background-color: #3E5369;\n"
 "}")
         icon1 = QIcon()
-        icon1.addFile(u"../../../resources/images/icons/arrow_next.svg", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u"./resources/images/icons/arrow_next.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.button_next.setIcon(icon1)
         self.button_next.setIconSize(QSize(24, 24))
 
@@ -1075,15 +1064,8 @@ class Ui_Pages(object):
     def retranslateUi(self, Pages):
         Pages.setWindowTitle(QCoreApplication.translate("Pages", u"StackedWidget", None))
         self.title_page_news.setText(QCoreApplication.translate("Pages", u"Not\u00edcias", None))
-        self.button_sync.setText(QCoreApplication.translate("Pages", u"Sincronizar Tabela", None))
         self.label_3.setText(QCoreApplication.translate("Pages", u"T\u00edtulo:", None))
         self.label_5.setText(QCoreApplication.translate("Pages", u"Data:", None))
-        self.combo_filter_year.setItemText(0, QCoreApplication.translate("Pages", u"Ano", None))
-
-        self.combo_filter_month.setItemText(0, QCoreApplication.translate("Pages", u"M\u00eas", None))
-
-        self.combo_filter_day.setItemText(0, QCoreApplication.translate("Pages", u"Dia", None))
-
         self.label_7.setText(QCoreApplication.translate("Pages", u"Relev\u00e2ncia:", None))
         self.label_4.setText(QCoreApplication.translate("Pages", u"Jornal:", None))
         self.button_filter.setText(QCoreApplication.translate("Pages", u"Filtrar", None))
@@ -1157,4 +1139,3 @@ class Ui_Pages(object):
         
         self.latitude.setValidator(expr_regu)
     # retranslateUi
-

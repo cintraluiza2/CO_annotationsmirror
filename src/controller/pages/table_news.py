@@ -1,4 +1,6 @@
 ﻿from qt_core import *
+import json
+import os
 # IMPORT WIDGETS
 from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption
 from view.widgets.py_color_delegate import PyColorDelegate
@@ -9,6 +11,7 @@ from models.repository.newsClass_repository import NewsClassRepository
 # from models.news_rating.dataframe_fuctions import DataFrame
 # from models.news_rating.doc_to_vector import DocToVector
 # from models.news_rating.model_prediction import ModelPrediction
+from models.utils.data import *
 
 class TableNewsManager:
     def __init__(self, table_news=None, table_page=None, show_page_class=None, set_text_class=None, set_title_list=None) -> None:
@@ -30,6 +33,9 @@ class TableNewsManager:
         self.title_news = ""
         self.toggle_order = Qt.AscendingOrder
         self.num_columns = 6
+        self.filtro = ""
+        self.dir = os.path.dirname(os.path.abspath(__file__)) 
+        self.path_filtro = os.path.join(self.dir, "filtro.json") 
         
         # TABLE MODEL NEWS
         self.model_table = QStandardItemModel()
@@ -38,16 +44,35 @@ class TableNewsManager:
         self.table_news.setItemDelegate(PyColorDelegate(self.table_news))
         # Definir a ordem de classificação na QTableView
         
+        # BUTTONS CONNECTS
         self.table_news.doubleClicked.connect(self.on_selection_table)
         self.table_page.button_note.clicked.connect(self.on_selection_table)
-        self.table_page.button_sync.clicked.connect(self.populate_table_news)
-        # self.table_page.button_train.clicked.connect(self.train_table_news)
+        self.table_page.button_filter.clicked.connect(self.set_filters)
+        
+        # INIT COMBO TABLE
+        self.init_combo_box(self.table_page.combo_filter_year, data_years)
+        self.init_combo_box(self.table_page.combo_filter_month, data_months)
+        self.init_combo_box(self.table_page.combo_filter_day, data_day)
+        self.init_combo_box(self.table_page.comboBox_relevance, data_relevance)
+        self.init_combo_box(self.table_page.comboBox_news, data_newspaper)
     
             
     def populate_table_news(self):
         try:
-            list_news = self.__news_repository.select_many_order_news(optionsReturn={"_id": 0,"publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "id_event": 1, "certainty_level": 1}, orderFilter='manual_relevance_class', optionsFilter=1, model_return=False)
+            if os.path.exists(self.path_filtro):
+                with open(self.path_filtro, 'r') as file_filtro:
+                    self.filtro = json.load(file_filtro)
+                
+            list_news = self.__news_repository.select_many_order_news(filters=self.filtro, optionsReturn={"_id": 0,"publication_date": 1, "newspaper": 1, "title": 1, "manual_relevance_class": 1, "automatic_relevance_class": 1, "id_event": 1, "certainty_level": 1}, orderFilter='manual_relevance_class', optionsFilter=1, model_return=False)
             mapping = {0: "Irrelevante", 1: "Relevante", 2: "Dúvida", None: "SClasse"}
+            
+            self.model_table.clear()
+            
+            # TABLE MODEL NEWS
+            self.model_table = QStandardItemModel()
+            self.model_table.setHorizontalHeaderLabels(["Data de Publicação", "Jornal", "Título", "Relevância Manual", "Relevância Automática", "Nível de Certeza", "ID"])
+            self.table_news.setModel(self.model_table)
+            self.table_news.setItemDelegate(PyColorDelegate(self.table_news))                 
                     
             for row, dict_news in enumerate(list_news):
                 try:
@@ -60,7 +85,7 @@ class TableNewsManager:
                 except KeyError:
                     dict_news["automatic_relevance_class"] = None
                     dict_news["automatic_relevance_class"] = mapping.get(dict_news["automatic_relevance_class"])
-                    
+                                        
                 for column, label in enumerate(dict_news):
                     item = QStandardItem(str(dict_news[label]))
                     if label == 'publication_date': self.model_table.setItem(row, 0, item)
@@ -72,12 +97,77 @@ class TableNewsManager:
                     if label == 'id_event': self.model_table.setItem(row, 6, item)                    
                                   
                     if not column == 2:
-                        item.setTextAlignment(Qt.AlignCenter)                        
-                    
-            self.table_news.setColumnWidth(2, 570)            
+                        item.setTextAlignment(Qt.AlignCenter)       
+                                    
+            self.table_news.setColumnWidth(2, 570)
+            self.get_filters()
         except Exception as e:
             print("Erro ao popular tabela de notícias:", e)
-
+            
+    def set_filters(self):
+        title = self.table_page.lineEdit.text()
+        year = self.table_page.combo_filter_year.currentData()
+        months = self.table_page.combo_filter_month.currentData()
+        day = self.table_page.combo_filter_day.currentData()
+        relevance = self.table_page.comboBox_relevance.currentData()
+        newspaper = self.table_page.comboBox_news.currentData()
+        
+        search_date = f"{day}-{months}-{year}"
+        search_date = {"$regex": search_date}
+        
+        self.filtro = {"publication_date": search_date}
+        
+        if title != "":
+            title = f".*{title}.*"
+            self.filtro["title"] = {"$regex": title}
+        if relevance is not None:
+            self.filtro["manual_relevance_class"] = relevance
+        if newspaper is not None:
+            self.filtro["newspaper"] = newspaper
+        
+        with open(self.path_filtro, 'w') as arquivo:
+            json.dump(self.filtro, arquivo)
+        
+        self.populate_table_news()
+            
+    # Get Filters             
+    def get_filters(self):
+            if "title" in self.filtro:
+                title = self.filtro["title"]['$regex']
+                self.table_page.lineEdit.setText(title)
+            
+            if "publication_date" in self.filtro:
+                datas = self.filtro["publication_date"]['$regex'].split("-")
+                
+                if datas[0] == r"\d{2}": self.table_page.combo_filter_day.setCurrentIndex(0)
+                else: self.table_page.combo_filter_day.setCurrentIndex(int(datas[0]))
+                
+                if datas[1] == r"\d{2}": self.table_page.combo_filter_month.setCurrentIndex(0)
+                else: self.table_page.combo_filter_month.setCurrentIndex(int(datas[1]))
+                
+                if datas[2] == r"\d{4}": self.table_page.combo_filter_year.setCurrentIndex(0)
+                else: self.table_page.combo_filter_year.setCurrentText(datas[2])
+            
+            if "manual_relevance_class" in self.filtro:
+                relevance = self.filtro['manual_relevance_class']
+                if relevance == None:
+                    self.table_page.comboBox_relevance.setCurrentIndex(0)
+                elif relevance == 1:
+                    self.table_page.comboBox_relevance.setCurrentIndex(1)
+                elif relevance == 0:
+                    self.table_page.comboBox_relevance.setCurrentIndex(2)
+                elif relevance == 2:
+                    self.table_page.comboBox_relevance.setCurrentIndex(3)
+                                
+            if "newspaper" in self.filtro:
+                newspaper = self.filtro["newspaper"]
+                if newspaper == None:
+                    self.table_page.comboBox_relevance.setCurrentIndex(0)
+                elif newspaper == "G1":
+                    self.table_page.comboBox_news.setCurrentIndex(1)
+                elif newspaper == "DM":
+                    self.table_page.comboBox_news.setCurrentIndex(2)
+                
             
     def on_selection_table(self):
         selected_items = self.table_news.selectedIndexes() # O selectedItems seleciona cada celula
@@ -107,6 +197,10 @@ class TableNewsManager:
         else:
             self.table.sortItems(logical_index, self.toggle_order)
             self.toggle_order = Qt.AscendingOrder
+            
+    def init_combo_box(self, combo_box, data):
+                for key, value in data.items():
+                        combo_box.addItem(key, value)
             
     # def train_table_news(self):
     #     df = DataFrame()
