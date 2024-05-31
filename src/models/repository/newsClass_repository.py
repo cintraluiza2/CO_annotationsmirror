@@ -65,9 +65,9 @@ class NewsClassRepository():
         return True
 
     # ------------------ Métodos de Busca ------------------------
-    def get_count(self):
+    def get_count(self, filters = {}):
         collection = self.__db_connection.get_collection(self.__collection_name)
-        response = collection.count_documents({})
+        response = collection.count_documents(filters)
 
         return response
     

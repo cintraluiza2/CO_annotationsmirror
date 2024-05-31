@@ -55,6 +55,9 @@ class TableNewsManager:
         self.init_combo_box(self.table_page.combo_filter_day, data_day)
         self.init_combo_box(self.table_page.comboBox_relevance, data_relevance)
         self.init_combo_box(self.table_page.comboBox_news, data_newspaper)
+        
+        # INIT STATUS
+        self.set_status()
     
             
     def populate_table_news(self):
@@ -101,8 +104,22 @@ class TableNewsManager:
                                     
             self.table_news.setColumnWidth(2, 570)
             self.get_filters()
+                        
         except Exception as e:
             print("Erro ao popular tabela de notícias:", e)
+            
+    def set_status(self):
+        total = self.__news_repository.get_count()
+        relevance = self.__news_repository.get_count({"manual_relevance_class": 1})
+        irrelevant = self.__news_repository.get_count({"manual_relevance_class": 0})
+        evaluated = 0 if (relevance + irrelevant) < 0 else (relevance + irrelevant)
+        no_evaluated = 0 if (total - evaluated) < 0 else (total - evaluated)
+                
+        self.table_page.lab_count_total.setText(str(total))
+        self.table_page.lab_irrelevant.setText(str(irrelevant))
+        self.table_page.lab_relevance.setText(str(relevance))
+        self.table_page.lab_evaluated.setText(str(evaluated))
+        self.table_page.lab_not_evaluated.setText(str(no_evaluated))
             
     def set_filters(self):
         title = self.table_page.lineEdit.text()

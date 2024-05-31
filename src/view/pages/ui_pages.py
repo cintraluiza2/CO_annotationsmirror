@@ -206,6 +206,110 @@ class Ui_Pages(object):
 
         self.verticalLayout.addWidget(self.table_news)
 
+        self.verticalSpacer = QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Maximum)
+
+        self.verticalLayout.addItem(self.verticalSpacer)
+
+        self.frame_12 = QFrame(self.table_news_page)
+        self.frame_12.setObjectName(u"frame_12")
+        self.frame_12.setStyleSheet(u"background-color: rgb(229, 229, 229);\n"
+"border: solid;\n"
+"border-radius: 12px;")
+        self.frame_12.setFrameShape(QFrame.StyledPanel)
+        self.frame_12.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_20 = QHBoxLayout(self.frame_12)
+        self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
+        self.label_18 = QLabel(self.frame_12)
+        self.label_18.setObjectName(u"label_18")
+        font4 = QFont()
+        font4.setFamilies([u"Roboto"])
+        font4.setPointSize(10)
+        self.label_18.setFont(font4)
+        self.label_18.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_20.addWidget(self.label_18)
+
+        self.lab_relevance = QLabel(self.frame_12)
+        self.lab_relevance.setObjectName(u"lab_relevance")
+        self.lab_relevance.setFont(font4)
+        self.lab_relevance.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+"border: solid;\n"
+"border-radius: 6px;")
+        self.lab_relevance.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_20.addWidget(self.lab_relevance)
+
+        self.label_16 = QLabel(self.frame_12)
+        self.label_16.setObjectName(u"label_16")
+        self.label_16.setFont(font4)
+        self.label_16.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_20.addWidget(self.label_16)
+
+        self.lab_irrelevant = QLabel(self.frame_12)
+        self.lab_irrelevant.setObjectName(u"lab_irrelevant")
+        self.lab_irrelevant.setFont(font4)
+        self.lab_irrelevant.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+"border: solid;\n"
+"border-radius: 6px;")
+        self.lab_irrelevant.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_20.addWidget(self.lab_irrelevant)
+
+        self.label_14 = QLabel(self.frame_12)
+        self.label_14.setObjectName(u"label_14")
+        self.label_14.setFont(font4)
+        self.label_14.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_20.addWidget(self.label_14)
+
+        self.lab_evaluated = QLabel(self.frame_12)
+        self.lab_evaluated.setObjectName(u"lab_evaluated")
+        self.lab_evaluated.setFont(font4)
+        self.lab_evaluated.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+"border: solid;\n"
+"border-radius: 6px;")
+        self.lab_evaluated.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_20.addWidget(self.lab_evaluated)
+
+        self.label_12 = QLabel(self.frame_12)
+        self.label_12.setObjectName(u"label_12")
+        self.label_12.setFont(font4)
+        self.label_12.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_20.addWidget(self.label_12)
+
+        self.lab_not_evaluated = QLabel(self.frame_12)
+        self.lab_not_evaluated.setObjectName(u"lab_not_evaluated")
+        self.lab_not_evaluated.setFont(font4)
+        self.lab_not_evaluated.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+"border: solid;\n"
+"border-radius: 6px;")
+        self.lab_not_evaluated.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_20.addWidget(self.lab_not_evaluated)
+
+        self.label_9 = QLabel(self.frame_12)
+        self.label_9.setObjectName(u"label_9")
+        self.label_9.setFont(font4)
+        self.label_9.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_20.addWidget(self.label_9)
+
+        self.lab_count_total = QLabel(self.frame_12)
+        self.lab_count_total.setObjectName(u"lab_count_total")
+        self.lab_count_total.setFont(font4)
+        self.lab_count_total.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+"border: solid;\n"
+"border-radius: 6px;")
+        self.lab_count_total.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_20.addWidget(self.lab_count_total)
+
+
+        self.verticalLayout.addWidget(self.frame_12)
+
         self.frame = QFrame(self.table_news_page)
         self.frame.setObjectName(u"frame")
         self.frame.setMinimumSize(QSize(187, 0))
@@ -228,10 +332,10 @@ class Ui_Pages(object):
         self.button_note.setSizePolicy(sizePolicy4)
         self.button_note.setMinimumSize(QSize(187, 40))
         self.button_note.setMaximumSize(QSize(16777215, 16777215))
-        font4 = QFont()
-        font4.setFamilies([u"Roboto"])
-        font4.setPointSize(13)
-        self.button_note.setFont(font4)
+        font5 = QFont()
+        font5.setFamilies([u"Roboto"])
+        font5.setPointSize(13)
+        self.button_note.setFont(font5)
         self.button_note.setStyleSheet(u"QPushButton{\n"
 "            color: #FFFFFF;\n"
 "            background-color: #77966D;\n"
@@ -274,10 +378,10 @@ class Ui_Pages(object):
         self.title_article.setMinimumSize(QSize(600, 0))
         self.title_article.setSizeIncrement(QSize(0, 0))
         self.title_article.setBaseSize(QSize(0, 0))
-        font5 = QFont()
-        font5.setFamilies([u"Roboto"])
-        font5.setPointSize(12)
-        self.title_article.setFont(font5)
+        font6 = QFont()
+        font6.setFamilies([u"Roboto"])
+        font6.setPointSize(12)
+        self.title_article.setFont(font6)
         self.title_article.setStyleSheet(u"background-color: #FFFFFF; \n"
 "border-radius: 8px")
         self.title_article.setLineWidth(1)
@@ -298,14 +402,14 @@ class Ui_Pages(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.label_publication = QLabel(self.frame_2)
         self.label_publication.setObjectName(u"label_publication")
-        self.label_publication.setFont(font5)
+        self.label_publication.setFont(font6)
         self.label_publication.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.label_publication)
 
         self.data_publication = QLabel(self.frame_2)
         self.data_publication.setObjectName(u"data_publication")
-        self.data_publication.setFont(font5)
+        self.data_publication.setFont(font6)
         self.data_publication.setStyleSheet(u"background-color: #FFFFFF;\n"
 "border-radius: 7px;")
         self.data_publication.setAlignment(Qt.AlignCenter)
@@ -314,14 +418,14 @@ class Ui_Pages(object):
 
         self.label_update = QLabel(self.frame_2)
         self.label_update.setObjectName(u"label_update")
-        self.label_update.setFont(font5)
+        self.label_update.setFont(font6)
         self.label_update.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.label_update)
 
         self.data_update = QLabel(self.frame_2)
         self.data_update.setObjectName(u"data_update")
-        self.data_update.setFont(font5)
+        self.data_update.setFont(font6)
         self.data_update.setStyleSheet(u"background-color: #FFFFFF;\n"
 "border-radius: 7px;")
         self.data_update.setAlignment(Qt.AlignCenter)
@@ -330,14 +434,14 @@ class Ui_Pages(object):
 
         self.label_6 = QLabel(self.frame_2)
         self.label_6.setObjectName(u"label_6")
-        self.label_6.setFont(font5)
+        self.label_6.setFont(font6)
         self.label_6.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.label_6)
 
         self.machine_class = QLabel(self.frame_2)
         self.machine_class.setObjectName(u"machine_class")
-        self.machine_class.setFont(font5)
+        self.machine_class.setFont(font6)
         self.machine_class.setStyleSheet(u"background-color: #FFFFFF;\n"
 "border-radius: 7px;")
         self.machine_class.setAlignment(Qt.AlignCenter)
@@ -346,14 +450,14 @@ class Ui_Pages(object):
 
         self.label_confidence = QLabel(self.frame_2)
         self.label_confidence.setObjectName(u"label_confidence")
-        self.label_confidence.setFont(font5)
+        self.label_confidence.setFont(font6)
         self.label_confidence.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout_2.addWidget(self.label_confidence)
 
         self.confidence_machine = QLabel(self.frame_2)
         self.confidence_machine.setObjectName(u"confidence_machine")
-        self.confidence_machine.setFont(font5)
+        self.confidence_machine.setFont(font6)
         self.confidence_machine.setStyleSheet(u"background-color: #FFFFFF;\n"
 "border-radius: 7px;")
         self.confidence_machine.setAlignment(Qt.AlignCenter)
@@ -378,9 +482,9 @@ class Ui_Pages(object):
         sizePolicy7.setVerticalStretch(0)
         sizePolicy7.setHeightForWidth(self.text_box_article.sizePolicy().hasHeightForWidth())
         self.text_box_article.setSizePolicy(sizePolicy7)
-        font6 = QFont()
-        font6.setFamilies([u"Roboto"])
-        self.text_box_article.setFont(font6)
+        font7 = QFont()
+        font7.setFamilies([u"Roboto"])
+        self.text_box_article.setFont(font7)
         self.text_box_article.setAutoFillBackground(False)
         self.text_box_article.setStyleSheet(u"QTextBrowser {\n"
 "        background-color: #FFFFFF; \n"
@@ -399,7 +503,7 @@ class Ui_Pages(object):
         sizePolicy5.setHeightForWidth(self.frame_infos.sizePolicy().hasHeightForWidth())
         self.frame_infos.setSizePolicy(sizePolicy5)
         self.frame_infos.setMaximumSize(QSize(16777215, 16777215))
-        self.frame_infos.setFont(font5)
+        self.frame_infos.setFont(font6)
         self.frame_infos.setStyleSheet(u"")
         self.frame_infos.setFrameShape(QFrame.StyledPanel)
         self.frame_infos.setFrameShadow(QFrame.Raised)
@@ -409,7 +513,7 @@ class Ui_Pages(object):
         self.frame_class.setObjectName(u"frame_class")
         sizePolicy.setHeightForWidth(self.frame_class.sizePolicy().hasHeightForWidth())
         self.frame_class.setSizePolicy(sizePolicy)
-        self.frame_class.setFont(font5)
+        self.frame_class.setFont(font6)
         self.frame_class.setFrameShape(QFrame.StyledPanel)
         self.frame_class.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_3 = QHBoxLayout(self.frame_class)
@@ -423,7 +527,7 @@ class Ui_Pages(object):
         self.button_accept_news.setObjectName(u"button_accept_news")
         sizePolicy3.setHeightForWidth(self.button_accept_news.sizePolicy().hasHeightForWidth())
         self.button_accept_news.setSizePolicy(sizePolicy3)
-        self.button_accept_news.setFont(font5)
+        self.button_accept_news.setFont(font6)
 
         self.horizontalLayout_15.addWidget(self.button_accept_news)
 
@@ -431,7 +535,7 @@ class Ui_Pages(object):
         self.button_reject_news.setObjectName(u"button_reject_news")
         sizePolicy3.setHeightForWidth(self.button_reject_news.sizePolicy().hasHeightForWidth())
         self.button_reject_news.setSizePolicy(sizePolicy3)
-        self.button_reject_news.setFont(font5)
+        self.button_reject_news.setFont(font6)
 
         self.horizontalLayout_15.addWidget(self.button_reject_news)
 
@@ -442,7 +546,7 @@ class Ui_Pages(object):
         self.button_query.setObjectName(u"button_query")
         sizePolicy3.setHeightForWidth(self.button_query.sizePolicy().hasHeightForWidth())
         self.button_query.setSizePolicy(sizePolicy3)
-        self.button_query.setFont(font5)
+        self.button_query.setFont(font6)
 
         self.horizontalLayout_3.addWidget(self.button_query)
 
@@ -456,10 +560,10 @@ class Ui_Pages(object):
         sizePolicy8.setVerticalStretch(0)
         sizePolicy8.setHeightForWidth(self.frame_extraction.sizePolicy().hasHeightForWidth())
         self.frame_extraction.setSizePolicy(sizePolicy8)
-        font7 = QFont()
-        font7.setFamilies([u"Roboto"])
-        font7.setPointSize(14)
-        self.frame_extraction.setFont(font7)
+        font8 = QFont()
+        font8.setFamilies([u"Roboto"])
+        font8.setPointSize(14)
+        self.frame_extraction.setFont(font8)
         self.frame_extraction.setFrameShape(QFrame.StyledPanel)
         self.frame_extraction.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.frame_extraction)
@@ -474,7 +578,7 @@ class Ui_Pages(object):
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.label_country = QLabel(self.frame_6)
         self.label_country.setObjectName(u"label_country")
-        self.label_country.setFont(font5)
+        self.label_country.setFont(font6)
 
         self.horizontalLayout_4.addWidget(self.label_country)
 
@@ -484,14 +588,14 @@ class Ui_Pages(object):
         self.combo_country.setSizePolicy(sizePolicy3)
         self.combo_country.setMinimumSize(QSize(150, 0))
         self.combo_country.setMaximumSize(QSize(150, 16777215))
-        self.combo_country.setFont(font5)
+        self.combo_country.setFont(font6)
         self.combo_country.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_4.addWidget(self.combo_country)
 
         self.label_region = QLabel(self.frame_6)
         self.label_region.setObjectName(u"label_region")
-        self.label_region.setFont(font5)
+        self.label_region.setFont(font6)
 
         self.horizontalLayout_4.addWidget(self.label_region)
 
@@ -501,14 +605,14 @@ class Ui_Pages(object):
         self.combo_region.setSizePolicy(sizePolicy3)
         self.combo_region.setMinimumSize(QSize(150, 0))
         self.combo_region.setMaximumSize(QSize(150, 16777215))
-        self.combo_region.setFont(font5)
+        self.combo_region.setFont(font6)
         self.combo_region.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_4.addWidget(self.combo_region)
 
         self.label_city = QLabel(self.frame_6)
         self.label_city.setObjectName(u"label_city")
-        self.label_city.setFont(font5)
+        self.label_city.setFont(font6)
 
         self.horizontalLayout_4.addWidget(self.label_city)
 
@@ -518,7 +622,7 @@ class Ui_Pages(object):
         self.combo_city.setSizePolicy(sizePolicy3)
         self.combo_city.setMinimumSize(QSize(150, 0))
         self.combo_city.setMaximumSize(QSize(150, 16777215))
-        self.combo_city.setFont(font5)
+        self.combo_city.setFont(font6)
         self.combo_city.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_4.addWidget(self.combo_city)
@@ -540,7 +644,7 @@ class Ui_Pages(object):
         self.latitude.setSizePolicy(sizePolicy2)
         self.latitude.setMinimumSize(QSize(150, 0))
         self.latitude.setMaximumSize(QSize(280, 16777215))
-        self.latitude.setFont(font5)
+        self.latitude.setFont(font6)
         self.latitude.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_5.addWidget(self.latitude)
@@ -551,7 +655,7 @@ class Ui_Pages(object):
         self.button_geo_city.setSizePolicy(sizePolicy8)
         self.button_geo_city.setMinimumSize(QSize(0, 0))
         self.button_geo_city.setMaximumSize(QSize(80, 16777215))
-        self.button_geo_city.setFont(font5)
+        self.button_geo_city.setFont(font6)
         self.button_geo_city.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
         self.horizontalLayout_5.addWidget(self.button_geo_city)
@@ -563,7 +667,7 @@ class Ui_Pages(object):
         self.button_maps.setSizePolicy(sizePolicy8)
         self.button_maps.setMinimumSize(QSize(0, 0))
         self.button_maps.setMaximumSize(QSize(80, 16777215))
-        self.button_maps.setFont(font5)
+        self.button_maps.setFont(font6)
         self.button_maps.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
         self.horizontalLayout_5.addWidget(self.button_maps)
@@ -575,7 +679,7 @@ class Ui_Pages(object):
         self.pushButton_3.setSizePolicy(sizePolicy8)
         self.pushButton_3.setMinimumSize(QSize(0, 0))
         self.pushButton_3.setMaximumSize(QSize(80, 16777215))
-        self.pushButton_3.setFont(font5)
+        self.pushButton_3.setFont(font6)
         self.pushButton_3.setStyleSheet(u"background-color: rgba(255, 255, 255, 0.8);")
 
         self.horizontalLayout_5.addWidget(self.pushButton_3)
@@ -595,7 +699,7 @@ class Ui_Pages(object):
         self.label_date_event.setObjectName(u"label_date_event")
         sizePolicy1.setHeightForWidth(self.label_date_event.sizePolicy().hasHeightForWidth())
         self.label_date_event.setSizePolicy(sizePolicy1)
-        self.label_date_event.setFont(font5)
+        self.label_date_event.setFont(font6)
 
         self.horizontalLayout_6.addWidget(self.label_date_event)
 
@@ -603,7 +707,7 @@ class Ui_Pages(object):
         self.input_date_event.setObjectName(u"input_date_event")
         sizePolicy3.setHeightForWidth(self.input_date_event.sizePolicy().hasHeightForWidth())
         self.input_date_event.setSizePolicy(sizePolicy3)
-        self.input_date_event.setFont(font5)
+        self.input_date_event.setFont(font6)
         self.input_date_event.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_6.addWidget(self.input_date_event)
@@ -616,7 +720,7 @@ class Ui_Pages(object):
         self.label_conflict.setObjectName(u"label_conflict")
         sizePolicy1.setHeightForWidth(self.label_conflict.sizePolicy().hasHeightForWidth())
         self.label_conflict.setSizePolicy(sizePolicy1)
-        self.label_conflict.setFont(font5)
+        self.label_conflict.setFont(font6)
 
         self.horizontalLayout_6.addWidget(self.label_conflict)
 
@@ -625,7 +729,7 @@ class Ui_Pages(object):
         self.check_conflict.setEnabled(True)
         sizePolicy3.setHeightForWidth(self.check_conflict.sizePolicy().hasHeightForWidth())
         self.check_conflict.setSizePolicy(sizePolicy3)
-        self.check_conflict.setFont(font5)
+        self.check_conflict.setFont(font6)
 
         self.horizontalLayout_6.addWidget(self.check_conflict)
 
@@ -637,7 +741,7 @@ class Ui_Pages(object):
         self.label_deaths.setObjectName(u"label_deaths")
         sizePolicy1.setHeightForWidth(self.label_deaths.sizePolicy().hasHeightForWidth())
         self.label_deaths.setSizePolicy(sizePolicy1)
-        self.label_deaths.setFont(font5)
+        self.label_deaths.setFont(font6)
 
         self.horizontalLayout_6.addWidget(self.label_deaths)
 
@@ -645,7 +749,7 @@ class Ui_Pages(object):
         self.input_deaths.setObjectName(u"input_deaths")
         sizePolicy3.setHeightForWidth(self.input_deaths.sizePolicy().hasHeightForWidth())
         self.input_deaths.setSizePolicy(sizePolicy3)
-        self.input_deaths.setFont(font5)
+        self.input_deaths.setFont(font6)
         self.input_deaths.setStyleSheet(u"background-color: #FFFFFF; ")
         self.input_deaths.setMaximum(1000)
 
@@ -669,13 +773,13 @@ class Ui_Pages(object):
         self.label_type_narcotic.setObjectName(u"label_type_narcotic")
         sizePolicy1.setHeightForWidth(self.label_type_narcotic.sizePolicy().hasHeightForWidth())
         self.label_type_narcotic.setSizePolicy(sizePolicy1)
-        self.label_type_narcotic.setFont(font5)
+        self.label_type_narcotic.setFont(font6)
 
         self.horizontalLayout_18.addWidget(self.label_type_narcotic)
 
         self.combo_narcotic_1 = QComboBox(self.groupBox_narcotic_1)
         self.combo_narcotic_1.setObjectName(u"combo_narcotic_1")
-        self.combo_narcotic_1.setFont(font5)
+        self.combo_narcotic_1.setFont(font6)
         self.combo_narcotic_1.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_18.addWidget(self.combo_narcotic_1)
@@ -684,13 +788,13 @@ class Ui_Pages(object):
         self.label_qty_narcotic.setObjectName(u"label_qty_narcotic")
         sizePolicy1.setHeightForWidth(self.label_qty_narcotic.sizePolicy().hasHeightForWidth())
         self.label_qty_narcotic.setSizePolicy(sizePolicy1)
-        self.label_qty_narcotic.setFont(font5)
+        self.label_qty_narcotic.setFont(font6)
 
         self.horizontalLayout_18.addWidget(self.label_qty_narcotic)
 
         self.input_qty_narcotic_1 = QSpinBox(self.groupBox_narcotic_1)
         self.input_qty_narcotic_1.setObjectName(u"input_qty_narcotic_1")
-        self.input_qty_narcotic_1.setFont(font5)
+        self.input_qty_narcotic_1.setFont(font6)
         self.input_qty_narcotic_1.setStyleSheet(u"background-color: #FFFFFF; ")
         self.input_qty_narcotic_1.setMaximum(100000)
 
@@ -712,13 +816,13 @@ class Ui_Pages(object):
         self.label_20.setObjectName(u"label_20")
         sizePolicy1.setHeightForWidth(self.label_20.sizePolicy().hasHeightForWidth())
         self.label_20.setSizePolicy(sizePolicy1)
-        self.label_20.setFont(font5)
+        self.label_20.setFont(font6)
 
         self.horizontalLayout_7.addWidget(self.label_20)
 
         self.combo_narcotic_2 = QComboBox(self.groupBox_narcotic_2)
         self.combo_narcotic_2.setObjectName(u"combo_narcotic_2")
-        self.combo_narcotic_2.setFont(font5)
+        self.combo_narcotic_2.setFont(font6)
         self.combo_narcotic_2.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_7.addWidget(self.combo_narcotic_2)
@@ -727,13 +831,13 @@ class Ui_Pages(object):
         self.label_21.setObjectName(u"label_21")
         sizePolicy1.setHeightForWidth(self.label_21.sizePolicy().hasHeightForWidth())
         self.label_21.setSizePolicy(sizePolicy1)
-        self.label_21.setFont(font5)
+        self.label_21.setFont(font6)
 
         self.horizontalLayout_7.addWidget(self.label_21)
 
         self.input_qty_narcotic_2 = QSpinBox(self.groupBox_narcotic_2)
         self.input_qty_narcotic_2.setObjectName(u"input_qty_narcotic_2")
-        self.input_qty_narcotic_2.setFont(font5)
+        self.input_qty_narcotic_2.setFont(font6)
         self.input_qty_narcotic_2.setStyleSheet(u"background-color: #FFFFFF; ")
         self.input_qty_narcotic_2.setMaximum(100000)
 
@@ -755,13 +859,13 @@ class Ui_Pages(object):
         self.label_22.setObjectName(u"label_22")
         sizePolicy1.setHeightForWidth(self.label_22.sizePolicy().hasHeightForWidth())
         self.label_22.setSizePolicy(sizePolicy1)
-        self.label_22.setFont(font5)
+        self.label_22.setFont(font6)
 
         self.horizontalLayout_8.addWidget(self.label_22)
 
         self.combo_narcotic_3 = QComboBox(self.groupBox_narcotic_3)
         self.combo_narcotic_3.setObjectName(u"combo_narcotic_3")
-        self.combo_narcotic_3.setFont(font5)
+        self.combo_narcotic_3.setFont(font6)
         self.combo_narcotic_3.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_8.addWidget(self.combo_narcotic_3)
@@ -770,13 +874,13 @@ class Ui_Pages(object):
         self.label_23.setObjectName(u"label_23")
         sizePolicy1.setHeightForWidth(self.label_23.sizePolicy().hasHeightForWidth())
         self.label_23.setSizePolicy(sizePolicy1)
-        self.label_23.setFont(font5)
+        self.label_23.setFont(font6)
 
         self.horizontalLayout_8.addWidget(self.label_23)
 
         self.input_qty_narcotic_3 = QSpinBox(self.groupBox_narcotic_3)
         self.input_qty_narcotic_3.setObjectName(u"input_qty_narcotic_3")
-        self.input_qty_narcotic_3.setFont(font5)
+        self.input_qty_narcotic_3.setFont(font6)
         self.input_qty_narcotic_3.setStyleSheet(u"background-color: #FFFFFF; ")
         self.input_qty_narcotic_3.setMaximum(100000)
 
@@ -798,7 +902,7 @@ class Ui_Pages(object):
         self.label_10.setObjectName(u"label_10")
         sizePolicy5.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
         self.label_10.setSizePolicy(sizePolicy5)
-        self.label_10.setFont(font5)
+        self.label_10.setFont(font6)
 
         self.horizontalLayout_16.addWidget(self.label_10)
 
@@ -832,7 +936,7 @@ class Ui_Pages(object):
         sizePolicy1.setHeightForWidth(self.list_weapons.sizePolicy().hasHeightForWidth())
         self.list_weapons.setSizePolicy(sizePolicy1)
         self.list_weapons.setMaximumSize(QSize(150, 200))
-        self.list_weapons.setFont(font5)
+        self.list_weapons.setFont(font6)
         self.list_weapons.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.list_weapons.setProperty("isWrapping", False)
         self.list_weapons.setResizeMode(QListView.Fixed)
@@ -865,7 +969,7 @@ class Ui_Pages(object):
         sizePolicy9.setVerticalStretch(0)
         sizePolicy9.setHeightForWidth(self.name_actor_1.sizePolicy().hasHeightForWidth())
         self.name_actor_1.setSizePolicy(sizePolicy9)
-        self.name_actor_1.setFont(font5)
+        self.name_actor_1.setFont(font6)
         self.name_actor_1.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_10.addWidget(self.name_actor_1)
@@ -881,7 +985,7 @@ class Ui_Pages(object):
         self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
         self.name_actor_2 = QLineEdit(self.frame_14)
         self.name_actor_2.setObjectName(u"name_actor_2")
-        self.name_actor_2.setFont(font5)
+        self.name_actor_2.setFont(font6)
         self.name_actor_2.setStyleSheet(u"background-color: #FFFFFF; ")
         self.name_actor_2.setClearButtonEnabled(False)
 
@@ -902,7 +1006,7 @@ class Ui_Pages(object):
         self.label_type_relation.setObjectName(u"label_type_relation")
         sizePolicy6.setHeightForWidth(self.label_type_relation.sizePolicy().hasHeightForWidth())
         self.label_type_relation.setSizePolicy(sizePolicy6)
-        self.label_type_relation.setFont(font5)
+        self.label_type_relation.setFont(font6)
 
         self.horizontalLayout_12.addWidget(self.label_type_relation)
 
@@ -910,7 +1014,7 @@ class Ui_Pages(object):
         self.combo_type_relation.setObjectName(u"combo_type_relation")
         sizePolicy6.setHeightForWidth(self.combo_type_relation.sizePolicy().hasHeightForWidth())
         self.combo_type_relation.setSizePolicy(sizePolicy6)
-        self.combo_type_relation.setFont(font5)
+        self.combo_type_relation.setFont(font6)
         self.combo_type_relation.setStyleSheet(u"background-color: #FFFFFF; ")
 
         self.horizontalLayout_12.addWidget(self.combo_type_relation)
@@ -941,7 +1045,7 @@ class Ui_Pages(object):
         sizePolicy3.setHeightForWidth(self.button_back.sizePolicy().hasHeightForWidth())
         self.button_back.setSizePolicy(sizePolicy3)
         self.button_back.setMinimumSize(QSize(150, 40))
-        self.button_back.setFont(font4)
+        self.button_back.setFont(font5)
         self.button_back.setStyleSheet(u"QPushButton{\n"
 "            color: #FFFFFF;\n"
 "            background-color: #1B4269;\n"
@@ -971,7 +1075,7 @@ class Ui_Pages(object):
         self.button_finish = QPushButton(self.frame_3)
         self.button_finish.setObjectName(u"button_finish")
         self.button_finish.setMinimumSize(QSize(200, 40))
-        self.button_finish.setFont(font4)
+        self.button_finish.setFont(font5)
         self.button_finish.setStyleSheet(u"QPushButton{\n"
 "            color: #FFFFFF;\n"
 "            background-color: #77966D;\n"
@@ -997,7 +1101,7 @@ class Ui_Pages(object):
         self.button_cancel = QPushButton(self.frame_3)
         self.button_cancel.setObjectName(u"button_cancel")
         self.button_cancel.setMinimumSize(QSize(200, 40))
-        self.button_cancel.setFont(font4)
+        self.button_cancel.setFont(font5)
         self.button_cancel.setStyleSheet(u"QPushButton{\n"
 "            color: #FFFFFF;\n"
 "            background-color: #941C2F;\n"
@@ -1025,7 +1129,7 @@ class Ui_Pages(object):
         sizePolicy3.setHeightForWidth(self.button_next.sizePolicy().hasHeightForWidth())
         self.button_next.setSizePolicy(sizePolicy3)
         self.button_next.setMinimumSize(QSize(150, 40))
-        self.button_next.setFont(font4)
+        self.button_next.setFont(font5)
         self.button_next.setStyleSheet(u"QPushButton{\n"
 "            color: #FFFFFF;\n"
 "            background-color: #1B4269;\n"
@@ -1069,6 +1173,16 @@ class Ui_Pages(object):
         self.label_7.setText(QCoreApplication.translate("Pages", u"Relev\u00e2ncia:", None))
         self.label_4.setText(QCoreApplication.translate("Pages", u"Jornal:", None))
         self.button_filter.setText(QCoreApplication.translate("Pages", u"Filtrar", None))
+        self.label_18.setText(QCoreApplication.translate("Pages", u"Relevantes:", None))
+        self.lab_relevance.setText(QCoreApplication.translate("Pages", u"00", None))
+        self.label_16.setText(QCoreApplication.translate("Pages", u"Irrelevantes:", None))
+        self.lab_irrelevant.setText(QCoreApplication.translate("Pages", u"00", None))
+        self.label_14.setText(QCoreApplication.translate("Pages", u"Avaliadas:", None))
+        self.lab_evaluated.setText(QCoreApplication.translate("Pages", u"00", None))
+        self.label_12.setText(QCoreApplication.translate("Pages", u"N\u00e3o Avaliadas:", None))
+        self.lab_not_evaluated.setText(QCoreApplication.translate("Pages", u"00", None))
+        self.label_9.setText(QCoreApplication.translate("Pages", u"Total:", None))
+        self.lab_count_total.setText(QCoreApplication.translate("Pages", u"00", None))
         self.label_2.setText("")
         self.button_note.setText(QCoreApplication.translate("Pages", u"Anotar", None))
         self.label.setText("")
