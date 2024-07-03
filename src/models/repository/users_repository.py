@@ -7,6 +7,8 @@ from pymongo.errors import DuplicateKeyError
 # IMPORTS VALIDATORS
 from email_validator import validate_email, EmailNotValidError
 import bcrypt
+# IMPORTS UTILS
+from models.utils.users import Users
 
 
 class UsersRepository():
@@ -15,23 +17,12 @@ class UsersRepository():
         self.__db_connection = db_connection
 
     # ------------------ Métodos de Inserção ------------------------
-    def insert_user(self, first_name: str, last_name: str, email: str, password: str, role: int, avatar="-") -> bool:
+    def insert_user(self, first_name: str, last_name: str, email: str, password: str, role: int) -> bool:
         collection = self.__db_connection.get_collection(self.__collection_name)
         collection.create_index([("email", ASCENDING)], unique=True)
         try:
-            validate_email(email)
-            password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt(10))
-            document = {
-                "first_name": first_name,
-                "last_name": last_name,
-                "email": email,
-                "password": password,
-                "role": role,
-                "avatar": avatar,
-                "notes": None,
-                "num_article_analyzed": 0,
-                "num_notes": 0
-            }
+            u = Users(first_name, last_name, email, password, role)
+            document = u.get_dict()
             collection.insert_one(document)
             
             return True
@@ -41,6 +32,21 @@ class UsersRepository():
         
         except EmailNotValidError as e:
             return e
+        
+    def insert_id_article(self, email, id_article):
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        user = self.select_one_user(email)
+        set_id_article = set(user["id_article"])
+        set_id_article.add(id_article)
+        num_article = len(set_id_article)
+        parameterEditing = {
+            "id_article": set_id_article,
+            "num_article": num_article
+        }
+        data = collection.update_one({"email": email},
+                                     {"$set": parameterEditing})
+        return data.modified_count
+        
 
     # ------------------ Métodos de Busca ------------------------
     
