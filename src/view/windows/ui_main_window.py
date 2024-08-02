@@ -11,7 +11,7 @@ class UiMainWindow(object):
             parent.setObjectName("MainWindow")
         
         # SET INITIAL PARAMETERS
-        parent.setWindowTitle('OrgaExtractor')
+        parent.setWindowTitle('OCNewsAnnotator')
         parent.setWindowIcon(QIcon('resources/images/icons/icon_logo.svg'))
         parent.setMinimumSize(1000, 700)
 

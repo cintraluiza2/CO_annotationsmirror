@@ -1065,7 +1065,7 @@ class Ui_Pages(object):
 "            background-color: #3E5369;\n"
 "}")
         icon = QIcon()
-        icon.addFile(u"../../../resources/images/icons/arrow_return.svg", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u"resources/images/icons/arrow_return.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.button_back.setIcon(icon)
         self.button_back.setIconSize(QSize(24, 24))
 
@@ -1149,7 +1149,7 @@ class Ui_Pages(object):
 "            background-color: #3E5369;\n"
 "}")
         icon1 = QIcon()
-        icon1.addFile(u"../../../resources/images/icons/arrow_next.svg", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u"resources/images/icons/arrow_next.svg", QSize(), QIcon.Normal, QIcon.Off)
         self.button_next.setIcon(icon1)
         self.button_next.setIconSize(QSize(24, 24))
 

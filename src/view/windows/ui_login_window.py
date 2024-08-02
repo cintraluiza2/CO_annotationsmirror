@@ -1,159 +1,164 @@
-from qt_core import *
-import os
-# IMPORTS WIDGETS
-from view.widgets.py_push_button import PyPushButtonGUI
+# -*- coding: utf-8 -*-
 
-class UiLoginWindow(object):
-    def setup_ui(self, parent):
-        if not parent.objectName():
-            parent.setObjectName("parent")
+################################################################################
+## Form generated from reading UI file 'ui_loginqjJSFs.ui'
+##
+## Created by: Qt User Interface Compiler version 6.7.2
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
+
+class Ui_Login(object):
+    def setupUi(self, Login):
+        if not Login.objectName():
+            Login.setObjectName(u"Login")
+            
+        Login.setWindowIcon(QIcon('resources/images/icons/icon_logo.svg'))
         
-        # SET INITIAL PARAMETERS
-        parent.setWindowTitle("Login - OrgaExtractor")
-        parent.setWindowIcon(QIcon('resources/images/icons/icon_logo.svg'))
-        parent.resize(700, 600)
-        parent.setMaximumSize(700, 600)
-        parent.setMinimumSize(700, 600)
-        
-        # CREATE CENTRAL WIDGET
-        self.central_frame = QFrame()
-        self.central_frame.setStyleSheet("font-family: 'Roboto'; background-color: #FFFFFF")
-        
-        # ------------------ IMAGE LOGO --------------------
-        self.image_logo = QLabel()
-        # Format Path
-        app_path = os.path.abspath(os.getcwd())
-        folder = "resources/images/logo_small.svg"
-        path = os.path.join(app_path, folder)
-        # Make PixMap
-        pixmap = QPixmap(path)
-        self.image_logo.setPixmap(pixmap)
-        self.image_logo.resize(pixmap.width(), pixmap.height())
-# ---------------------------------------------------------------------- ITENS/FRAMES
-        # ------------------ FRAME LOGIN --------------------
-        self.login_frame = QFrame()
-        self.login_frame.setMaximumWidth(448)
-        self.login_frame.setMaximumHeight(448)
-        
-        # ------------------ FRAME ICON --------------------
-        self.frame_icon = QFrame()
-        self.frame_icon.setMaximumWidth(448)
-        self.frame_icon.setMaximumHeight(138)
-        
-        # ------------------ IMAGE ICON --------------------
-        self.image_login = QLabel()
-        # Format Path
-        app_path = os.path.abspath(os.getcwd())
-        folder = "resources/images/user_login.svg"
-        path = os.path.join(app_path, folder)
-        # Make PixMap
-        pixmap = QPixmap(path)
-        self.image_login.setPixmap(pixmap)
-        self.image_login.resize(pixmap.width(), pixmap.height())
-        
-        # ------------------ FRAME INPUT --------------------
-        self.frame_input = QFrame()
-        self.frame_input.setStyleSheet("font-size: 14pt; color: black;")
-        self.frame_input.setMaximumWidth(448)
-        self.frame_input.setMaximumHeight(300)
-        
-        style_line_edit = """
-            border-style: solid;  
-            border-color: black; 
-            border-radius: 20px;
-            background-color: #CED2D6; 
-            padding: 10px 10px 10px 15px;
-            color: #524F4F
-        """   
-        
-        # Create Frame User
-        self.user_frame = QFrame()
-        self.user_frame.setMaximumWidth(341)
-        self.user_frame.setMaximumHeight(90)
-        
-        # Label User
-        self.label_user = QLabel("Email")
-        self.label_user.setAlignment(Qt.AlignLeft)
-        
-        # Create LineEdit User
-        self.txt_user = QLineEdit()
-        self.txt_user.setPlaceholderText("email@address.com")
-        self.txt_user.setStyleSheet(style_line_edit)
-        
-        # Create Frame Pass
-        self.pass_frame = QFrame()
-        self.pass_frame.setMaximumWidth(341)
-        self.pass_frame.setMaximumHeight(90)
-        
-        # Label Pass
-        self.label_pass = QLabel("Senha")
-        self.label_pass.setAlignment(Qt.AlignLeft)
-        
-        # Create LineEdit PassWord
-        self.txt_pass_word = QLineEdit()
-        self.txt_pass_word.setEchoMode(QLineEdit.Password)
-        self.txt_pass_word.show()
-        self.txt_pass_word.setPlaceholderText("Senha de 8 caracteres")
-        self.txt_pass_word
-        self.txt_pass_word.setStyleSheet(style_line_edit)
-        
-        # BUTTONS
-        self.butons_access = PyPushButtonGUI(text="Acessar", font_family="Roboto", font_size=13, width=310, border_radius=20)
-        
-# ---------------------------------------------------------------------- Layouts
-        # CREATE WINDOW LAYOUT
-        self.window_layout = QVBoxLayout()
-        # CREATE MAIN LAYOUT
-        self.main_layout = QHBoxLayout(self.central_frame)
-        self.main_layout.setContentsMargins(0, 0, 0, 0)
-        self.main_layout.setSpacing(0)
-        
-        # CREATE LOGIN LAYOUT
-        self.login_layout = QVBoxLayout(self.login_frame)
-        self.login_layout.setContentsMargins(0, 0, 0, 0)
-        self.login_layout.setSpacing(44)
-        
-        # CREATE LAYOUT ICON
-        self.icon_layout = QVBoxLayout(self.frame_icon)
-        self.icon_layout.setContentsMargins(0, 0, 0, 0)
-        self.icon_layout.setSpacing(0)
-        
-        # CREATE LAYOUT INPUT
-        self.input_layout = QVBoxLayout(self.frame_input)
-        self.input_layout.setContentsMargins(65, 0, 65, 0)
-        
-        # LAYOUT USER
-        self.user_layout = QVBoxLayout(self.user_frame)
-        
-        # LAYOUT PASS
-        self.pass_layout = QVBoxLayout(self.pass_frame)
-        
-# ---------------------------------------------------------------------- Widgets
-        # IN LAYOUT WINDOW
-        self.window_layout.addWidget(self.central_frame)
-        # IN MAIN LAYOUT
-        self.main_layout.addWidget(self.login_frame)
-        
-        # IN LOGIN LAYOUT
-        self.login_layout.addWidget(self.frame_icon)
-        self.login_layout.addWidget(self.frame_input)
-        
-        # IN ICON LAYOUT
-        self.icon_layout.addWidget(self.image_login)
-        
-        # IN INPUT LAYOUT
-        self.input_layout.addWidget(self.user_frame)
-        self.input_layout.addWidget(self.pass_frame)
-        self.input_layout.addSpacing(10)
-        self.input_layout.addWidget(self.butons_access)
-        
-        # IN USER LAYOUT
-        self.user_layout.addWidget(self.label_user)
-        self.user_layout.addWidget(self.txt_user)
-        # IN PASS LAYOUT
-        self.pass_layout.addWidget(self.label_pass)
-        self.pass_layout.addWidget(self.txt_pass_word)
-        
-        # --------- SET CENTRAL WIDGET ------------
-        parent.setLayout(self.window_layout)
-        
+        Login.resize(488, 500)
+        Login.setMinimumSize(QSize(0, 500))
+        Login.setMaximumSize(QSize(488, 500))
+        Login.setStyleSheet(u"background-color: rgb(255, 255, 255);")
+        self.verticalLayout_3 = QVBoxLayout(Login)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.label = QLabel(Login)
+        self.label.setObjectName(u"label")
+        self.label.setPixmap(QPixmap(u"resources/images/user_login.svg"))
+        self.label.setScaledContents(True)
+
+        self.verticalLayout_3.addWidget(self.label)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
+
+        self.verticalLayout_3.addItem(self.verticalSpacer)
+
+        self.frame = QFrame(Login)
+        self.frame.setObjectName(u"frame")
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.MinimumExpanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
+        self.frame.setSizePolicy(sizePolicy)
+        self.frame.setStyleSheet(u"background-color: rgb(255, 255, 255);\n"
+"border: none;")
+        self.frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout_4 = QVBoxLayout(self.frame)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.frame_2 = QFrame(self.frame)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setFrameShape(QFrame.Shape.StyledPanel)
+        self.frame_2.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout = QVBoxLayout(self.frame_2)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.label_2 = QLabel(self.frame_2)
+        self.label_2.setObjectName(u"label_2")
+        font = QFont()
+        font.setFamilies([u"Roboto"])
+        font.setPointSize(12)
+        self.label_2.setFont(font)
+
+        self.verticalLayout.addWidget(self.label_2)
+
+        self.txt_user = QLineEdit(self.frame_2)
+        self.txt_user.setObjectName(u"txt_user")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.txt_user.sizePolicy().hasHeightForWidth())
+        self.txt_user.setSizePolicy(sizePolicy1)
+        self.txt_user.setFont(font)
+        self.txt_user.setStyleSheet(u"background-color: rgb(234, 238, 242);\n"
+"border-radius: 8px;\n"
+"padding-left: 1em;")
+
+        self.verticalLayout.addWidget(self.txt_user)
+
+
+        self.verticalLayout_4.addWidget(self.frame_2)
+
+        self.frame_3 = QFrame(self.frame)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setFrameShape(QFrame.Shape.StyledPanel)
+        self.frame_3.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout_2 = QVBoxLayout(self.frame_3)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.label_3 = QLabel(self.frame_3)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setFont(font)
+
+        self.verticalLayout_2.addWidget(self.label_3)
+
+        self.txt_password = QLineEdit(self.frame_3)
+        self.txt_password.setObjectName(u"txt_password")
+        sizePolicy1.setHeightForWidth(self.txt_password.sizePolicy().hasHeightForWidth())
+        self.txt_password.setSizePolicy(sizePolicy1)
+        self.txt_password.setFont(font)
+        self.txt_password.setStyleSheet(u"background-color: rgb(234, 238, 242);\n"
+"border-radius: 8px;\n"
+"padding-left: 1em;")
+        self.txt_password.setEchoMode(QLineEdit.EchoMode.Password)
+
+        self.verticalLayout_2.addWidget(self.txt_password)
+
+
+        self.verticalLayout_4.addWidget(self.frame_3)
+
+        self.frame_4 = QFrame(self.frame)
+        self.frame_4.setObjectName(u"frame_4")
+        self.frame_4.setFrameShape(QFrame.Shape.StyledPanel)
+        self.frame_4.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout = QHBoxLayout(self.frame_4)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.butons_access = QPushButton(self.frame_4)
+        self.butons_access.setObjectName(u"butons_access")
+        self.butons_access.setMaximumSize(QSize(150, 30))
+        self.butons_access.setFont(font)
+        self.butons_access.setStyleSheet(u" QPushButton{\n"
+"	background-color: rgb(66, 79, 91);\n"
+"	color: rgb(255, 255, 255);\n"
+"	border-radius: 10px;\n"
+"}\n"
+" QPushButton::hover{\n"
+"	background-color: rgb(114, 135, 157);\n"
+"}\n"
+"\n"
+"QPushButton::pressed {\n"
+"            background-color: #89966E;\n"
+"}")
+
+        self.horizontalLayout.addWidget(self.butons_access)
+
+
+        self.verticalLayout_4.addWidget(self.frame_4)
+
+
+        self.verticalLayout_3.addWidget(self.frame)
+
+
+        self.retranslateUi(Login)
+
+        QMetaObject.connectSlotsByName(Login)
+    # setupUi
+
+    def retranslateUi(self, Login):
+        Login.setWindowTitle(QCoreApplication.translate("Login", u"OCNewsAnnotator", None))
+        self.label.setText("")
+        self.label_2.setText(QCoreApplication.translate("Login", u"Usu\u00e1rio", None))
+        self.txt_user.setPlaceholderText(QCoreApplication.translate("Login", u"Digite seu email", None))
+        self.label_3.setText(QCoreApplication.translate("Login", u"Senha", None))
+        self.txt_password.setPlaceholderText(QCoreApplication.translate("Login", u"Digite sua senha de 8 d\u00edgitos", None))
+        self.butons_access.setText(QCoreApplication.translate("Login", u"Acessar", None))
+    # retranslateUi
+

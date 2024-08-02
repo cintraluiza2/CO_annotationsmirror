@@ -1,0 +1,1 @@
+{"publication_date": {"$regex": "\\d{2}-\\d{2}-2020"}}

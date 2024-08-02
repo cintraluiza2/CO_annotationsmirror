@@ -4,10 +4,9 @@ import sys
 # IMPORTS WIDGETS
 from view.widgets.py_message_options import WarningMessageBox, WarningMessageBoxOption, WarningMessageBoxOptionOk
 # IMPORTS VIEWS
-from view.windows.ui_login_window import UiLoginWindow
+from view.windows.ui_login_window import Ui_Login
 # Imports CONTROLLER
 from controller.main_control import MainWindow
-from controller.host_control import HostWindow
 # IMPORTS VALIDATORS
 from email_validator import validate_email, EmailNotValidError
 import requests
@@ -24,8 +23,8 @@ class LoginWindow(QDialog):
         super().__init__()
         
         # Setup Login Window
-        self.ui = UiLoginWindow()
-        self.ui.setup_ui(self)
+        self.ui = Ui_Login()
+        self.ui.setupUi(self)
         
         # Check Username and Password
         self.ui.butons_access.clicked.connect(self.access_permission)
@@ -38,32 +37,10 @@ class LoginWindow(QDialog):
         self.__db_connection = self.__db_handle.get_db_connection()
         self.__users_repository = UsersRepository(self.__db_connection)
         
-    def erro_connect(self):
-        try:
-            # Tente fazer uma solicitação GET para um site conhecido para verificar rede
-            requests.get("http://www.google.com", timeout=5)
-            dlg = WarningMessageBox("Atenção", "Sem acesso ao banco de dados. Tente novamente mais tarde!\nSe o erro persistir, entre em contato com o suporte!")
-        except requests.ConnectionError:
-            dlg = WarningMessageBox("Atenção", "Sem acesso à rede!\nVerifique sua conexão com a internet.")
-        dlg.exec()
-        self.close()
-        sys.exit()
-        
-                
-    # Função de verficação de conexão com XShell
-    def init_connect_mongo_db(self):
-        if not self.__db_handle.connect_to_db():
-            dlg = WarningMessageBoxOptionOk("Atenção", "Sem acesso ao banco de dados!\nAbra o XShell e clique em conectar")
-            if dlg.exec_() == QMessageBox.Ok:
-                self.init_connect_mongo_db()
-            else:
-                self.close()
-                sys.exit()
-        
     def access_permission(self):
         # DATABASE CHECK
         user_email = self.ui.txt_user.text()
-        txt_pass = self.ui.txt_pass_word.text()
+        txt_pass = self.ui.txt_password.text()
         
         try:
             validate_email(user_email)
@@ -80,8 +57,6 @@ class LoginWindow(QDialog):
                     role = response["role"]
                     if role == 0:
                         self.win = MainWindow()
-                    else:
-                        self.win = HostWindow()
                     self.win.show()
                     self.close() 
                 
