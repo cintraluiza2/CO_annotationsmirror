@@ -11,11 +11,9 @@ class Users():
             "email": email,
             "password": password,
             "role": role,
-            "notes": None,
-            "num_article": 0,
-            "id_article": {},
-            "num_notes": 0,
-            "notes": {}
+            "num_articles_note": 0,
+            "num_comments": 0,
+            "comments": []
         }
                 
     def get_dict(self):

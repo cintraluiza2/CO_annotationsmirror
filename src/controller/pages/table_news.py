@@ -218,21 +218,3 @@ class TableNewsManager:
     def init_combo_box(self, combo_box, data):
                 for key, value in data.items():
                         combo_box.addItem(key, value)
-            
-    # def train_table_news(self):
-    #     df = DataFrame()
-    #     mp = ModelPrediction()
-    #     dtv = DocToVector()
-
-    #     df_news = df.make_data_frame()
-    #     x, y = dtv.create_XY_vector(df_news, 40, 50)
-    #     data_best_model = mp.cross_model(x, y, 20)
-
-    #     name_model, best_model, confidence, standard_deviation = data_best_model
-    #     best_model.fit(x, y)
-    #     new_df = mp.automatic_relevance_class(df_news, name_model, best_model, x)
-    #     automatic_list = new_df['automatic_relevance_class'].astype(int)
-    #     self.table_init()
-    #     num_rows = self.table.rowCount()
-    #     for row in range(0, num_rows):
-    #         self.table.setItem(row, 4, QTableWidgetItem(str(automatic_list[row])))

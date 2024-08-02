@@ -63,33 +63,70 @@ class ClassificationManager:
         if self.title_list:
             title_news = self.title_list[self.title_select]
             self.id_news = title_news
-            news = self.__news_repository.select_one_news(self.id_news, optionsReturn={"title": 1, "article": 1, "manual_relevance_class": 1, "publication_date": 1, "last_update": 1, "automatic_relevance_class": 1, "confidence_relevance_class": 1, "pais": 1, "regiao": 1, "municipio": 1, "coordenadas_GPS": 1, "tipo_droga": 1, "quant_droga": 1, "weapons": 1, "weapons_codes": 1, "tipo_conflito_armado": 1, "ator1_nome": 1, "ator2_nome": 1, "tipo_relacao_entre_atores": 1})
+            news = self.__news_repository.select_one_news(self.id_news, optionsReturn={"title": 1, "article": 1, "publication_date": 1, "last_update": 1, "notes": 1})
             
-            mapping = {0: 'rejeite', 1: 'aceite', None: "SClasse"}
             title_news = news["title"]
             publication_news = news["publication_date"]
             update_news = news['last_update']
-            automatic_news = mapping.get(news['automatic_relevance_class'])
-            manual_news = news['manual_relevance_class']
-            confidence_news = news['confidence_relevance_class']
             text_news = news["article"]
-            armed_conflict = 0 if news["tipo_conflito_armado"] == None else news["tipo_conflito_armado"]
-            actor1 = news["ator1_nome"]
-            actor2 = news['ator2_nome']
-            relationship_atores = 0 if news['tipo_relacao_entre_atores'] == None else news['tipo_relacao_entre_atores']
-            type_narcotic = news['tipo_droga']
-            qty_narcotic = news['quant_droga']
-            weapons = news['weapons']
-            pais = 0 if news["pais"] == None else int(news["pais"])
-            regiao = 0 if news["regiao"] == None else int(news["regiao"])
-            municipio = 0 if news["municipio"] == None else int(news["municipio"])
-            coordenadas_GPS = news['coordenadas_GPS']
-            lati, long = coordenadas_GPS['coordinates']
+            
+            self.classification.title_article.setText(title_news)
+            self.classification.data_update.setText(update_news)
+            self.classification.text_box_article.setText(text_news)
+            self.classification.data_publication.setText(publication_news)
+            data = QDate.fromString(publication_news, "dd-MM-yyyy")
+            self.classification.input_date_event.setDate(data)
+            
+        else:
+            dlg = WarningMessageBox(title="Informação", txt="O processo de classificação de noticías foi finalizado!")
+            dlg.setIcon(QMessageBox.Information)
+            dlg.exec()
+            self.show_page_table_class()
+            
+    def set_note_class(self):
+        note =  self.__news_repository.select_note_news(self.id_news, self.id_user)
 
+        if note:
+            manual_news = note['manual_relevance_class']
             if manual_news == 1: 
                 self.classification.button_accept_news.setChecked(True)
                 self.classification.button_query.setChecked(False)
                 self.enabled_widgets()
+                
+                mapping = {0: 'rejeite', 1: 'aceite', None: "SClasse"}
+                # automatic_news = mapping.get(note['automatic_relevance_class'])
+                confidence_news = note['confidence_relevance_class']
+                armed_conflict = 0 if note["tipo_conflito_armado"] == None else note["tipo_conflito_armado"]
+                actor1 = note["ator1_nome"]
+                actor2 = note['ator2_nome']
+                relationship_atores = 0 if note['tipo_relacao_entre_atores'] == None else note['tipo_relacao_entre_atores']
+                type_narcotic = note['tipo_droga']
+                qty_narcotic = note['quant_droga']
+                weapons = note['weapons']
+                pais = 0 if note["pais"] == None else int(note["pais"])
+                regiao = 0 if note["regiao"] == None else int(note["regiao"])
+                municipio = 0 if note["municipio"] == None else int(note["municipio"])
+                coordenadas_GPS = note['coordenadas_GPS']
+                lati, long = coordenadas_GPS['coordinates']
+                
+                self.classification.combo_country.currentData(pais)
+                self.classification.combo_region.currentData(regiao)
+                self.classification.combo_city.currentData(municipio)
+                if lati != 0 and long != 0: self.classification.latitude.setText(f"{lati}, {long}")
+                else: self.classification.latitude.setText("")
+                self.classification.confidence_machine.setText(confidence_news)
+                self.classification.check_conflict.setChecked(armed_conflict)
+                self.classification.combo_narcotic_1.setCurrentIndex(type_narcotic[0])
+                self.classification.input_qty_narcotic_1.setValue(qty_narcotic[0])
+                self.classification.combo_narcotic_2.setCurrentIndex(type_narcotic[1])
+                self.classification.input_qty_narcotic_2.setValue(qty_narcotic[1])
+                self.classification.combo_narcotic_3.setCurrentIndex(type_narcotic[2])
+                self.classification.input_qty_narcotic_3.setValue(qty_narcotic[2])
+                self.set_list_weapons(weapons)
+                self.classification.name_actor_1.setText(actor1)
+                self.classification.name_actor_2.setText(actor2)
+                self.classification.combo_type_relation.setCurrentIndex(relationship_atores)
+                
             elif manual_news == 2:
                 self.classification.button_query.setChecked(True)
                 self.disable_widgets()
@@ -97,37 +134,7 @@ class ClassificationManager:
                 self.classification.button_reject_news.setChecked(True)
                 self.classification.button_query.setChecked(False)
                 self.disable_widgets()
-            
-            self.classification.title_article.setText(title_news)
-            self.classification.data_publication.setText(publication_news)
-            data = QDate.fromString(publication_news, "dd-MM-yyyy")
-            self.classification.combo_country.currentData(pais)
-            self.classification.combo_region.currentData(regiao)
-            self.classification.combo_city.currentData(municipio)
-            if lati != 0 and long != 0: self.classification.latitude.setText(f"{lati}, {long}")
-            else: self.classification.latitude.setText("")
-            self.classification.input_date_event.setDate(data)
-            self.classification.data_update.setText(update_news)
-            self.classification.machine_class.setText(automatic_news)
-            self.classification.confidence_machine.setText(confidence_news)
-            self.classification.text_box_article.setText(text_news)
-            self.classification.check_conflict.setChecked(armed_conflict)
-            self.classification.combo_narcotic_1.setCurrentIndex(type_narcotic[0])
-            self.classification.input_qty_narcotic_1.setValue(qty_narcotic[0])
-            self.classification.combo_narcotic_2.setCurrentIndex(type_narcotic[1])
-            self.classification.input_qty_narcotic_2.setValue(qty_narcotic[1])
-            self.classification.combo_narcotic_3.setCurrentIndex(type_narcotic[2])
-            self.classification.input_qty_narcotic_3.setValue(qty_narcotic[2])
-            self.set_list_weapons(weapons)
-            self.classification.name_actor_1.setText(actor1)
-            self.classification.name_actor_2.setText(actor2)
-            self.classification.combo_type_relation.setCurrentIndex(relationship_atores)
-            
-        else:
-            dlg = WarningMessageBox(title="Informação", txt="O processo de classificação de noticías foi finalizado!")
-            dlg.setIcon(QMessageBox.Information)
-            dlg.exec()
-            self.show_page_table_class()
+
             
     def next_news(self):
         self.save_infos()
@@ -139,47 +146,54 @@ class ClassificationManager:
         self.title_select = self.title_select - 1
         self.set_text_class()
         
+    def get_infos_note(self):
+        country = self.classification.combo_country.currentData()
+        region = self.classification.combo_region.currentData()
+        city = self.classification.combo_city.currentData()
+        lati_long_txt = self.classification.latitude.text()
+        if lati_long_txt == '':
+            lati, long = self.geo.get_lati_long(country, region, city)
+        else:
+            lati, long = lati_long_txt.split(',')
+        data_event = self.classification.input_date_event.text()
+        deaths = int(self.classification.input_deaths.text())
+        conflict = int(self.classification.check_conflict.isChecked())
+        type_narcotic_1 = self.classification.combo_narcotic_1.currentData()
+        qty_narcotic_1 = self.classification.input_qty_narcotic_1.value()
+        type_narcotic_2 = self.classification.combo_narcotic_2.currentData()
+        qty_narcotic_2 = self.classification.input_qty_narcotic_2.value()
+        type_narcotic_3 = self.classification.combo_narcotic_3.currentData()
+        qty_narcotic_3 = self.classification.input_qty_narcotic_3.value()
+        weapons, weapons_codes = self.get_list_weapons()
+        actor_1 = self.classification.name_actor_1.text()
+        actor_2 = self.classification.name_actor_2.text()
+        type_relation = self.classification.combo_type_relation.currentData()
+        cod_actor_1 = cod_actor_2 = None
+        if not (actor_1 == ""):
+            cod_actor_1 = self.random_integer_code(actor_1)
+        if not (actor_2 == ""):
+            cod_actor_2 = self.random_integer_code(actor_2)
+            
+        # List type narcotic
+        type_narcotic = [type_narcotic_1, type_narcotic_2, type_narcotic_3]
+        qty_narcotic = [qty_narcotic_1, qty_narcotic_2, qty_narcotic_3]
+        
+        coordenadas_GPS = {"type": "Point", "coordinates": [float(lati), float(long)]}
+        
+        edit = {"manual_relevance_class": 1, "data_evento": data_event, "quant_mortes": deaths, "tipo_conflito_armado": conflict, "pais": country, "regiao": region, "municipio": city, "coordenadas_GPS": coordenadas_GPS,  "tipo_droga": type_narcotic, "quant_droga": qty_narcotic, "weapons": weapons, "weapons_codes": weapons_codes, "ator1_nome": actor_1, "ator1_cod": cod_actor_1, "ator2_nome": actor_2, "ator2_cod": cod_actor_2, "tipo_relacao_entre_atores": type_relation}
+        
+        return edit
+        
     def save_infos(self):
         """
             Salvar as informações extraidas do texto.
         """
         accept_res = int(self.classification.button_accept_news.isChecked())
         query = int(self.classification.button_query.isChecked())
+    
         if accept_res:
-            country = self.classification.combo_country.currentData()
-            region = self.classification.combo_region.currentData()
-            city = self.classification.combo_city.currentData()
-            lati_long_txt = self.classification.latitude.text()
-            if lati_long_txt == '':
-                lati, long = self.geo.get_lati_long(country, region, city)
-            else:
-                lati, long = lati_long_txt.split(',')
-            data_event = self.classification.input_date_event.text()
-            deaths = int(self.classification.input_deaths.text())
-            conflict = int(self.classification.check_conflict.isChecked())
-            type_narcotic_1 = self.classification.combo_narcotic_1.currentData()
-            qty_narcotic_1 = self.classification.input_qty_narcotic_1.value()
-            type_narcotic_2 = self.classification.combo_narcotic_2.currentData()
-            qty_narcotic_2 = self.classification.input_qty_narcotic_2.value()
-            type_narcotic_3 = self.classification.combo_narcotic_3.currentData()
-            qty_narcotic_3 = self.classification.input_qty_narcotic_3.value()
-            weapons, weapons_codes = self.get_list_weapons()
-            actor_1 = self.classification.name_actor_1.text()
-            actor_2 = self.classification.name_actor_2.text()
-            type_relation = self.classification.combo_type_relation.currentData()
-            cod_actor_1 = cod_actor_2 = None
-            if not (actor_1 == ""):
-                cod_actor_1 = self.random_integer_code(actor_1)
-            if not (actor_2 == ""):
-                cod_actor_2 = self.random_integer_code(actor_2)
-                
-            # List type narcotic
-            type_narcotic = [type_narcotic_1, type_narcotic_2, type_narcotic_3]
-            qty_narcotic = [qty_narcotic_1, qty_narcotic_2, qty_narcotic_3]
+            edit = self.get_infos_note()
             
-            coordenadas_GPS = {"type": "Point", "coordinates": [float(lati), float(long)]}
-            
-            edit = {"manual_relevance_class": accept_res, "data_evento": data_event, "quant_mortes": deaths, "tipo_conflito_armado": conflict, "pais": country, "regiao": region, "municipio": city, "coordenadas_GPS": coordenadas_GPS,  "tipo_droga": type_narcotic, "quant_droga": qty_narcotic, "weapons": weapons, "weapons_codes": weapons_codes, "ator1_nome": actor_1, "ator1_cod": cod_actor_1, "ator2_nome": actor_2, "ator2_cod": cod_actor_2, "tipo_relacao_entre_atores": type_relation}
         elif query:
             edit = {"manual_relevance_class": 2}
         else:

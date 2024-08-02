@@ -15,30 +15,8 @@
             "tags": None,
             "accepted_by": None,
             "gangs": None,
-            "manual_relevance_class": None,
-            "automatic_relevance_class": None,
-            "confidence_relevance_class": None, 
-            "relevance_model": None,
-            "relevance_classification_date": None,
             "id_event": None,
-            "certainty_level": None,
-            "resumo": None,
-            "data_evento": None,
-            "quant_mortes": None,
-            "tipo_droga": [0, 0, 0],
-            "quant_droga": [0, 0, 0],
-            "pais": None,
-            "regiao": None,
-            "municipio": None,
-            "coordenadas_GPS": {"type": "Point", "coordinates": [0, 0]},
-            "tipo_conflito_armado": None,
-            "ator1_nome": None,
-            "ator1_cod": None,
-            "ator2_nome": None,
-            "ator2_cod": None,
-            "tipo_relacao_entre_atores": None,
-            "weapons": [],
-            "weapons_codes": []
+            "notes": []
         }
         
         if hasattr(self, 'manual_relevance_class'):

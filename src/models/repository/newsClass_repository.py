@@ -25,8 +25,6 @@ class NewsClassRepository():
             True: Insertion successful
         """
         collection = self.__db_connection.get_collection(self.__collection_name) # Estabelece conexão com o banco
-        collection.create_index("url", unique=True)
-        collection.create_index("id_event", unique=True)
         document["id_event"] = self.get_count() 
         if model_active:
             registre.set_keys()
@@ -85,6 +83,17 @@ class NewsClassRepository():
 
         return n.get_dict()
     
+    def select_note_news(self, id_news, id_user, optionsReturn={"_id": 0}) -> Dict:
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        news = self.select_one_news(id_news)
+        if news:
+            notes = news['notes']
+            for note in notes:
+                if note['id_user'] == id_user:
+                    return note
+        else:
+            return False
+         
     def select_many_news(self, filters=None, optionsReturn={"_id": 0}) -> List[Dict]:
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.find(filters, optionsReturn)
@@ -96,6 +105,7 @@ class NewsClassRepository():
             response.append(n.get_dict())
 
         return response
+    
 
     def select_num_news(self, num: int = 1, filters=None, optionsReturn={"_id": 0}) -> List[Dict]:
         collection = self.__db_connection.get_collection(self.__collection_name)
@@ -143,6 +153,24 @@ class NewsClassRepository():
         data = collection.update_one({"id_event": id},
                                      {"$set": parameterEditing})
         return data.modified_count
+    
+    def edit_registry_note(self, id_news, id_user, parameterEditing: Dict = None):
+        collection = self.__db_connection.get_collection(self.__collection_name)
+        news = self.select_one_news(id_news)
+        notes = news['notes']
+        t = False
+        for note in notes:
+            if note['id_user'] == id_user:
+                note.update(parameterEditing)
+                t = True
+                break
+        
+        if not t:
+            parameterEditing["id_user"] = id_user
+            notes.append(parameterEditing)
+                
+        data = collection.update_one({"id_event": id_news}, 
+                                    {"$set": {"notes: {notes}"}})
 
     def edit_many_registries_news(self, filters: Dict = None, parameterEditing: Dict = None) -> int:
         collection = self.__db_connection.get_collection(self.__collection_name)
