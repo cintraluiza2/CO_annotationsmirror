@@ -1,6 +1,16 @@
 from qt_core import *
 
 class WarningMessageBoxOption(QMessageBox):
+    """
+        Classe para criar uma caixa de diálogo de aviso com botões 'Sim' e 'Cancelar'.
+
+        Parâmetros:
+        ----------
+        title : str
+            O título da janela da caixa de mensagem.
+        txt : str
+            O texto da mensagem que será exibido na caixa de diálogo.
+    """
     def __init__(self, title, txt):
         super().__init__()
         
@@ -15,6 +25,16 @@ class WarningMessageBoxOption(QMessageBox):
         self.setButtonText(QMessageBox.Cancel, "Cancelar")
         
 class WarningMessageBoxOptionOk(QMessageBox):
+    """ 
+        Classe para criar uma caixa de diálogo de aviso com botões 'Ok' e 'Cancelar'.
+
+        Parâmetros:
+        ----------
+        title : str
+            O título da janela da caixa de mensagem.
+        txt : str
+            O texto da mensagem que será exibido na caixa de diálogo.
+    """
     def __init__(self, title, txt):
         super().__init__()
         
@@ -29,6 +49,16 @@ class WarningMessageBoxOptionOk(QMessageBox):
         self.setButtonText(QMessageBox.Cancel, "Cancelar")
         
 class WarningMessageBox(QMessageBox):
+    """ 
+        Classe para criar uma caixa de diálogo de aviso com um botão 'Ok'.
+
+        Parâmetros:
+        ----------
+        title : str
+            O título da janela da caixa de mensagem.
+        txt : str
+            O texto da mensagem que será exibido na caixa de diálogo.
+    """
     def __init__(self, title, txt):
         super().__init__()
         
