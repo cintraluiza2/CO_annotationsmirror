@@ -64,16 +64,41 @@ class NewsClassRepository():
 
     # ------------------ Métodos de Busca ------------------------
     def get_count(self, filters = {}):
+        """
+        Counts the number of documents in the `newsData` collection that match the given filters.
+
+        Args:
+            filters (Dict): Filters to apply to the count query.
+
+        Returns:
+            int: Number of documents matching the filters.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         response = collection.count_documents(filters)
 
         return response
     
     def find_all(self):
+        """
+        Retrieves all documents from the `newsData` collection.
+
+        Returns:
+            pymongo.cursor.Cursor: Cursor for iterating over all documents in the collection.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         return collection.find()
     
     def select_one_news(self, id_news, optionsReturn={"_id": 0}) -> Dict:
+        """
+        Retrieves a single news document by its event ID.
+
+        Args:
+            id_news: The ID of the news event.
+            optionsReturn (Dict): Fields to include or exclude in the returned document.
+
+        Returns:
+            Union[Dict, bool]: News document as a dictionary if found, False if not found.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         response = collection.find_one({"id_event": id_news}, optionsReturn)
         if response == None:
@@ -84,6 +109,17 @@ class NewsClassRepository():
         return n.get_dict()
     
     def select_note_news(self, id_news, id_user, optionsReturn={"_id": 0}) -> Dict:
+        """
+        Retrieves a specific note from a news document by event ID and user ID.
+
+        Args:
+            id_news: The ID of the news event.
+            id_user: The ID of the user who created the note.
+            optionsReturn (Dict): Fields to include or exclude in the returned document.
+
+        Returns:
+            Union[Dict, bool]: Note as a dictionary if found, False if not found.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         news = self.select_one_news(id_news)
         if news:
@@ -95,6 +131,16 @@ class NewsClassRepository():
             return False
          
     def select_many_news(self, filters=None, optionsReturn={"_id": 0}) -> List[Dict]:
+        """
+        Retrieves multiple news documents that match the given filters.
+
+        Args:
+            filters (Dict): Filters to apply to the query.
+            optionsReturn (Dict): Fields to include or exclude in the returned documents.
+
+        Returns:
+            List[Dict]: List of news documents as dictionaries.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.find(filters, optionsReturn)
 
@@ -108,6 +154,17 @@ class NewsClassRepository():
     
 
     def select_num_news(self, num: int = 1, filters=None, optionsReturn={"_id": 0}) -> List[Dict]:
+        """
+        Retrieves a specified number of news documents that match the given filters.
+
+        Args:
+            num (int): Number of documents to retrieve.
+            filters (Dict): Filters to apply to the query.
+            optionsReturn (Dict): Fields to include or exclude in the returned documents.
+
+        Returns:
+            List[Dict]: List of news documents as dictionaries.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.find(filters, optionsReturn).limit(num)
 
@@ -121,6 +178,19 @@ class NewsClassRepository():
 
     def select_many_order_news(self, filters=None, optionsReturn={"_id": 0}, orderFilter=None, optionsFilter=-1, model_return=True) -> List[
         Dict]:
+        """
+        Retrieves multiple news documents that match the given filters, sorted by a specified field.
+
+        Args:
+            filters (Dict): Filters to apply to the query.
+            optionsReturn (Dict): Fields to include or exclude in the returned documents.
+            orderFilter (str): Field to sort by.
+            optionsFilter (int): Sort order; 1 for ascending, -1 for descending.
+            model_return (bool): If True, returns documents as `News` objects; otherwise, returns raw documents.
+
+        Returns:
+            List[Dict]: List of news documents as dictionaries.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.find(filters, optionsReturn).sort([(orderFilter, optionsFilter)])
 
@@ -136,6 +206,16 @@ class NewsClassRepository():
         return response
 
     def select_by_object_id_news(self, objId: ObjectId, optionsReturn=None) -> List[Dict]:
+        """
+        Retrieves news documents by their ObjectId.
+
+        Args:
+            objId (ObjectId): The ObjectId of the news document.
+            optionsReturn (Dict): Fields to include or exclude in the returned document.
+
+        Returns:
+            List[Dict]: List of news documents as dictionaries.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.find({"_id": ObjectId(objId)}, optionsReturn)
 
@@ -149,12 +229,33 @@ class NewsClassRepository():
 
     # ------------------ Métodos de Edição ------------------------
     def edit_registry_news(self, id, parameterEditing: Dict = None) -> int:
+        """
+        Updates a news document by its event ID with new parameters.
+
+        Args:
+            id: The ID of the news event.
+            parameterEditing (Dict): Parameters to update.
+
+        Returns:
+            int: Number of documents modified.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.update_one({"id_event": id},
                                      {"$set": parameterEditing})
         return data.modified_count
     
     def edit_registry_note(self, id_news, id_user, parameterEditing: Dict = None):
+        """
+        Updates a note within a news document by its event ID and user ID.
+
+        Args:
+            id_news: The ID of the news event.
+            id_user: The ID of the user who created the note.
+            parameterEditing (Dict): Parameters to update.
+
+        Returns:
+            None
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         news = self.select_one_news(id_news)
         notes = news['notes']
@@ -173,18 +274,46 @@ class NewsClassRepository():
                                     {"$set": {"notes: {notes}"}})
 
     def edit_many_registries_news(self, filters: Dict = None, parameterEditing: Dict = None) -> int:
+        """
+        Updates multiple news documents that match the given filters.
+
+        Args:
+            filters (Dict): Filters to apply to the update query.
+            parameterEditing (Dict): Parameters to update.
+
+        Returns:
+            int: Number of documents modified.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.update_many(filters,
                                       {"$set": parameterEditing})
         return data.modified_count
 
     def delete_one_registry_news(self, title: str) -> int:
+        """
+        Deletes a single news document by its title.
+
+        Args:
+            title (str): The title of the news document.
+
+        Returns:
+            int: Number of documents deleted.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.delete_one({"title": title})
 
         return data.deleted_count
 
     def delete_many_registries_news(self, filters: Dict = None) -> int:
+        """
+        Deletes multiple news documents that match the given filters.
+
+        Args:
+            filters (Dict): Filters to apply to the delete query.
+
+        Returns:
+            int: Number of documents deleted.
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         data = collection.delete_many(filters)
 
@@ -192,6 +321,16 @@ class NewsClassRepository():
     
     # ------------------ Métodos de Atualização ------------------------
     def replace_one_registry_news(self, id, registry) -> bool:
+        """
+        Replaces a news document by its ObjectId with a new document.
+
+        Args:
+            id: The ObjectId of the news document.
+            registry (Dict): New document data to replace the old one.
+
+        Returns:
+            bool: True if the replacement is successful, otherwise an exception.
+        """
         try:
             collection = self.__db_connection.get_collection(self.__collection_name)
             print(registry)
@@ -201,5 +340,15 @@ class NewsClassRepository():
             return e
         
     def update_one_registry_news(self, id, registry):
+        """
+        Updates a news document by its ObjectId with new data.
+
+        Args:
+            id: The ObjectId of the news document.
+            registry (Dict): New data to update.
+
+        Returns:
+            None
+        """
         collection = self.__db_connection.get_collection(self.__collection_name)
         collection.update_one({"_id": ObjectId(id)}, {"$set": registry})
