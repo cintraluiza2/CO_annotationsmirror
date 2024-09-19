@@ -7,11 +7,12 @@ from qt_core import *
 # Import Main Window
 from controller.main_control import *
 # Imports SSHTUNNEL
-from sshtunnel import open_tunnel, BaseSSHTunnelForwarderError
+from sshtunnel import open_tunnel, BaseSSHTunnelForwarderError # https://sshtunnel.readthedocs.io/en/latest/
 
 # -----------------------Main ---------------------------
 if __name__ == "__main__":
     try:
+        # Tenta abrir um túnel SSH usando as configurações fornecidas
         with open_tunnel(
             (server_configs['ip_server'], server_configs['port']),
             ssh_username=server_configs['username'],
