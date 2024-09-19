@@ -7,6 +7,22 @@ from PySide6.QtGui import QPaintEvent
 from qt_core import *
 
 class PyPushButtonIcon(QPushButton):
+    """
+        Botão personalizado com ícone e cores personalizadas.
+
+        Parâmetros:
+        - text (str): Texto do botão.
+        - height (int): Altura do botão.
+        - minimum_width (int): Largura mínima do botão.
+        - text_padding (int): Espaçamento do texto.
+        - text_color (str): Cor do texto.
+        - icon_path (str): Caminho do ícone.
+        - icon_color (str): Cor do ícone.
+        - btn_color (str): Cor do botão.
+        - btn_hover (str): Cor do botão ao passar o cursor.
+        - btn_pressed (str): Cor do botão ao ser pressionado.
+        - is_active (bool): Define se o botão está ativo.
+    """
     
     def __init__(self, text = "", height = 40, minimum_width = 50, text_padding = 55, text_color = "#FFFFFF", icon_path = "", icon_color = "#FFFFFF", btn_color = "#1B4269", btn_hover = "#2563A0", btn_pressed = "#133557", is_active = False):
         super().__init__()
@@ -110,6 +126,24 @@ class PyPushButtonIcon(QPushButton):
         
 # ------------------------------------------------------------------------------------ BUTTON GUI
 class PyPushButtonGUI(QPushButton):
+    """
+    Botão GUI com ícone e estilo personalizado.
+
+    Parâmetros:
+    - text (str): Texto do botão.
+    - height (int): Altura do botão.
+    - width (int): Largura do botão.
+    - text_padding (int): Espaçamento do texto.
+    - border_radius (int): Raio da borda.
+    - text_color (str): Cor do texto.
+    - btn_color (str): Cor do botão.
+    - btn_hover (str): Cor do botão ao passar o cursor.
+    - btn_pressed (str): Cor do botão ao ser pressionado.
+    - icon_path (str): Caminho do ícone.
+    - icon_color (str): Cor do ícone.
+    - is_active (bool): Define se o botão está ativo.
+    """
+    
     def __init__(self, text = "", height = 40, width = 50, text_padding = 0, border_radius= 0, text_color = "#FFFFFF", btn_color = "#1B4269", btn_hover = "#2563A0", btn_pressed = "#133557", font_size = 12, font_family = "Arial"):
         super().__init__()
         
