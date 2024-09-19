@@ -15,6 +15,18 @@ from models.utils.data import *
 
 class TableNewsManager:
     def __init__(self, table_news=None, table_page=None, show_page_class=None, set_text_class=None, set_title_list=None) -> None:
+        """
+        Initializes the `TableNewsManager` class, sets up the table view, and configures various components.
+
+        Sets up connections to the database, initializes global variables, and configures table model and buttons.
+        
+        Args:
+            table_news (QTableView): The table view widget for displaying news.
+            table_page (QWidget): The widget containing table-related UI elements.
+            show_page_class (Callable): Callback function to show the classification page.
+            set_text_class (Callable): Callback function to set the classification text.
+            set_title_list (Callable): Callback function to set the list of titles.
+        """
         self.table_news = table_news
         self.table_page = table_page
         self.show_page_class = show_page_class
@@ -61,6 +73,12 @@ class TableNewsManager:
     
             
     def populate_table_news(self):
+        """
+        Populates the table with news data from the database.
+
+        Retrieves news data based on filters stored in `filtro.json`, maps relevance classes to readable strings,
+        and updates the table model with the news data.
+        """
         try:
             if os.path.exists(self.path_filtro):
                 with open(self.path_filtro, 'r') as file_filtro:
@@ -109,6 +127,11 @@ class TableNewsManager:
             print("Erro ao popular tabela de notícias:", e)
             
     def set_status(self):
+        """
+        Updates the status labels on the table page with counts of total, relevant, irrelevant, evaluated, and non-evaluated news items.
+
+        Retrieves counts from the database and updates the corresponding labels on the UI.
+        """
         total = self.__news_repository.get_count()
         relevance = self.__news_repository.get_count({"manual_relevance_class": 1})
         irrelevant = self.__news_repository.get_count({"manual_relevance_class": 0})
@@ -122,6 +145,12 @@ class TableNewsManager:
         self.table_page.lab_not_evaluated.setText(str(no_evaluated))
             
     def set_filters(self):
+        """
+        Applies filters based on user input and updates the table with filtered news data.
+
+        Retrieves filter criteria from UI elements, updates the `filtro` dictionary, and saves it to `filtro.json`.
+        Then, populates the table with news data that matches the filters.
+        """
         title = self.table_page.lineEdit.text()
         year = self.table_page.combo_filter_year.currentData()
         months = self.table_page.combo_filter_month.currentData()
@@ -149,44 +178,54 @@ class TableNewsManager:
             
     # Get Filters             
     def get_filters(self):
-            if "title" in self.filtro:
-                title = self.filtro["title"]['$regex']
-                self.table_page.lineEdit.setText(title)
+        """
+        Updates UI elements with the current filter criteria.
+
+        Retrieves filter criteria from the `filtro` dictionary and sets the corresponding values in the UI elements.
+        """
+        if "title" in self.filtro:
+            title = self.filtro["title"]['$regex']
+            self.table_page.lineEdit.setText(title)
+        
+        if "publication_date" in self.filtro:
+            datas = self.filtro["publication_date"]['$regex'].split("-")
             
-            if "publication_date" in self.filtro:
-                datas = self.filtro["publication_date"]['$regex'].split("-")
-                
-                if datas[0] == r"\d{2}": self.table_page.combo_filter_day.setCurrentIndex(0)
-                else: self.table_page.combo_filter_day.setCurrentIndex(int(datas[0]))
-                
-                if datas[1] == r"\d{2}": self.table_page.combo_filter_month.setCurrentIndex(0)
-                else: self.table_page.combo_filter_month.setCurrentIndex(int(datas[1]))
-                
-                if datas[2] == r"\d{4}": self.table_page.combo_filter_year.setCurrentIndex(0)
-                else: self.table_page.combo_filter_year.setCurrentText(datas[2])
+            if datas[0] == r"\d{2}": self.table_page.combo_filter_day.setCurrentIndex(0)
+            else: self.table_page.combo_filter_day.setCurrentIndex(int(datas[0]))
             
-            if "manual_relevance_class" in self.filtro:
-                relevance = self.filtro['manual_relevance_class']
-                if relevance == None:
-                    self.table_page.comboBox_relevance.setCurrentIndex(0)
-                elif relevance == 1:
-                    self.table_page.comboBox_relevance.setCurrentIndex(1)
-                elif relevance == 0:
-                    self.table_page.comboBox_relevance.setCurrentIndex(2)
-                elif relevance == 2:
-                    self.table_page.comboBox_relevance.setCurrentIndex(3)
-                                
-            if "newspaper" in self.filtro:
-                newspaper = self.filtro["newspaper"]
-                if newspaper == None:
-                    self.table_page.comboBox_relevance.setCurrentIndex(0)
-                elif newspaper == "G1":
-                    self.table_page.comboBox_news.setCurrentIndex(1)
-                elif newspaper == "DM":
-                    self.table_page.comboBox_news.setCurrentIndex(2)
+            if datas[1] == r"\d{2}": self.table_page.combo_filter_month.setCurrentIndex(0)
+            else: self.table_page.combo_filter_month.setCurrentIndex(int(datas[1]))
+            
+            if datas[2] == r"\d{4}": self.table_page.combo_filter_year.setCurrentIndex(0)
+            else: self.table_page.combo_filter_year.setCurrentText(datas[2])
+        
+        if "manual_relevance_class" in self.filtro:
+            relevance = self.filtro['manual_relevance_class']
+            if relevance == None:
+                self.table_page.comboBox_relevance.setCurrentIndex(0)
+            elif relevance == 1:
+                self.table_page.comboBox_relevance.setCurrentIndex(1)
+            elif relevance == 0:
+                self.table_page.comboBox_relevance.setCurrentIndex(2)
+            elif relevance == 2:
+                self.table_page.comboBox_relevance.setCurrentIndex(3)
+                            
+        if "newspaper" in self.filtro:
+            newspaper = self.filtro["newspaper"]
+            if newspaper == None:
+                self.table_page.comboBox_relevance.setCurrentIndex(0)
+            elif newspaper == "G1":
+                self.table_page.comboBox_news.setCurrentIndex(1)
+            elif newspaper == "DM":
+                self.table_page.comboBox_news.setCurrentIndex(2)
                 
             
     def on_selection_table(self):
+        """
+        Handles selection of a news item in the table.
+
+        Retrieves the ID of the selected news item, updates the title list, and displays the classification page.
+        """
         selected_items = self.table_news.selectedIndexes() # O selectedItems seleciona cada celula
         num_selected = len(selected_items) // self.num_columns  # Cada linha é representada por self.num_columns células
         if num_selected == 0:
@@ -206,6 +245,14 @@ class TableNewsManager:
             self.show_page_class()
 
     def on_column_header_clicked(self, logical_index): # Ordenação da Table
+        """
+        Handles sorting of the table by column header.
+
+        Toggles between ascending and descending order when a column header is clicked.
+        
+        Args:
+            logical_index (int): The index of the column header that was clicked.
+        """
         
         if self.toggle_order == Qt.AscendingOrder:
             self.table.sortItems(logical_index, self.toggle_order)
@@ -216,5 +263,14 @@ class TableNewsManager:
             self.toggle_order = Qt.AscendingOrder
             
     def init_combo_box(self, combo_box, data):
-                for key, value in data.items():
-                        combo_box.addItem(key, value)
+        """
+        Initializes a combo box with data.
+
+        Populates the combo box with items from the provided data dictionary.
+        
+        Args:
+            combo_box (QComboBox): The combo box to be initialized.
+            data (dict): A dictionary where keys are item labels and values are item data.
+        """
+        for key, value in data.items():
+                combo_box.addItem(key, value)

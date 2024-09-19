@@ -13,6 +13,13 @@ import random
 
 class ClassificationManager:
     def __init__(self, classification, show_page_table_class) -> None:
+        """
+        Inicializa o gerenciador de classificação de notícias.
+
+        Argumentos:
+            classification: Instância da classe que gerencia a interface de classificação.
+            show_page_table_class: Função para exibir a página de tabela de notícias.
+        """
         self.classification = classification
         self.show_page_table_class = show_page_table_class
         
@@ -55,11 +62,22 @@ class ClassificationManager:
         self.classification.button_cancel.clicked.connect(self.back_table_page)
         
     def set_title_list(self, title_list, title_select, model_table):
+        """
+        Define a lista de títulos, o título selecionado e o modelo da tabela.
+
+        Argumentos:
+            title_list: Lista de títulos de notícias.
+            title_select: Índice do título selecionado.
+            model_table: Modelo da tabela de exibição das notícias.
+        """
         self.title_list = title_list
         self.title_select = title_select
         self.model_table = model_table
         
     def set_text_class(self):
+        """
+        Configura o texto da classificação com base na notícia selecionada.
+        """
         if self.title_list:
             title_news = self.title_list[self.title_select]
             self.id_news = title_news
@@ -84,6 +102,9 @@ class ClassificationManager:
             self.show_page_table_class()
             
     def set_note_class(self):
+        """
+        Configura a nota da notícia com base nas informações armazenadas no banco de dados.
+        """
         note =  self.__news_repository.select_note_news(self.id_news, self.id_user)
 
         if note:
@@ -137,16 +158,28 @@ class ClassificationManager:
 
             
     def next_news(self):
+        """
+        Avança para a próxima notícia e salva as informações atuais.
+        """
         self.save_infos()
         self.title_select = self.title_select + 1
         self.set_text_class()
         
     def back_news(self):
+        """
+        Retorna para a notícia anterior e salva as informações atuais.
+        """
         self.save_infos()
         self.title_select = self.title_select - 1
         self.set_text_class()
         
     def get_infos_note(self):
+        """
+        Obtém as informações da nota atual e as formata para atualização no banco de dados.
+
+        Retorna:
+            Um dicionário com as informações formatadas da nota.
+        """
         country = self.classification.combo_country.currentData()
         region = self.classification.combo_region.currentData()
         city = self.classification.combo_city.currentData()
@@ -208,6 +241,9 @@ class ClassificationManager:
         
             
     def finish_class(self):
+        """
+        Finaliza o processo de anotação e salva o progresso.
+        """
         dlg = WarningMessageBoxOption(title="Questão", txt="Gostaria de finalizar o processo de anotação? O seu progresso será salvo!")
         dlg.setIcon(QMessageBox.Question)
         if dlg.exec_() == QMessageBox.Yes:
@@ -216,6 +252,9 @@ class ClassificationManager:
             self.show_page_table_class()
 
     def back_table_page(self):
+        """
+        Retorna ao menu inicial e limpa o progresso atual.
+        """
         dlg = WarningMessageBoxOption(title="Atenção", txt="Gostaria de retornar ao menu inicial?\nO seu progresso será perdido!")
         dlg.setIcon(QMessageBox.Warning)
         dlg.setButtonText(QMessageBox.Yes, "Sim")
@@ -224,16 +263,28 @@ class ClassificationManager:
             self.show_page_table_class()
             
     def disable_widgets(self):
+        """
+        Desativa os widgets na interface de extração e altera a aparência para indicar desativação.
+        """
         for widget in self.classification.frame_extraction.findChildren(QFrame):
             widget.setStyleSheet("color: #8C8C8C")
             widget.setEnabled(False)
     
     def enabled_widgets(self):
+        """
+        Ativa os widgets na interface de extração e restaura a aparência padrão.
+        """
         for widget in self.classification.frame_extraction.findChildren(QFrame):
             widget.setStyleSheet("QLabel{background-color: transparent;}")
             widget.setEnabled(True)
             
     def check_selected_country(self, index):
+        """
+        Atualiza os combo boxes de região e cidade com base no país selecionado.
+
+        Argumentos:
+            index: Índice do país selecionado no combo box.
+        """
         self.classification.combo_region.clear()
         self.classification.combo_city.clear()
         self.selected_country = self.classification.combo_country.currentText()
@@ -248,6 +299,12 @@ class ClassificationManager:
             self.classification.combo_city.setEnabled(False)
             
     def check_selected_region(self, index):
+        """
+        Atualiza o combo box de cidades com base na região selecionada.
+
+        Argumentos:
+            index: Índice da região selecionada no combo box.
+        """
         self.classification.combo_city.clear()
         self.classification.combo_city.setEnabled(True)
         index = self.classification.combo_region.currentData()
@@ -259,19 +316,37 @@ class ClassificationManager:
             self.classification.combo_city.setEnabled(False)
         
     def add_weapons(self):
+        """
+        Adiciona uma arma à lista de armas na interface.
+        """
         arm = self.classification.input_weapons.text()
         self.classification.list_weapons.addItem(arm)
         
     def remove_weapons(self):
+        """
+        Remove a arma selecionada da lista de armas na interface.
+        """
         if self.classification.list_weapons.currentItem() is not None:
             # Remover o item selecionado
             self.classification.list_weapons.takeItem(self.classification.list_weapons.currentRow())
         
     def set_list_weapons(self, weapons):
+        """
+        Define a lista de armas com base nas armas fornecidas.
+
+        Argumentos:
+            weapons: Lista de armas a serem adicionadas à interface.
+        """
         for item in weapons:
             self.classification.list_weapons.addItem(item)
         
     def get_list_weapons(self):
+        """
+        Obtém a lista de armas e seus códigos a partir da interface.
+
+        Retorna:
+            Uma tupla contendo a lista de armas e a lista de códigos correspondentes.
+        """
         items_list = []
         items_cod_list = []
         list_widget = self.classification.list_weapons
@@ -311,6 +386,9 @@ class ClassificationManager:
         return rand_number
     
     def active_button_geo(self):
+        """
+        Ativa a exibição das coordenadas geográficas com base no país, região e cidade selecionados.
+        """
         country = self.classification.combo_country.currentData()
         region = self.classification.combo_region.currentData()
         city = self.classification.combo_city.currentData()
@@ -321,6 +399,13 @@ class ClassificationManager:
         
     
     def init_combo_box(self, combo_box, data):
-                for key, value in data.items():
-                        combo_box.addItem(key, value)
+        """
+        Inicializa um combo box com dados fornecidos.
+
+        Argumentos:
+            combo_box: O combo box a ser inicializado.
+            data: Dados a serem inseridos no combo box.
+        """
+        for key, value in data.items():
+                combo_box.addItem(key, value)
         
