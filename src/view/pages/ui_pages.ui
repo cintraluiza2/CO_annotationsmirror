@@ -1660,7 +1660,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    <string>g</string>
                   </property>
                   <property name="maximum">
-                   <number>100000</number>
+                   <number>10000000</number>
                   </property>
                  </widget>
                 </item>
@@ -1754,7 +1754,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    <string>g</string>
                   </property>
                   <property name="maximum">
-                   <number>100000</number>
+                   <number>10000000</number>
                   </property>
                  </widget>
                 </item>
@@ -1848,7 +1848,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                    <string>g</string>
                   </property>
                   <property name="maximum">
-                   <number>100000</number>
+                   <number>10000000</number>
                   </property>
                  </widget>
                 </item>

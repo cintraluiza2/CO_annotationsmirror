@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'ui_pages.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.6.1
+## Created by: Qt User Interface Compiler version 6.7.2
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -799,7 +799,7 @@ class Ui_Pages(object):
         self.input_qty_narcotic_1.setObjectName(u"input_qty_narcotic_1")
         self.input_qty_narcotic_1.setFont(font6)
         self.input_qty_narcotic_1.setStyleSheet(u"background-color: #FFFFFF; ")
-        self.input_qty_narcotic_1.setMaximum(100000)
+        self.input_qty_narcotic_1.setMaximum(10000000)
 
         self.horizontalLayout_18.addWidget(self.input_qty_narcotic_1)
 
@@ -842,7 +842,7 @@ class Ui_Pages(object):
         self.input_qty_narcotic_2.setObjectName(u"input_qty_narcotic_2")
         self.input_qty_narcotic_2.setFont(font6)
         self.input_qty_narcotic_2.setStyleSheet(u"background-color: #FFFFFF; ")
-        self.input_qty_narcotic_2.setMaximum(100000)
+        self.input_qty_narcotic_2.setMaximum(10000000)
 
         self.horizontalLayout_7.addWidget(self.input_qty_narcotic_2)
 
@@ -885,7 +885,7 @@ class Ui_Pages(object):
         self.input_qty_narcotic_3.setObjectName(u"input_qty_narcotic_3")
         self.input_qty_narcotic_3.setFont(font6)
         self.input_qty_narcotic_3.setStyleSheet(u"background-color: #FFFFFF; ")
-        self.input_qty_narcotic_3.setMaximum(100000)
+        self.input_qty_narcotic_3.setMaximum(10000000)
 
         self.horizontalLayout_8.addWidget(self.input_qty_narcotic_3)
 
