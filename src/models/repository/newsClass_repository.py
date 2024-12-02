@@ -10,7 +10,7 @@ class NewsClassRepository():
     def __init__(self, db_connection) -> None:
         self.__collection_name = "newsData"
         self.__db_connection = db_connection
-        if self.__db_connection:
+        if not self.__db_connection is None:
             self.collection = self.__db_connection.get_collection(self.__collection_name)
         else:
             self.collection = None
@@ -76,7 +76,7 @@ class NewsClassRepository():
         Returns:
             int: Number of documents matching the filters.
         """
-        if self.__db_connection:
+        if not self.__db_connection is None:
             collection = self.__db_connection.get_collection(self.__collection_name)
             response = collection.count_documents(filters)
             return response
