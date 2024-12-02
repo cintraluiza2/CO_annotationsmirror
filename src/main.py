@@ -24,6 +24,7 @@ if __name__ == "__main__":
             window = MainWindow()
             sys.exit(app.exec())
     except BaseSSHTunnelForwarderError:
+        app = QApplication(sys.argv)
         window = MainWindow()
         window.erro_connect()
         

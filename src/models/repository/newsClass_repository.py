@@ -10,7 +10,10 @@ class NewsClassRepository():
     def __init__(self, db_connection) -> None:
         self.__collection_name = "newsData"
         self.__db_connection = db_connection
-        self.collection = self.__db_connection.get_collection(self.__collection_name)
+        if self.__db_connection:
+            self.collection = self.__db_connection.get_collection(self.__collection_name)
+        else:
+            self.collection = None
 
     # ------------------ Métodos de Inserção ------------------------
     def insert_document_news(self, document: Dict, model_active=True) -> Dict:
@@ -73,11 +76,13 @@ class NewsClassRepository():
         Returns:
             int: Number of documents matching the filters.
         """
-        collection = self.__db_connection.get_collection(self.__collection_name)
-        response = collection.count_documents(filters)
+        if self.__db_connection:
+            collection = self.__db_connection.get_collection(self.__collection_name)
+            response = collection.count_documents(filters)
+            return response
+        else:
+            return 0
 
-        return response
-    
     def find_all(self):
         """
         Retrieves all documents from the `newsData` collection.
