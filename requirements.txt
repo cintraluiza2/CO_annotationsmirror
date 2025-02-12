@@ -1,0 +1,9 @@
+# Conexão ao banco de dados
+sshtunnel==0.4.0
+pymongo==4.11
+
+# Credenciais
+PyYAML==6.0.2
+
+# Interface gráfica
+streamlit==1.42.0

@@ -1,0 +1,83 @@
+from pymongo.errors import ServerSelectionTimeoutError
+import numpy as np
+
+from ..settings import (
+    CONFIDENCE_SCALE, DEFAULT_SORTING_FIELD, ITEMS_PER_PAGE, FIELDS_MAPPING, INVERSE_FIELDS_MAPPING
+)
+from ..data.database import get_articles, get_newspapers
+
+def stylize_relevance_value(col):
+    """
+    Recebe uma coluna de pd.DataFrame e adiciona `background-color` às células a depender do valor de cada uma.
+    - Se o valor for 0: vermelho.
+    - Se o valor for 1: verde.
+    - Demais valores: sem alteração.
+    """
+    style = []
+    for value in col:
+        if value == "Irrelevante":
+            style.append('background-color: #ed685f')
+        elif value == "Relevante":
+            style.append('background-color: #5bb55b')
+        else:
+            style.append('')
+    return style
+
+def stylize_confidence_value(col):
+    colors = []
+    for value in col:
+        if "%" in value:
+            scale_index = (int(value.split("%")[0]) - 50) // 5
+            style = f"background-color: {CONFIDENCE_SCALE[scale_index]};"
+            if scale_index >= 4:
+                style += "color: #dbdbdb;"
+            else:
+                style += "color: #2e2e2e;"
+            colors.append(style)
+        else:
+            colors.append("")
+    return colors
+
+def get_articles_dataframe(filters, sort=DEFAULT_SORTING_FIELD, page=1):
+    """
+    Retorna o dataframe de notícias a ser exibido.
+    """
+    articles_df, search_count = get_articles(
+        filters,
+        as_df=True,
+        page=page,
+        items_per_page=ITEMS_PER_PAGE,
+        sort=INVERSE_FIELDS_MAPPING[sort]
+    )
+
+    if articles_df is None:
+        return None, 0
+
+    # Formatação dos valores das células
+    articles_df["manual_relevance_class"] = articles_df["manual_relevance_class"].apply(
+        lambda x: "Não anotado" if (x is None or np.isnan(x)) else ("Relevante" if x == 1 else "Irrelevante"))
+    articles_df["automatic_relevance_class"] = articles_df["automatic_relevance_class"].apply(
+        lambda x: "Não anotado" if (x is None or np.isnan(x)) else ("Relevante" if x == 1 else "Irrelevante"))
+    articles_df["automatic_relevance_pipeline_confidence"] = articles_df["automatic_relevance_pipeline_confidence"].apply(
+        lambda x: "" if (x is None or np.isnan(x)) else f"{round(x*100)}%")
+
+    # Mapeamento dos nomes das colunas para o que o usuário deve visualizar
+    articles_df.rename(columns=FIELDS_MAPPING, inplace=True)
+
+    # Criação da coluna clicável para abrir a notícia
+    articles_df["Abrir"] = articles_df["_id"].apply(
+        lambda id: f"?page=article&id={id}"
+    )
+
+    # Formatação estética das células
+    articles_df = articles_df.style.apply(stylize_relevance_value, subset=FIELDS_MAPPING["manual_relevance_class"]) \
+        .apply(stylize_relevance_value, subset=FIELDS_MAPPING["automatic_relevance_class"]) \
+            .apply(stylize_confidence_value, subset=FIELDS_MAPPING["automatic_relevance_pipeline_confidence"])
+
+    return articles_df, search_count
+
+def get_sources():
+    try:
+        return get_newspapers()
+    except ServerSelectionTimeoutError:
+        return None
