@@ -23,6 +23,11 @@ configs_file = open('config.yml', 'r')
 configs = yaml.safe_load(configs_file)
 configs_file.close()
 
+def is_port_open(host="localhost", port=27018, timeout=1):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(timeout)
+        return s.connect_ex((host, port)) == 0
+
 def is_tunnel_open() -> bool:
     """
     Verifica se há conexão com o servidor.
@@ -37,16 +42,18 @@ def open_ssh_tunnel(timeout_minutes=10) -> MongoClient:
     global server, db_client, tunnel_timer
 
     if not is_tunnel_open():
-        server = SSHTunnelForwarder(
-            ("200.137.215.38", 42112),
-            ssh_username="couser",
-            ssh_password=configs['lamcad']['ssh_password'],
-            local_bind_address=("localhost", 27018),
-            remote_bind_address=("127.0.0.1", 27017),
-        )
-        server.start()
+        print(is_port_open)
+        if not is_port_open():
+            server = SSHTunnelForwarder(
+                ("200.137.215.38", 42112),
+                ssh_username="couser",
+                ssh_password=configs['lamcad']['ssh_password'],
+                local_bind_address=("localhost", 27018),
+                remote_bind_address=("127.0.0.1", 27017),
+            )
+            server.start()
+            logging.info("SSH Tunnel opened.")
         db_client = pymongo.MongoClient(configs["mongodb_lamcad"]["uri"])
-        logging.info("SSH Tunnel opened.")
 
     # Reiniciando o timer
     if tunnel_timer is not None:
@@ -102,7 +109,20 @@ def get_article(_id: str):
 
     return article
 
-def get_articles(filters: dict, as_df=True, page=1, items_per_page=20, sort="publication_date"):
+def update_article(_id: ObjectId, update: dict):
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["newsData"]
+    collection.update_one({"_id": _id}, update)
+
+def get_best_classification_model():
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["classification_pipelines"]
+
+    best_model = collection.find_one({}, sort=[("score", -1)])
+
+    return best_model
+
+def get_articles(filters: dict, as_df=True, page=1, items_per_page=20, sort="publication_date", sort_type=1):
     db_client = open_ssh_tunnel()
     collection = db_client["couser"]["newsData"]
 
@@ -110,19 +130,17 @@ def get_articles(filters: dict, as_df=True, page=1, items_per_page=20, sort="pub
 
     if filters.get('title'):
         pipeline.append({'$match': {"title": { "$regex": filters.get('title'), "$options": "i" }}})
+    else:
+        pipeline.append({"$match": {}})
+    filters.pop("title", None)
 
-    if not filters.get("relevance") == "Todos":
-        if filters.get("relevance") == "Relevantes":
-            pipeline.append({'$match': {"manual_relevance_class": 1}})
-        else:
-            pipeline.append({'$match': {"manual_relevance_class": 0}})
-
-    if not filters.get("newspaper") == "Todas as fontes":
-        pipeline.append({'$match': {"newspaper": filters.get("newspaper")}})
+    for key, value in filters.items():
+        pipeline[0]["$match"].update({key: value})
 
     pipeline.append({
         '$project': {
             "_id": 1,
+            "id_event": 1,
             "publication_date": 1,
             "newspaper": 1,
             "title": 1,
@@ -146,7 +164,7 @@ def get_articles(filters: dict, as_df=True, page=1, items_per_page=20, sort="pub
         '_id': {'$toString': '$_id'}
         }
     })
-    pipeline.append({"$sort": {sort: -1, "_id": 1}})
+    pipeline.append({"$sort": {sort: sort_type, "_id": 1}})
     pipeline.append({"$skip": skip})
     pipeline.append({"$limit": items_per_page})
 
@@ -155,7 +173,6 @@ def get_articles(filters: dict, as_df=True, page=1, items_per_page=20, sort="pub
     cursor = collection.aggregate(pipeline)
     
     articles = list(cursor)
-    # close_ssh_tunnel(server)
 
     if as_df:
         df = pd.DataFrame(articles)

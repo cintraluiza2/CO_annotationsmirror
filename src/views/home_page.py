@@ -4,7 +4,7 @@ import streamlit as st
 import numpy as np
 
 from ..data.database import get_newspapers
-from ..controllers.home_controllers import get_articles_dataframe, get_sources
+from ..controllers.home_controllers import get_articles_dataframe, get_sources, get_best_classification_model
 from src.settings import (
     ITEMS_PER_PAGE, COLUMNS_ORDER, APP_NAME, APP_DESCRIPTION, APP_INSTRUCTIONS, APP_ICON
 )
@@ -23,7 +23,13 @@ def display_problem_reporting():
 
 def display_automatic_annotation_button():
     columns = st.columns(3)
-    columns[1].button("Atualizar anotação automática", disabled=True)
+    best_classification_model = get_best_classification_model()
+    score = best_classification_model.get("score", "Desconhecida")
+    last_evaluation = best_classification_model.get('timestamp', "Desconhecido")
+
+    columns[0].write(f"Acurácia do modelo de classificação automática: {round(score*100)}%")
+    columns[1].write(f"Última avaliação: {last_evaluation}")
+    columns[2].button("Atualizar anotação automática", disabled=True)
 
 def display_search_count(count):
     st.write(f"{count} notícias encontradas")
@@ -55,11 +61,11 @@ def display_articles_dataframe(df):
     )
 
 def search():
-    print(f"Current page: {st.session_state.current_page}")
     st.session_state.df, st.session_state.search_count = get_articles_dataframe(
         filters=st.session_state.filters,
         page=st.session_state.current_page,
-        sort=st.session_state.get("sort_input")
+        sort=st.session_state.get("sort_input"),
+        sort_type=st.session_state.get('sort_type_input')
     )
     df = st.session_state.df
     if st.session_state.search_count > 0:
@@ -80,9 +86,10 @@ def next_page(upper=True):
 def apply_filters_form():
     st.session_state.filters = {
         'title': st.session_state.get("title_input", ""),
-        'begin_date': st.session_state.get("begin_date_input", ""),
-        'end_date': st.session_state.get("end_date_input", ""),
-        'relevance': st.session_state.get("relevance_input", None),
+        # 'begin_date': st.session_state.get("begin_date_input", ""),
+        # 'end_date': st.session_state.get("end_date_input", ""),
+        'manual_relevance': st.session_state.get("manual_relevance_input", None),
+        'automatic_relevance': st.session_state.get("automatic_relevance_input", None),
         'newspaper': st.session_state.get("newspaper_input", None)
     }
 
@@ -101,13 +108,20 @@ def create_sidebar(messages_placeholder):
         begin_date = col1.date_input("De:", datetime.strptime("01/01/2011", "%d/%m/%Y"), format="DD/MM/YYYY", disabled=True)
         end_date = col2.date_input("Até:", datetime.strptime("31/12/2022", "%d/%m/%Y"), format="DD/MM/YYYY", disabled=True)
 
-        # Filtro de relevância
+        # Filtro de relevância manual
         st.selectbox(
-            "Tipo de notícia:",
-            options=["Todos", "Relevantes", "Não relevantes"],
+            "Anotação manual:",
+            options=["Todas", "Relevantes", "Irrelevantes", "Sem anotação"],
             on_change=None,
-            key="relevance_input",
-            placeholder="Escolha um tipo de notícia"
+            key="manual_relevance_input",
+        )
+
+        # Filtro de relevância automática
+        st.selectbox(
+            "Anotação automática:",
+            options=["Todas", "Relevantes", "Irrelevantes"],
+            on_change=None,
+            key="automatic_relevance_input",
         )
 
         # Filtro de fonte
@@ -130,6 +144,12 @@ def create_sidebar(messages_placeholder):
             "Ordenar por:",
             options=["Confiança", "Data de publicação", "Fonte", "Título da notícia"],
             key="sort_input",
+        )
+
+        st.selectbox(
+            "Tipo de ordenação:",
+            options=["Ascendente", "Descendente"],
+            key="sort_type_input"
         )
         
         # Aplicação do filtro

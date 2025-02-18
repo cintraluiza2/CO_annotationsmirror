@@ -2,12 +2,6 @@ import streamlit as st
 import hashlib
 import hmac
 
-# Initialize session state variables if they don't exist
-if 'authenticated' not in st.session_state:
-    st.session_state.authenticated = False
-if 'username' not in st.session_state:
-    st.session_state.username = ''
-
 # Mock user database - in a real app, use a secure database
 users = {
     "admin": "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918",  # admin

@@ -2,7 +2,8 @@ from datetime import datetime
 import streamlit as st
 import pandas as pd
 
-from ..controllers.article_controllers import get_article
+from ..controllers.article_controllers import get_article, regex_search, update_article_on_db
+from ..settings import ACTORS_RELATIONS, LATIN_AMERICA_CONTRIES
 
 keys = iter(range(1, 100))
 
@@ -25,7 +26,7 @@ def display_article_form(key, disabled=True, submit_label="Salvar", **kwargs):
             else:
                 st.markdown(f"Confiança: {(confidence):.0f}%")
 
-        country = st.selectbox("País", options=["Brasil", "Argentina", "..."], index=kwargs.get('country'), key=next(keys), disabled=disabled)    
+        country = st.selectbox("País", options=LATIN_AMERICA_CONTRIES, index=kwargs.get('country'), key=next(keys), disabled=disabled)    
         region = st.text_input("Região", value=kwargs.get('region'), disabled=disabled)
         city = st.text_input("Município", value=kwargs.get('city'), disabled=disabled)
 
@@ -90,15 +91,29 @@ params = st.query_params
 
 def display_article(container):
     article = get_article(_id=st.query_params.get("id"))
+    article_body = article.get("article")
 
-    st.header("Dados da notícia")
-    st.text(f"Aquisição: {article.get('acquisition_date')}")
+    col1, col2 = st.columns(2, gap="small")
+    # Palavras-chave
+    if article.get("accepted_by"):
+        regex_terms = article.get("accepted_by")
+        regex_terms = regex_terms.split(" - ") if isinstance(regex_terms, str) else regex_terms
+        keywords = regex_search(article_body, regex_terms)
+        col1.pills("Palavras-chave:", keywords, disabled=True)
+
+    # Tags
+    if tags:=article.get("tags"):
+        col2.pills("Tags:", tags, disabled=True)
+
     st.text(f"Publicação: {article.get('publication_date')}")
     st.text(f"Última atualização: {article.get('last_update')}")
     st.text(f"Fonte: {article.get('newspaper')}")
     st.text_area(label="Título da notícia", value=article.get("title"), height=68)
-    st.text_area(label="Corpo da notícia:", value=article.get("article"), height=680)
-    st.link_button("Acessar página da notícia", url=article.get("url"))
+    st.text_area(label="Corpo da notícia:", value=article_body, height=680)
+    
+    if url:=article.get("url"):
+        if isinstance(url, str):
+            st.link_button("Acessar página da notícia", url=url)
 
 def article_page():
     st.set_page_config(
@@ -117,42 +132,45 @@ def article_page():
         with st.form("human_annotation", enter_to_submit=False):
             st.header("Anotação humana")
 
-            relevance = st.radio("Relevante?", ["Sim", "Não"], horizontal=True)
-            doubt = st.checkbox(label="Com dúvida")
+            # Relevância
+            st.radio("Relevante?", ["Sim", "Não", "Dúvida"], horizontal=True, key="manual_relevance_input")
 
-            country = st.selectbox("País", options=["Brasil", "Argentina", "..."])
-            region = st.text_input("Região")
-            city = st.text_input("Município")
+            # Localização
+            st.selectbox("País:", options=LATIN_AMERICA_CONTRIES, index=None, placeholder="Selecione o país", key="country_input")
+            st.text_input("Estado:", key="state_input")
+            st.text_input("Município:", key="city_input")
+            st.text_input("Referências do local (se houver):", key="location_references_input")
+            st.text_input("Latitude e longitude", placeholder="Ex: 18.25000000, -63.16666666", key="latitude_and_longitude_input")
 
-            date = st.date_input("Data do evento", format="DD/MM/YYYY")
+            # Data do evento
+            st.date_input("Data do evento", format="DD/MM/YYYY", value=None, key="event_date_input")
 
-            location = st.text_input("Latitude e longitude", placeholder="Ex: 18.25000000, -63.16666666")
-            # st.map()
-
+            # Conflito
             col2_1, col2_2 = st.columns(2, gap="small")
             with col2_1:
-                conflict = st.radio("Houve conflito?", ["Sim", "Não"], help="Conflito é caracterizado como...", index=None, key=next(keys))
+                st.radio("Houve conflito?", ["Sim", "Não"], help="Conflito é caracterizado como...", index=None, key="conflict_input")
             with col2_2:
-                deaths = st.number_input("Quantidade de mortes", value=0, min_value=0)
+                st.number_input("Quantidade de mortes", value=0, min_value=0, key="deaths_input")
             
             # Drogas apreendidas
-            df = pd.DataFrame(columns=["Tipo de droga", "Quantidade", "Métrica"])
-            st.data_editor(
-                df,
+            drugs_df = pd.DataFrame(columns=["Tipo de droga", "Quantidade", "Métrica"])
+            drugs_input = st.data_editor(
+                drugs_df,
                 column_config={
-                    "Tipo de droga": st.column_config.SelectboxColumn(options=["Cocaína", "Skunk"], required=True),
-                    "Quantidade": st.column_config.NumberColumn(format="%f", required=True),
-                    "Métrica": st.column_config.SelectboxColumn(options=["gramas", "quilos", "tabletes"], required=True)
+                    "Tipo de droga": st.column_config.SelectboxColumn(options=["Cocaína", "Skunk"], required=False, default=" "),
+                    "Quantidade": st.column_config.NumberColumn(format="%f", required=True, default=0),
+                    "Métrica": st.column_config.SelectboxColumn(options=["gramas", "quilos", "tabletes"], required=True, default=" ")
                 },
                 hide_index=True,
                 use_container_width=True,
                 num_rows="dynamic",
+                key="drugs_df_input",
             )
 
             # Armas apreendidas
-            df = pd.DataFrame(columns=["Tipo de arma", "Quantidade"])
-            st.data_editor(
-                df,
+            guns_df = pd.DataFrame(columns=["Tipo de arma", "Quantidade"])
+            guns_input = st.data_editor(
+                guns_df,
                 column_config={
                     "Tipo de arma": st.column_config.TextColumn(required=True),
                     "Quantidade": st.column_config.NumberColumn(required=True, format="%d")
@@ -163,20 +181,54 @@ def article_page():
             )
 
             # Relação entre atores
-            df = pd.DataFrame(columns=["Ator 1", "Ator 2", "Relação"])
-            st.data_editor(
-                df,
+            actors_df = pd.DataFrame(columns=["Ator 1", "Ator 2", "Relação"])
+            actors_input = st.data_editor(
+                actors_df,
                 column_config={
                     "Ator 1": st.column_config.TextColumn(required=True),
                     "Ator 2": st.column_config.TextColumn(required=True),
-                    "Relação": st.column_config.SelectboxColumn(required=True, options=["Rivalidade", "Competição"])
+                    "Relação": st.column_config.SelectboxColumn(required=True, options=ACTORS_RELATIONS)
                 },
                 hide_index=True,
                 use_container_width=True,
                 num_rows="dynamic",
             )
 
-            st.form_submit_button("Salvar")
+            col2_1, col2_2 = st.columns(2, gap="small")
+            with col2_1:
+                # Outras notícias sobre o mesmo evento
+                st.write("Identifique abaixo o ID de outras notícias que tratam sobre este mesmo evento, se houver:")
+                same_event_df = pd.DataFrame(columns=["ID da notícia"])
+                same_event_input = st.data_editor(
+                    same_event_df,
+                    column_config={
+                        "ID da notícia": st.column_config.NumberColumn(required=True, format="%d")
+                    },
+                    hide_index=True,
+                    use_container_width=True,
+                    num_rows="dynamic",
+                )
+
+            if st.form_submit_button("Salvar"):
+
+                update_article_on_db(
+                    _id=st.query_params.get("id"),
+                    update={
+                        "manual_relevance_class": st.session_state.get("manual_relevance_input", None),
+                        "country": st.session_state.get("country_input", None),
+                        "state": st.session_state.get("state_input", None),
+                        "city": st.session_state.get("city_input", None),
+                        "location_references": st.session_state.get("location_references_input", None),
+                        "latitude_and_longitude": st.session_state.get("latitude_and_longitude_input", None),
+                        "event_date": st.session_state.get("event_date_input", None),
+                        "conflict": st.session_state.get("conflict_input", None),
+                        "deaths": st.session_state.get("deaths_input", None),
+                        "drugs": drugs_input,
+                        "guns": guns_input,
+                        "actors": actors_input,
+                        "same_event": same_event_input,
+                    }
+                )
 
     st.divider()
 

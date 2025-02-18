@@ -4,7 +4,7 @@ import numpy as np
 from ..settings import (
     CONFIDENCE_SCALE, DEFAULT_SORTING_FIELD, ITEMS_PER_PAGE, FIELDS_MAPPING, INVERSE_FIELDS_MAPPING
 )
-from ..data.database import get_articles, get_newspapers
+from ..data.database import get_articles, get_newspapers, get_best_classification_model
 
 def stylize_relevance_value(col):
     """
@@ -38,19 +38,46 @@ def stylize_confidence_value(col):
             colors.append("")
     return colors
 
-def get_articles_dataframe(filters, sort=DEFAULT_SORTING_FIELD, page=1):
+def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_type=-1):
     """
     Retorna o dataframe de notícias a ser exibido.
     """
+    # Formatação da relevância manual
+    if not filters.get("manual_relevance") == "Todas":
+        if filters.get("manual_relevance") == "Relevantes":
+            filters.update({"manual_relevance_class": 1})
+        elif filters.get("manual_relevance") == "Relevantes":
+            filters.update({"manual_relevance_class": 0})
+        else:
+            filters.update(
+                {"$or": [
+                    {"manual_relevance_class": None},  # Field is None
+                    {"manual_relevance_class": {"$exists": False}}]  # Field does not exist
+                })
+    filters.pop("manual_relevance", None)
+
+    # Formatação da relevância automática
+    if not filters.get("automatic_relevance") == "Todas":
+        if filters.get("automatic_relevance") == "Relevantes":
+            filters.update({"automatic_relevance_class": 1})
+        else:
+            filters.update({"automatic_relevance_class": 0})
+    filters.pop("automatic_relevance", None)
+
+    # Formatação da fonte
+    if filters.get("newspaper") == "Todas as fontes":
+        filters.pop("newspaper")
+
     articles_df, search_count = get_articles(
         filters,
         as_df=True,
         page=page,
         items_per_page=ITEMS_PER_PAGE,
-        sort=INVERSE_FIELDS_MAPPING[sort]
+        sort=INVERSE_FIELDS_MAPPING[sort],
+        sort_type={"Ascendente": 1, "Descendente": -1}[sort_type],
     )
 
-    if articles_df is None:
+    if (articles_df is None) or (not search_count):
         return None, 0
 
     # Formatação dos valores das células
@@ -60,7 +87,7 @@ def get_articles_dataframe(filters, sort=DEFAULT_SORTING_FIELD, page=1):
         lambda x: "Não anotado" if (x is None or np.isnan(x)) else ("Relevante" if x == 1 else "Irrelevante"))
     articles_df["automatic_relevance_pipeline_confidence"] = articles_df["automatic_relevance_pipeline_confidence"].apply(
         lambda x: "" if (x is None or np.isnan(x)) else f"{round(x*100)}%")
-
+    
     # Mapeamento dos nomes das colunas para o que o usuário deve visualizar
     articles_df.rename(columns=FIELDS_MAPPING, inplace=True)
 
@@ -81,3 +108,4 @@ def get_sources():
         return get_newspapers()
     except ServerSelectionTimeoutError:
         return None
+    

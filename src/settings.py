@@ -31,17 +31,33 @@ CONFIDENCE_SCALE = [
 DEFAULT_SORTING_FIELD = "Data de publicação"
 
 FIELDS_MAPPING = {
+    "automatic_relevance_class": "Anotação automática",
+    "automatic_relevance_pipeline_confidence": "Confiança",
+    "id_event": "ID",
     "publication_date": "Data de publicação",
     "newspaper": "Fonte",
     "title": "Título da notícia",
     "manual_relevance_class": "Anotação manual",
-    "automatic_relevance_class": "Anotação automática",
-    "automatic_relevance_pipeline_confidence": "Confiança"
 }
 
 INVERSE_FIELDS_MAPPING = {value: key for key, value in FIELDS_MAPPING.items()}
 
 COLUMNS_ORDER = [
-    "Abrir", "Data de publicação", "Fonte", "Título da notícia",
+    "Abrir", "ID", "Data de publicação", "Fonte", "Título da notícia",
     "Anotação manual", "Anotação automática", "Confiança"
+]
+
+LATIN_AMERICA_CONTRIES = [
+    "Argentina", "Bolívia", "Brasil", "Chile", "Colômbia", "Costa Rica", 
+    "Cuba", "Equador", "El Salvador", "Guatemala", "Haiti", "Honduras", 
+    "México", "Nicarágua", "Panamá", "Paraguai", "Peru", 
+    "República Dominicana", "Uruguai", "Venezuela"
+]
+
+ACTORS_RELATIONS = [
+    "Cooperação",
+    "Competição",
+    "Confronto",
+    "Integração",
+    "Rivalidade",
 ]

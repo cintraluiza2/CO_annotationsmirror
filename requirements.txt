@@ -2,6 +2,9 @@
 sshtunnel==0.4.0
 pymongo==4.11
 
+# Processamento de dados
+Unidecode==1.3.8
+
 # Credenciais
 PyYAML==6.0.2
 
