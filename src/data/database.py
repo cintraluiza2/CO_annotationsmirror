@@ -1,13 +1,15 @@
-from sshtunnel import open_tunnel, SSHTunnelForwarder
-from pymongo import MongoClient, DESCENDING
+from sshtunnel import SSHTunnelForwarder
+from pymongo import MongoClient
+from bcrypt import hashpw, gensalt, checkpw
 from bson import ObjectId
 import pandas as pd
 import threading
-import time
+import base64
 import pymongo
 import socket
 import yaml
 import logging
+
 
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 logging.getLogger("watchdog.observers.inotify_buffer").setLevel(logging.WARNING)
@@ -42,11 +44,10 @@ def open_ssh_tunnel(timeout_minutes=10) -> MongoClient:
     global server, db_client, tunnel_timer
 
     if not is_tunnel_open():
-        print(is_port_open)
         if not is_port_open():
             server = SSHTunnelForwarder(
-                ("200.137.215.38", 42112),
-                ssh_username="couser",
+                (configs["lamcad"]["server_ip"], configs["lamcad"]["server_port"]),
+                ssh_username=configs["lamcad"]["ssh_username"],
                 ssh_password=configs['lamcad']['ssh_password'],
                 local_bind_address=("localhost", 27018),
                 remote_bind_address=("127.0.0.1", 27017),
@@ -190,3 +191,80 @@ def get_articles(filters: dict, as_df=True, page=1, items_per_page=20, sort="pub
         return df, total_count
     else:
         return articles, total_count
+    
+# -------------------- Login e usuários -------------------------
+
+def create_user(email, password, role):
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["users"]
+
+    hashed_password = hashpw(password.encode(), gensalt())
+
+    user_data = {
+        "email": email,
+        "password": base64.b64encode(hashed_password).decode(),
+        "role": role
+    }
+
+    collection.insert_one(user_data)
+
+    return True
+
+def user_exists(email):
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["users"]
+
+    user = collection.find_one({"email": email})
+    return bool(user)
+
+def get_users_credentials():
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["users"]
+
+    cursor = collection.aggregate([{
+        '$project': {
+            "_id": 1,
+            "username": 1,
+            "email": 1,
+            "name": 1,
+            "password": 1,
+            "role": 1
+        }
+    }])
+
+    users = collection.find()
+
+    credentials = {"usernames": {}}
+    for user in users:
+        if not "username" in user:
+            user["username"] = user["email"]
+
+        credentials["usernames"][user["username"]] = {
+            "email": user.get("email"),
+            "name": user.get("name"),
+            "password": user.get("password"),
+            "roles": [user.get("role")]
+        }
+
+    return credentials
+
+def authenticate_user(email, password):
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["users"]
+
+    user = collection.find_one({"email": email})
+    stored_password = base64.b64decode(user["password"])
+
+    if user and checkpw(password.encode(), stored_password):
+        return True
+    return False
+
+def is_admin(email):
+    return get_user_role(email) == 1
+
+def get_user_role(email):
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["users"]
+
+    user = collection.find_one({"email": email})
+    return user.get("role")

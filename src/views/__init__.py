@@ -5,3 +5,4 @@
 from .login_page import login_page
 from .home_page import home_page
 from .article_page import article_page
+from .register_page import register_page

@@ -1,13 +1,16 @@
+from streamlit_authenticator import Authenticate
 from datetime import datetime
 from math import ceil
 import streamlit as st
 import numpy as np
 
-from ..data.database import get_newspapers
-from ..controllers.home_controllers import get_articles_dataframe, get_sources, get_best_classification_model
+from ..data.database import get_newspapers, get_users_credentials
+from ..controllers.home_controllers import get_articles_dataframe, get_sources, get_best_classification_model, get_user_role, is_admin
 from src.settings import (
     ITEMS_PER_PAGE, COLUMNS_ORDER, APP_NAME, APP_DESCRIPTION, APP_INSTRUCTIONS, APP_ICON
 )
+
+keys = iter(range(1, 100))
 
 if "filters" not in st.session_state:
     st.session_state["filters"] = {}
@@ -16,6 +19,17 @@ def display_welcome():
     st.title(APP_NAME)
     st.text(APP_DESCRIPTION)
     st.text(APP_INSTRUCTIONS)
+
+    if st.button("Sair"):
+        from ..controllers.main_controllers import authenticator
+
+        authenticator.logout(location="unrendered", callback=lambda _: st.rerun())
+
+    # if is_admin(st.session_state["username"]):
+    #     if st.button("Registrar novo usuário"):
+    #         st.query_params["page"] = "register"
+    #         st.rerun()
+
     display_problem_reporting()
 
 def display_problem_reporting():
@@ -29,7 +43,7 @@ def display_automatic_annotation_button():
 
     columns[0].write(f"Acurácia do modelo de classificação automática: {round(score*100)}%")
     columns[1].write(f"Última avaliação: {last_evaluation}")
-    columns[2].button("Atualizar anotação automática", disabled=True)
+    columns[2].button("Atualizar anotação automática", disabled=True, key=next(keys))
 
 def display_search_count(count):
     st.write(f"{count} notícias encontradas")
@@ -42,7 +56,7 @@ def display_pagination(total_pages):
         pagination[0].button("← Página anterior", on_click=lambda: next_page(upper=False), use_container_width=True)
 
     if st.session_state.current_page < total_pages:
-        pagination[1].button("Próxima página →", on_click=next_page, use_container_width=True)
+        pagination[1].button("Próxima página →", on_click=next_page, use_container_width=True, key=next(keys))
 
 def display_articles_dataframe(df):
     """
@@ -170,5 +184,7 @@ def home_page():
 
     create_sidebar(messages_placeholder)
 
-    if not "df" in st.session_state:
+    if "df" in st.session_state:
+        search()
+    else:
         display_welcome()

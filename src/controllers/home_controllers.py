@@ -4,7 +4,7 @@ import numpy as np
 from ..settings import (
     CONFIDENCE_SCALE, DEFAULT_SORTING_FIELD, ITEMS_PER_PAGE, FIELDS_MAPPING, INVERSE_FIELDS_MAPPING
 )
-from ..data.database import get_articles, get_newspapers, get_best_classification_model
+from ..data.database import get_articles, get_newspapers, get_best_classification_model, get_user_role, is_admin
 
 def stylize_relevance_value(col):
     """
@@ -46,7 +46,7 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
     if not filters.get("manual_relevance") == "Todas":
         if filters.get("manual_relevance") == "Relevantes":
             filters.update({"manual_relevance_class": 1})
-        elif filters.get("manual_relevance") == "Relevantes":
+        elif filters.get("manual_relevance") == "Irrelevantes":
             filters.update({"manual_relevance_class": 0})
         else:
             filters.update(
@@ -108,4 +108,4 @@ def get_sources():
         return get_newspapers()
     except ServerSelectionTimeoutError:
         return None
-    
+        
