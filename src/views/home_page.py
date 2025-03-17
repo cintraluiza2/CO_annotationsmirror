@@ -20,20 +20,10 @@ def display_welcome():
     st.text(APP_DESCRIPTION)
     st.text(APP_INSTRUCTIONS)
 
-    if st.button("Sair"):
-        from ..controllers.main_controllers import authenticator
-
-        authenticator.logout(location="unrendered", callback=lambda _: st.rerun())
-
-    # if is_admin(st.session_state["username"]):
-    #     if st.button("Registrar novo usuário"):
-    #         st.query_params["page"] = "register"
-    #         st.rerun()
-
     display_problem_reporting()
 
 def display_problem_reporting():
-    st.button("Reportar problema", disabled=True)
+    st.button("Reportar problema", disabled=True, key=next(keys))
 
 def display_automatic_annotation_button():
     columns = st.columns(3)
@@ -72,6 +62,7 @@ def display_articles_dataframe(df):
         },
         key="dataframe_widget",
         height=600,
+        use_container_width=True
     )
 
 def search():
@@ -185,6 +176,9 @@ def home_page():
     create_sidebar(messages_placeholder)
 
     if "df" in st.session_state:
+        print("Search")
         search()
+        print("Search")
+        print("---")
     else:
         display_welcome()

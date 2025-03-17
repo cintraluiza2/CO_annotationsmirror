@@ -169,7 +169,7 @@ def get_articles(filters: dict, as_df=True, page=1, items_per_page=20, sort="pub
     pipeline.append({"$skip": skip})
     pipeline.append({"$limit": items_per_page})
 
-    logging.debug(f"Pipeline query: {pipeline}")
+    # logging.debug(f"Pipeline query: {pipeline}")
 
     cursor = collection.aggregate(pipeline)
     

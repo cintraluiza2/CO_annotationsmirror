@@ -9,8 +9,6 @@ keys = iter(range(1, 100))
 
 st.session_state["tab_name"] = "| Notícia"
 
-
-
 def display_article_form(key, disabled=True, submit_label="Salvar", **kwargs):
     with st.form(key, enter_to_submit=False):
         st.header("Dados preenchidos automaticamente")
@@ -121,7 +119,6 @@ def article_page():
         page_icon="📝",
         layout="wide",
     )
-    # st.title("Anotação de notícia")
 
     col1, col2 = st.columns(2, gap="medium")
 
