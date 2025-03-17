@@ -176,9 +176,7 @@ def home_page():
     create_sidebar(messages_placeholder)
 
     if "df" in st.session_state:
-        print("Search")
-        search()
-        print("Search")
-        print("---")
+        # search()
+        pass
     else:
         display_welcome()
