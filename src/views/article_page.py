@@ -233,26 +233,29 @@ def article_page():
                 )
 
             if st.form_submit_button("Salvar"):
-
-                update_article_on_db(
-                    _id=st.query_params.get("id"),
-                    update={
-                        "manual_relevance_class": st.session_state.get("manual_relevance_input", None),
-                        "country": st.session_state.get("country_input", None),
-                        "state": st.session_state.get("state_input", None),
-                        "city": st.session_state.get("city_input", None),
-                        "location_references": st.session_state.get("location_references_input", None),
-                        "latitude_and_longitude": st.session_state.get("latitude_and_longitude_input", None),
-                        "event_date": st.session_state.get("event_date_input", None),
-                        "conflict": st.session_state.get("conflict_input", None),
-                        "deaths": st.session_state.get("deaths_input", None),
-                        "drugs": drugs_input,
-                        "other_drugs": other_drugs_input,
-                        "guns": guns_input,
-                        "actors": actors_input,
-                        "same_event": same_event_input,
-                    }
-                )
+                try:
+                    update_article_on_db(
+                        _id=st.query_params.get("id"),
+                        update={
+                            "manual_relevance_class": st.session_state.get("manual_relevance_input", None),
+                            "country": st.session_state.get("country_input", None),
+                            "state": st.session_state.get("state_input", None),
+                            "city": st.session_state.get("city_input", None),
+                            "location_references": st.session_state.get("location_references_input", None),
+                            "latitude_and_longitude": st.session_state.get("latitude_and_longitude_input", None),
+                            "event_date": st.session_state.get("event_date_input", None),
+                            "conflict": st.session_state.get("conflict_input", None),
+                            "deaths": st.session_state.get("deaths_input", None),
+                            "drugs": drugs_input,
+                            "other_drugs": other_drugs_input,
+                            "guns": guns_input,
+                            "actors": actors_input,
+                            "same_event": same_event_input,
+                        }
+                    )
+                except:
+                    st.error("Ocorreu algum erro ao tentar salvar!")
+                st.success("Salvo com sucesso!")
 
     st.divider()
 
