@@ -4,8 +4,7 @@ from math import ceil
 import streamlit as st
 import numpy as np
 
-from ..data.database import get_newspapers, get_users_credentials
-from ..controllers.home_controllers import get_articles_dataframe, get_sources, get_best_classification_model, get_user_role, is_admin
+from ..controllers.home_controllers import get_articles_dataframe, get_sources, get_best_classification_model
 from src.settings import (
     ITEMS_PER_PAGE, COLUMNS_ORDER, APP_NAME, APP_DESCRIPTION, APP_INSTRUCTIONS, APP_ICON
 )

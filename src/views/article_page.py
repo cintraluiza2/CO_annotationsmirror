@@ -148,13 +148,16 @@ def article_page():
                 st.radio("Houve conflito?", ["Sim", "Não"], help="Conflito é caracterizado como...", index=None, key="conflict_input")
             with col2_2:
                 st.number_input("Quantidade de mortes", value=0, min_value=0, key="deaths_input")
+
+            st.divider()
             
             # Drogas apreendidas
+            st.write("Identifique abaixo as drogas apreendidas, se houver:")
             drugs_df = pd.DataFrame(columns=["Tipo de droga", "Quantidade", "Métrica"])
             drugs_input = st.data_editor(
                 drugs_df,
                 column_config={
-                    "Tipo de droga": st.column_config.SelectboxColumn(options=["Cocaína", "Skunk"], required=False, default=" "),
+                    "Tipo de droga": st.column_config.SelectboxColumn(options=["Cocaína", "Skunk"], required=True, default=" "),
                     "Quantidade": st.column_config.NumberColumn(format="%f", required=True, default=0),
                     "Métrica": st.column_config.SelectboxColumn(options=["gramas", "quilos", "tabletes"], required=True, default=" ")
                 },
@@ -164,32 +167,55 @@ def article_page():
                 key="drugs_df_input",
             )
 
+            st.write("Utilize o campo abaixo se desejar adicionar outros tipos de drogas ou outros tipos de métrica:")
+            other_drugs_df = pd.DataFrame(columns=["Outro tipo de droga", "Quantidade", "Métrica"])
+            other_drugs_input = st.data_editor(
+                other_drugs_df,
+                column_config={
+                    "Outro tipo de droga": st.column_config.TextColumn(required=False, default=" "),
+                    "Quantidade": st.column_config.NumberColumn(format="%f", required=True, default=0),
+                    "Métrica": st.column_config.TextColumn(required=True, default=" ")
+                },
+                hide_index=True,
+                use_container_width=True,
+                num_rows="dynamic",
+                key="other_drugs_df_input",
+            )
+
+            st.divider()
+
             # Armas apreendidas
+            st.write("Identifique abaixo as armas apreendidas, se houver:")
             guns_df = pd.DataFrame(columns=["Tipo de arma", "Quantidade"])
             guns_input = st.data_editor(
                 guns_df,
                 column_config={
-                    "Tipo de arma": st.column_config.TextColumn(required=True),
-                    "Quantidade": st.column_config.NumberColumn(required=True, format="%d")
+                    "Tipo de arma": st.column_config.TextColumn(required=True, default=" "),
+                    "Quantidade": st.column_config.NumberColumn(required=True, format="%d", default=0)
                 },
                 hide_index=True,
                 use_container_width=True,
                 num_rows="dynamic",
             )
 
+            st.divider()
+
             # Relação entre atores
+            st.write("Identifique abaixo a interações entre os atores envolvidos:")
             actors_df = pd.DataFrame(columns=["Ator 1", "Ator 2", "Relação"])
             actors_input = st.data_editor(
                 actors_df,
                 column_config={
-                    "Ator 1": st.column_config.TextColumn(required=True),
-                    "Ator 2": st.column_config.TextColumn(required=True),
-                    "Relação": st.column_config.SelectboxColumn(required=True, options=ACTORS_RELATIONS)
+                    "Ator 1": st.column_config.TextColumn(required=True, default=" "),
+                    "Ator 2": st.column_config.TextColumn(required=True, default=" "),
+                    "Relação": st.column_config.SelectboxColumn(required=True, options=ACTORS_RELATIONS, default=" ")
                 },
                 hide_index=True,
                 use_container_width=True,
                 num_rows="dynamic",
             )
+
+            st.divider()
 
             col2_1, col2_2 = st.columns(2, gap="small")
             with col2_1:
@@ -221,6 +247,7 @@ def article_page():
                         "conflict": st.session_state.get("conflict_input", None),
                         "deaths": st.session_state.get("deaths_input", None),
                         "drugs": drugs_input,
+                        "other_drugs": other_drugs_input,
                         "guns": guns_input,
                         "actors": actors_input,
                         "same_event": same_event_input,
@@ -241,5 +268,5 @@ def article_page():
         ]
     })
 
-    article_id = params.get("id", [None])[0]
-    print(f"article_id: {article_id}")
+    article_id = params.get("id", [None])
+    print(get_article(_id=article_id))

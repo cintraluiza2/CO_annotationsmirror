@@ -4,7 +4,7 @@ import numpy as np
 from ..settings import (
     CONFIDENCE_SCALE, DEFAULT_SORTING_FIELD, ITEMS_PER_PAGE, FIELDS_MAPPING, INVERSE_FIELDS_MAPPING
 )
-from ..data.database import get_articles, get_newspapers, get_best_classification_model, get_user_role, is_admin
+from ..data.database import get_articles, get_newspapers, get_best_classification_model
 
 def stylize_relevance_value(col):
     """
@@ -87,6 +87,9 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
         lambda x: "Não anotado" if (x is None or np.isnan(x)) else ("Relevante" if x == 1 else "Irrelevante"))
     articles_df["automatic_relevance_pipeline_confidence"] = articles_df["automatic_relevance_pipeline_confidence"].apply(
         lambda x: "" if (x is None or np.isnan(x)) else f"{round(x*100)}%")
+
+    # Alterando o tipo de id_event para str para melhorar a visualização
+    articles_df["id_event"] = articles_df["id_event"].astype(str)
     
     # Mapeamento dos nomes das colunas para o que o usuário deve visualizar
     articles_df.rename(columns=FIELDS_MAPPING, inplace=True)

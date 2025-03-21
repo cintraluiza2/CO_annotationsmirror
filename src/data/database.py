@@ -113,7 +113,7 @@ def get_article(_id: str):
 def update_article(_id: ObjectId, update: dict):
     db_client = open_ssh_tunnel()
     collection = db_client["couser"]["newsData"]
-    collection.update_one({"_id": _id}, update)
+    collection.update_one({"_id": _id}, {"$set": update})
 
 def get_best_classification_model():
     db_client = open_ssh_tunnel()
@@ -191,80 +191,18 @@ def get_articles(filters: dict, as_df=True, page=1, items_per_page=20, sort="pub
         return df, total_count
     else:
         return articles, total_count
+
+def domain_translation(column_name, value=None, description=None):
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["domain"]
+    filter_ = {"column_name": column_name}
+    if not value is None:
+        filter_["value"] = value
+    elif not description is None:
+        filter_["description"] = description
     
-# -------------------- Login e usuários -------------------------
-
-def create_user(email, password, role):
-    db_client = open_ssh_tunnel()
-    collection = db_client["couser"]["users"]
-
-    hashed_password = hashpw(password.encode(), gensalt())
-
-    user_data = {
-        "email": email,
-        "password": base64.b64encode(hashed_password).decode(),
-        "role": role
-    }
-
-    collection.insert_one(user_data)
-
-    return True
-
-def user_exists(email):
-    db_client = open_ssh_tunnel()
-    collection = db_client["couser"]["users"]
-
-    user = collection.find_one({"email": email})
-    return bool(user)
-
-def get_users_credentials():
-    db_client = open_ssh_tunnel()
-    collection = db_client["couser"]["users"]
-
-    cursor = collection.aggregate([{
-        '$project': {
-            "_id": 1,
-            "username": 1,
-            "email": 1,
-            "name": 1,
-            "password": 1,
-            "role": 1
-        }
-    }])
-
-    users = collection.find()
-
-    credentials = {"usernames": {}}
-    for user in users:
-        if not "username" in user:
-            user["username"] = user["email"]
-
-        credentials["usernames"][user["username"]] = {
-            "email": user.get("email"),
-            "name": user.get("name"),
-            "password": user.get("password"),
-            "roles": [user.get("role")]
-        }
-
-    return credentials
-
-def authenticate_user(email, password):
-    db_client = open_ssh_tunnel()
-    collection = db_client["couser"]["users"]
-
-    user = collection.find_one({"email": email})
-    stored_password = base64.b64decode(user["password"])
-
-    if user and checkpw(password.encode(), stored_password):
-        return True
-    return False
-
-def is_admin(email):
-    return get_user_role(email) == 1
-
-def get_user_role(email):
-    db_client = open_ssh_tunnel()
-    collection = db_client["couser"]["users"]
-
-    user = collection.find_one({"email": email})
-    return user.get("role")
+    result = collection.find_one(filter_)
+    if not value is None:
+        return result.get("description")
+    else:
+        return result.get("value")

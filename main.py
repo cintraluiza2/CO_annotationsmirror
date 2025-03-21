@@ -1,8 +1,7 @@
 import streamlit as st
 import atexit
 
-from src.controllers.home_controllers import is_admin
-from src.views import login_page, home_page, article_page, register_page
+from src.views import home_page, article_page
 from src.data.database import close_ssh_tunnel
 
 # Para fechar o túnel SSH quando a aplicação é encerrada
