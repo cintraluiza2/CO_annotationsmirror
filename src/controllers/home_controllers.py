@@ -1,10 +1,14 @@
 from pymongo.errors import ServerSelectionTimeoutError
 import numpy as np
 
+from ..data import database as db
 from ..settings import (
-    CONFIDENCE_SCALE, DEFAULT_SORTING_FIELD, ITEMS_PER_PAGE, FIELDS_MAPPING, INVERSE_FIELDS_MAPPING
+    CONFIDENCE_SCALE,
+    DEFAULT_SORTING_FIELD,
+    ITEMS_PER_PAGE,
+    FIELDS_MAPPING,
+    INVERSE_FIELDS_MAPPING
 )
-from ..data.database import get_articles, get_newspapers, get_best_classification_model
 
 def stylize_relevance_value(col):
     """
@@ -70,7 +74,7 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
     if filters.get("newspaper") == "Todas as fontes":
         filters.pop("newspaper")
 
-    articles_df, search_count = get_articles(
+    articles_df, search_count = db.get_articles(
         filters,
         as_df=True,
         page=page,
@@ -111,7 +115,9 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
 
 def get_sources():
     try:
-        return get_newspapers()
+        return db.get_newspapers()
     except ServerSelectionTimeoutError:
         return None
         
+def get_best_classification_model():
+    return db.get_best_classification_model()

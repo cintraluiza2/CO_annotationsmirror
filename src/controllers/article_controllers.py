@@ -5,8 +5,12 @@ import pandas as pd
 import re
 
 from ..data import database as db
-from ..data.database import get_article_from_database, update_article, domain_translation, get_countries
-from ..settings import DRUGS_DATA_MAPPING, OTHER_DRUGS_DATA_MAPPING, GUNS_DATA_MAPPING, ACTORS_DATA_MAPPING
+from ..settings import (
+    DRUGS_DATA_MAPPING,
+    OTHER_DRUGS_DATA_MAPPING,
+    GUNS_DATA_MAPPING,
+    ACTORS_DATA_MAPPING
+)
 
 def regex_search(text:str, regex_terms:list):
     # Remoção de acentos
@@ -31,11 +35,11 @@ def update_article_on_db(_id: str, update: dict):
 
     # Traduzindo o país
     if update.get("country"):
-        update["country"] = domain_translation(column_name="country", description=update["country"])
-    
+        update["country"] = db.domain_translation(column_name="country", description=update["country"])
+
     # Traduzindo o campo de conflito
     if update.get("conflict"):
-        update["conflict"] = domain_translation(column_name="conflict", description=update["conflict"])
+        update["conflict"] = db.domain_translation(column_name="conflict", description=update["conflict"])
 
     # Traduzindo o campo de tipo de droga
     drugs = []
@@ -75,7 +79,7 @@ def update_article_on_db(_id: str, update: dict):
             actors.append({
                 "actor 1": row["Ator 1"],
                 "actor 2": row["Ator 2"],
-                "relationship": domain_translation(column_name="actors_relationship", description=row["Relação"]),
+                "relationship": db.domain_translation(column_name="actors_relationship", description=row["Relação"]),
             })
     update["actors"] = actors
 
@@ -97,12 +101,12 @@ def update_article_on_db(_id: str, update: dict):
     # Traduzindo o campo de validação
     update["validated"] = {"Não": 0, "Sim": 1}[update.get("validated", 0)]
         
-    update_article(ObjectId(_id), update) # 9805
+    db.update_article(ObjectId(_id), update) # 9805
 
     return 1, "Sucesso"
 
 def get_article(_id: str):
-    article = get_article_from_database(_id)
+    article = db.get_article(_id)
 
     # Formação das drogas do campo do campo livre, isto é, onde "droga" e "métrica" era digitados
     free_type_drugs = [drug for drug in article.get("drugs", []) if drug.get("type", "") == "free_field"]
@@ -135,7 +139,7 @@ def get_article(_id: str):
         relationships = []
         for relationship in article.get("actors"):
             relationships.append(relationship)
-            relationships[-1]["relationship"] = domain_translation("actors_relationship", value=relationship["relationship"])
+            relationships[-1]["relationship"] = db.domain_translation("actors_relationship", value=relationship["relationship"])
         article["actors"] = pd.DataFrame(
             relationships
         ).rename(axis=1, mapper=ACTORS_DATA_MAPPING)
@@ -148,3 +152,9 @@ def get_article(_id: str):
         article["same_event_articles_id"] = pd.DataFrame(columns=["ID da notícia"])
 
     return article
+
+def get_countries():
+    return db.get_countries()
+
+def domain_translation(column_name, value=None, description=None):
+    return db.domain_translation(column_name, value, description)
