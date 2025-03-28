@@ -5,7 +5,7 @@ import pandas as pd
 from ..controllers.article_controllers import get_article, regex_search, update_article_on_db, get_countries, domain_translation
 from ..settings import ACTORS_RELATIONS, DEFAULT_DRUGS_METRICS, DEFAULT_DRUGS
 
-keys = iter(range(1, 100))
+# keys = iter(range(1, 100))
 
 st.session_state["tab_name"] = "| Notícia"
 

@@ -96,7 +96,7 @@ DEFAULT_DRUGS = [
     'Crack',
     'Ecstasy (MDMA)',
     'Fentanil',
-    'Fumaça/vapor de tabaco'
+    'Fumaça/vapor de tabaco',
     'Haxixe',
     'Heroína',
     'LSD (ácido lisérgico)',

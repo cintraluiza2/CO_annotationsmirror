@@ -20,7 +20,12 @@ def display_welcome():
     display_problem_reporting()
 
 def display_problem_reporting():
-    st.button("Reportar problema", disabled=True, key=next(keys))
+    global keys
+    try:
+        st.button("Reportar problema", disabled=True, key=next(keys))
+    except StopIteration:
+        keys = iter(range(1, 100))
+        st.button("Reportar problema", disabled=True, key=next(keys))
 
 def display_automatic_annotation_button():
     columns = st.columns(3)
@@ -30,7 +35,12 @@ def display_automatic_annotation_button():
 
     columns[0].markdown(f"Acurácia do modelo de classificação automática: **{round(score*100)}%**")
     columns[1].write(f"Última avaliação: {last_evaluation}")
-    columns[2].button("Atualizar anotação automática", disabled=True, key=next(keys))
+    global keys
+    try:
+        columns[2].button("Atualizar anotação automática", disabled=True, key=next(keys))
+    except StopIteration:
+        keys = iter(range(1, 100))
+        columns[2].button("Atualizar anotação automática", disabled=True, key=next(keys))
 
 def display_search_count(count):
     st.write(f"{count} notícias encontradas")
@@ -43,7 +53,12 @@ def display_pagination(total_pages):
         pagination[0].button("← Página anterior", on_click=previous_page, use_container_width=True)
 
     if st.session_state.current_page < total_pages:
-        pagination[1].button("Próxima página →", on_click=next_page, use_container_width=True, key=next(keys))
+        global keys
+        try:
+            pagination[1].button("Próxima página →", on_click=next_page, use_container_width=True, key=next(keys))
+        except StopIteration:
+            keys = iter(range(1, 100))
+            pagination[1].button("Próxima página →", on_click=next_page, use_container_width=True, key=next(keys))
 
 def display_articles_dataframe(df):
     """
