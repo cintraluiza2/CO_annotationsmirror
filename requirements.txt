@@ -10,4 +10,3 @@ PyYAML==6.0.2
 
 # Interface gráfica
 streamlit==1.42.0
-streamlit-authenticator==0.4.1
