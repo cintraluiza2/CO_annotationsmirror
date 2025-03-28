@@ -1,8 +1,6 @@
-from streamlit_authenticator import Authenticate
 from datetime import datetime
 from math import ceil
 import streamlit as st
-import numpy as np
 
 from ..controllers.home_controllers import get_articles_dataframe, get_sources, get_best_classification_model
 from src.settings import (
