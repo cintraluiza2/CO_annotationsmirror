@@ -100,7 +100,7 @@ def row_color(row):
     else:
         return [''] * len(row)
     
-def get_article(_id: str):
+def get_article_from_database(_id: str):
     db_client = open_ssh_tunnel()
     collection = db_client["couser"]["newsData"]
 
@@ -148,6 +148,7 @@ def get_articles(filters: dict, as_df=True, page=1, items_per_page=20, sort="pub
             "manual_relevance_class": 1,
             "automatic_relevance_class": 1,
             "automatic_relevance_pipeline_confidence": 1,
+            "validated": 1,
         }
     })
 
@@ -186,8 +187,13 @@ def get_articles(filters: dict, as_df=True, page=1, items_per_page=20, sort="pub
         if not "automatic_relevance_pipeline_confidence" in df.columns:
             df["automatic_relevance_pipeline_confidence"] = None
 
-        # df['automatic_relevance_pipeline_confidence'] = df['automatic_relevance_pipeline_confidence'].apply(
-        #     lambda x: x*100 if not x is None else None)
+        if not "validated" in df.columns:
+            df["validated"] = 0
+        else:
+            for i, row in df.iterrows():
+                if pd.isna(row.get("validated", pd.NA)):
+                    df.at[i, "validated"] = 0
+
         return df, total_count
     else:
         return articles, total_count
@@ -206,3 +212,18 @@ def domain_translation(column_name, value=None, description=None):
         return result.get("description")
     else:
         return result.get("value")
+    
+def get_countries():
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["domain"]
+    filter_ = {"column_name": "country"}
+    result = collection.find(filter_).sort("value", 1)
+    return result
+
+def articles_exist(id_events):
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["newsData"]
+
+    result = collection.find({"id_event": {"$in": id_events}}, {"_id": 1})
+
+    return len(list(result)) == len(id_events)

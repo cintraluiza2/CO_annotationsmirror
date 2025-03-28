@@ -30,7 +30,7 @@ def display_automatic_annotation_button():
     score = best_classification_model.get("score", "Desconhecida")
     last_evaluation = best_classification_model.get('timestamp', "Desconhecido")
 
-    columns[0].write(f"Acurácia do modelo de classificação automática: {round(score*100)}%")
+    columns[0].markdown(f"Acurácia do modelo de classificação automática: **{round(score*100)}%**")
     columns[1].write(f"Última avaliação: {last_evaluation}")
     columns[2].button("Atualizar anotação automática", disabled=True, key=next(keys))
 
@@ -42,7 +42,7 @@ def display_pagination(total_pages):
 
     pagination = st.columns(2, gap="large")
     if st.session_state.current_page > 1:
-        pagination[0].button("← Página anterior", on_click=lambda: next_page(upper=False), use_container_width=True)
+        pagination[0].button("← Página anterior", on_click=previous_page, use_container_width=True)
 
     if st.session_state.current_page < total_pages:
         pagination[1].button("Próxima página →", on_click=next_page, use_container_width=True, key=next(keys))
@@ -58,6 +58,7 @@ def display_articles_dataframe(df):
         column_config={
             "_id": None,
             "Abrir": st.column_config.LinkColumn(label="", display_text="Abrir", pinned=True),
+            "Validada": st.column_config.CheckboxColumn(label="Validada")
         },
         key="dataframe_widget",
         height=600,
@@ -81,13 +82,20 @@ def search():
     else:
         st.info("Nenhum resultado encontrado para os filtros selecionados.")
 
-def next_page(upper=True):
-    st.session_state.current_page += 1 if upper else -1
+def next_page():
+    apply_filters_form(mode="next_page")
 
-    with st.spinner("Por favor, aguarde...", show_time=True):
-        search()
+def previous_page():
+    apply_filters_form(mode="previous_page")
 
-def apply_filters_form():
+def apply_filters_form(mode): # "next_page", "previous_page" ou "search"
+    if mode == "search":
+        st.session_state.current_page = 1
+    elif mode == "next_page":
+        st.session_state.current_page += 1
+    elif mode == "previous_page":
+        st.session_state.current_page -= 1
+
     st.session_state.filters = {
         'title': st.session_state.get("title_input", ""),
         # 'begin_date': st.session_state.get("begin_date_input", ""),
@@ -96,8 +104,6 @@ def apply_filters_form():
         'automatic_relevance': st.session_state.get("automatic_relevance_input", None),
         'newspaper': st.session_state.get("newspaper_input", None)
     }
-
-    st.session_state.current_page = 1
 
     with st.spinner("Por favor, aguarde...", show_time=True):
         search()
@@ -115,7 +121,7 @@ def create_sidebar(messages_placeholder):
         # Filtro de relevância manual
         st.selectbox(
             "Anotação manual:",
-            options=["Todas", "Relevantes", "Irrelevantes", "Sem anotação"],
+            options=["Todas", "Relevantes", "Irrelevantes", "Dúvida", "Sem anotação"],
             on_change=None,
             key="manual_relevance_input",
         )
@@ -146,7 +152,7 @@ def create_sidebar(messages_placeholder):
         # Ordenação
         st.selectbox(
             "Ordenar por:",
-            options=["Confiança", "Data de publicação", "Fonte", "Título da notícia"],
+            options=["Confiança", "Data de publicação", "Fonte", "ID", "Título da notícia"],
             key="sort_input",
         )
 
@@ -157,7 +163,7 @@ def create_sidebar(messages_placeholder):
         )
         
         # Aplicação do filtro
-        st.form_submit_button("Buscar", on_click=apply_filters_form)
+        st.form_submit_button("Buscar", on_click=lambda: apply_filters_form(mode="search"))
 
 def home_page():
     st.set_page_config(

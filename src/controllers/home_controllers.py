@@ -48,7 +48,9 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
             filters.update({"manual_relevance_class": 1})
         elif filters.get("manual_relevance") == "Irrelevantes":
             filters.update({"manual_relevance_class": 0})
-        else:
+        elif filters.get("manual_relevance") == "Dúvida":
+            filters.update({"manual_relevance_class": 2})
+        else: # Sem anotação
             filters.update(
                 {"$or": [
                     {"manual_relevance_class": None},  # Field is None
@@ -82,7 +84,8 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
 
     # Formatação dos valores das células
     articles_df["manual_relevance_class"] = articles_df["manual_relevance_class"].apply(
-        lambda x: "Não anotado" if (x is None or np.isnan(x)) else ("Relevante" if x == 1 else "Irrelevante"))
+        lambda x: "Não anotado" if (x is None or np.isnan(x)) else {0: "Irrelevante", 1: "Relevante", 2: "Dúvida"}[x])
+        # lambda x: "Não anotado" if (x is None or np.isnan(x)) else ("Relevante" if x == 1 else "Irrelevante"))
     articles_df["automatic_relevance_class"] = articles_df["automatic_relevance_class"].apply(
         lambda x: "Não anotado" if (x is None or np.isnan(x)) else ("Relevante" if x == 1 else "Irrelevante"))
     articles_df["automatic_relevance_pipeline_confidence"] = articles_df["automatic_relevance_pipeline_confidence"].apply(

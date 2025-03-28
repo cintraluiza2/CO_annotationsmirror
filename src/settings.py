@@ -38,13 +38,14 @@ FIELDS_MAPPING = {
     "newspaper": "Fonte",
     "title": "Título da notícia",
     "manual_relevance_class": "Anotação manual",
+    "validated": "Validada",
 }
 
 INVERSE_FIELDS_MAPPING = {value: key for key, value in FIELDS_MAPPING.items()}
 
 COLUMNS_ORDER = [
     "Abrir", "ID", "Data de publicação", "Fonte", "Título da notícia",
-    "Anotação manual", "Anotação automática", "Confiança"
+    "Anotação manual", "Anotação automática", "Confiança", "Validada"
 ]
 
 LATIN_AMERICA_CONTRIES = [
@@ -61,3 +62,47 @@ ACTORS_RELATIONS = [
     "Integração",
     "Rivalidade",
 ]
+
+DRUGS_DATA_MAPPING = {
+    "drug_type": "Tipo de droga",
+    "amount": "Quantidade",
+    "metric": "Métrica",
+}
+
+OTHER_DRUGS_DATA_MAPPING = {
+    "drug_type": "Outro tipo de droga",
+    "amount": "Quantidade",
+    "metric": "Métrica",
+}
+
+GUNS_DATA_MAPPING = {
+    "gun_type": "Tipo de arma", 
+    "quantity": "Quantidade"
+}
+
+ACTORS_DATA_MAPPING = {
+    "actor 1": "Ator 1",
+    "actor 2": "Ator 2",
+    "relationship": "Relação",
+}
+
+DEFAULT_DRUGS_METRICS = ["Quilos (kg)", "Gramas (g)", "Toneladas (t)", "Tabletes", "Pacotes"]
+
+DEFAULT_DRUGS = [
+    'Álcool',
+    'Anfetamina',
+    'Cocaína',
+    'Chetamina',
+    'Crack',
+    'Ecstasy (MDMA)',
+    'Fentanil',
+    'Fumaça/vapor de tabaco'
+    'Haxixe',
+    'Heroína',
+    'LSD (ácido lisérgico)',
+    'Maconha (cannabis)',
+    'Maconha sintética',
+    'Metanfetamina',
+    'Psilocibina (cogumelos alucinógenos)',
+    'Skunk',
+]  
