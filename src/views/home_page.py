@@ -111,8 +111,8 @@ def apply_filters_form(mode): # "next_page", "previous_page" ou "search"
 
     st.session_state.filters = {
         'title': st.session_state.get("title_input", ""),
-        # 'begin_date': st.session_state.get("begin_date_input", ""),
-        # 'end_date': st.session_state.get("end_date_input", ""),
+        'begin_date': st.session_state.get("begin_date_input", ""),
+        'end_date': st.session_state.get("end_date_input", ""),
         'manual_relevance': st.session_state.get("manual_relevance_input", None),
         'automatic_relevance': st.session_state.get("automatic_relevance_input", None),
         'newspaper': st.session_state.get("newspaper_input", None)
@@ -127,9 +127,26 @@ def create_sidebar(messages_placeholder):
     with st.sidebar.form("filters_form", enter_to_submit=True):
         st.text_input("Título da notícia:", key="title_input")
 
+        # Filtros de data
         col1, col2 = st.columns(2)
-        begin_date = col1.date_input("De:", datetime.strptime("01/01/2011", "%d/%m/%Y"), format="DD/MM/YYYY", disabled=True)
-        end_date = col2.date_input("Até:", datetime.strptime("31/12/2022", "%d/%m/%Y"), format="DD/MM/YYYY", disabled=True)
+        begin_date = col1.date_input(
+            "De:",
+            min_value=datetime(2011, 1, 1),
+            max_value=datetime.today(),
+            value=datetime(2011, 1, 1),
+            format="DD/MM/YYYY",
+            disabled=False,
+            key="begin_date_input"
+        )
+        end_date = col2.date_input(
+            "Até:",
+            min_value=datetime(2011, 1, 1),
+            max_value=datetime.today(),
+            value=datetime.today(),
+            format="DD/MM/YYYY",
+            disabled=False,
+            key="end_date_input"
+        )
 
         # Filtro de relevância manual
         st.selectbox(

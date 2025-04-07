@@ -1,4 +1,5 @@
 from pymongo.errors import ServerSelectionTimeoutError
+from datetime import datetime
 import numpy as np
 
 from ..data import database as db
@@ -74,6 +75,23 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
     if filters.get("newspaper") == "Todas as fontes":
         filters.pop("newspaper")
 
+    # Formatação da data de início
+    if filters.get("begin_date") == "":
+        filters.pop("begin_date")
+    else:
+        date = datetime.combine(filters["begin_date"], datetime.min.time()) # Formata a data para o início do dia
+        filters.update({"publication_date": {"$gte": date}})
+        filters.pop("begin_date")
+
+    # Formatação da data de fim
+    if filters.get("end_date") == "":
+        filters.pop("end_date")
+    else:
+        date = datetime.combine(filters["end_date"], datetime.max.time()) # Formata a data para o fim do dia
+        filters["publication_date"].update({"$lte": date})
+        filters.pop("end_date")
+
+    # Requisição dos artigoss
     articles_df, search_count = db.get_articles(
         filters,
         as_df=True,
@@ -94,6 +112,8 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
         lambda x: "Não anotado" if (x is None or np.isnan(x)) else ("Relevante" if x == 1 else "Irrelevante"))
     articles_df["automatic_relevance_pipeline_confidence"] = articles_df["automatic_relevance_pipeline_confidence"].apply(
         lambda x: "" if (x is None or np.isnan(x)) else f"{round(x*100)}%")
+    articles_df["publication_date"] = articles_df["publication_date"].apply(
+        lambda x: x.strftime("%d/%m/%Y"))
 
     # Alterando o tipo de id_event para str para melhorar a visualização
     articles_df["id_event"] = articles_df["id_event"].astype(str)
