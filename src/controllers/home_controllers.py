@@ -141,3 +141,27 @@ def get_sources():
         
 def get_best_classification_model():
     return db.get_best_classification_model()
+
+def count_articles():
+    """
+    Retorna a contagem de notícias na base de dados.
+    """
+    return db.count_articles()
+
+def count_manual_classifications(values: list[int]):
+    """
+    Retorna a contagem de notícias que foram classificadas manualmente.
+    """
+    return db.count_manual_classifications(values)
+
+def count_automatic_classifications(values: list[int]):
+    """
+    Retorna a contagem de notícias que foram classificadas automaticamente.
+    """
+    return db.count_automatic_classifications(values)
+
+def count_manual_and_automatic_classifications(manual_values: list[int], automatic_values: list[int]):
+    """
+    Retorna a contagem de notícias que foram classificadas manualmente e automaticamente.
+    """
+    return db.count_manual_and_automatic_classifications(manual_values, automatic_values)

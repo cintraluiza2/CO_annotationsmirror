@@ -205,6 +205,45 @@ def get_articles(filters: dict, as_df=True, page=1, items_per_page=20, sort="pub
         return df, total_count
     else:
         return articles, total_count
+    
+def count_articles():
+    """
+    Conta o número de artigos presentes no banco de dados.
+    """
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["newsData"]
+    count = collection.count_documents({})
+    return count
+
+def count_manual_classifications(values: list[int]):
+    """
+    Conta o número de artigos classificados manualmente.
+    """
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["newsData"]
+    count = collection.count_documents({"manual_relevance_class": {"$in": values}})
+    return count
+
+def count_automatic_classifications(values: list[int]):
+    """
+    Conta o número de artigos classificados automaticamente.
+    """
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["newsData"]
+    count = collection.count_documents({"automatic_relevance_class": {"$in": values}})
+    return count
+
+def count_manual_and_automatic_classifications(manual_values: list[int], automatic_values: list[int]):
+    """
+    Conta o número de artigos classificados manualmente e automaticamente.
+    """
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["newsData"]
+    count = collection.count_documents({
+        "manual_relevance_class": {"$in": manual_values},
+        "automatic_relevance_class": {"$in": automatic_values}
+    })
+    return count
 
 def domain_translation(column_name, value=None, description=None):
     """

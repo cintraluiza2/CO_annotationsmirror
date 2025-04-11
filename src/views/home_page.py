@@ -2,7 +2,10 @@ from datetime import datetime
 from math import ceil
 import streamlit as st
 
-from ..controllers.home_controllers import get_articles_dataframe, get_sources, get_best_classification_model
+from ..controllers.home_controllers import (
+    get_articles_dataframe, get_sources, get_best_classification_model, count_articles,
+    count_manual_classifications, count_automatic_classifications, count_manual_and_automatic_classifications
+)
 from src.settings import (
     ITEMS_PER_PAGE, COLUMNS_ORDER, APP_NAME, APP_DESCRIPTION, APP_INSTRUCTIONS, APP_ICON
 )
@@ -16,6 +19,92 @@ def display_welcome():
     st.title(APP_NAME)
     st.text(APP_DESCRIPTION)
     st.text(APP_INSTRUCTIONS)
+
+    st.header("Indicadores")
+    with st.spinner("Por favor, aguarde enquanto os indicadores são carregados...", show_time=True):
+        col1, _, _, _ = st.columns(4)
+        articles_count = count_articles()
+        col1.metric("Total de notícias", f"{articles_count:,}".replace(",", "."), border=True)
+
+        col1, col2, col3, col4 = st.columns(4)
+        manual_classifications_count = count_manual_classifications(values=[0, 1, 2])
+        col1.metric(
+            "Classificações manuais",
+            f"{manual_classifications_count:,}".replace(",", "."),
+            border=True,
+            delta="Total",
+            delta_color="off"
+        )
+        manual_relevant_classifications_count = count_manual_classifications(values=[1])
+        col2.metric(
+            "Classificações manuais",
+            f"{manual_relevant_classifications_count:,}".replace(",", "."),
+            border=True,
+            delta="Relevantes",
+            delta_color="off"
+        )
+        manual_nonrelevant_classifications_count = count_manual_classifications(values=[0])
+        col3.metric(
+            "Classificações manuais",
+            f"{manual_nonrelevant_classifications_count:,}".replace(",", "."),
+            border=True,
+            delta="Não relevantes",
+            delta_color="off"
+        )
+        manual_doubt_classifications_count = count_manual_classifications(values=[2])
+        col4.metric(
+            "Classificações manuais",
+            f"{manual_doubt_classifications_count:,}".replace(",", "."),
+            border=True,
+            delta="Dúvida",
+            delta_color="off"
+        )
+
+        col1, col2, col3, _ = st.columns(4)
+        automatic_classifications_count = count_automatic_classifications(values=[0, 1])
+        col1.metric(
+            "Classificações automáticas",
+            f"{automatic_classifications_count:,}".replace(",", "."),
+            border=True,
+            delta="Total",
+            delta_color="off"
+        )
+        automatic_relevant_classifications_count = count_automatic_classifications(values=[1])
+        col2.metric(
+            "Classificações automáticas",
+            f"{automatic_relevant_classifications_count:,}".replace(",", "."),
+            border=True,
+            delta="Relevantes",
+            delta_color="off"
+        )
+        automatic_nonrelevant_classifications_count = count_automatic_classifications(values=[0])
+        col3.metric(
+            "Classificações automáticas",
+            f"{automatic_nonrelevant_classifications_count:,}".replace(",", "."),
+            border=True,
+            delta="Não relevantes",
+            delta_color="off"
+        )
+
+        _, col2, col3, _ = st.columns(4)
+        true_true_count = count_manual_and_automatic_classifications(manual_values=[1], automatic_values=[1])
+        col2.metric(
+            "Relevantes confirmadas",
+            f"{true_true_count:,}".replace(",", "."),
+            border=True,
+            delta=f"{round((true_true_count/manual_relevant_classifications_count)*100)}%",
+            delta_color="off",
+            help="Classificações relevantes para o humano e para o modelo",
+        )
+        true_false_count = count_manual_and_automatic_classifications(manual_values=[0], automatic_values=[0])
+        col3.metric(
+            "Não relevantes confirmadas",
+            f"{true_false_count:,}".replace(",", "."),
+            delta=f"{round((true_false_count/manual_nonrelevant_classifications_count)*100)}%",
+            delta_color="off",
+            border=True,
+            help="Classificações não relevantes para o humano e para o modelo",
+        )
 
     display_problem_reporting()
 
