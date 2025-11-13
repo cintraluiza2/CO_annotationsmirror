@@ -10,3 +10,5 @@ PyYAML==6.0.2
 
 # Interface gráfica
 streamlit==1.42.0
+
+paramiko==3.5.1
