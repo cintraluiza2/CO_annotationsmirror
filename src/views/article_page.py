@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 
 from ..controllers.article_controllers import get_article, regex_search, update_article_on_db, get_countries, domain_translation
-from ..settings import ACTORS_RELATIONS, DEFAULT_DRUGS_METRICS, DEFAULT_DRUGS, BRAZILIAN_STATES
+from ..settings import ACTORS_RELATIONS, DEFAULT_DRUGS_METRICS, DEFAULT_DRUGS
 
 # keys = iter(range(1, 100))
 
@@ -91,31 +91,6 @@ def display_article(article):
     # article = get_article(_id=st.query_params.get("id"))
     article_body = article.get("article")
 
-    # Avaliação automática e confiança
-    col_auto1, col_auto2 = st.columns(2, gap="small")
-    
-    # Avaliação automática
-    automatic_class = article.get("automatic_relevance_class")
-    if automatic_class is not None:
-        relevance_text = {0: "Não relevante", 1: "Relevante"}.get(automatic_class, "Não classificado")
-        relevance_color = {0: "red", 1: "green"}.get(automatic_class, "gray")
-        col_auto1.markdown(f"**Avaliação automática**: :{relevance_color}[{relevance_text}]")
-    else:
-        col_auto1.markdown("**Avaliação automática**: Não classificado")
-    
-    # Confiança
-    confidence = article.get("automatic_relevance_pipeline_confidence")
-    if confidence is not None:
-        confidence_percent = confidence * 100
-        if confidence_percent >= 90:
-            col_auto2.markdown(f"**Confiança**: :blue[{confidence_percent:.1f}%]")
-        elif confidence_percent <= 75:
-            col_auto2.markdown(f"**Confiança**: :red[{confidence_percent:.1f}%]")
-        else:
-            col_auto2.markdown(f"**Confiança**: :orange[{confidence_percent:.1f}%]")
-    else:
-        col_auto2.markdown("**Confiança**: -")
-
     col1, col2 = st.columns(2, gap="small")
     # Palavras-chave
     if article.get("accepted_by"):
@@ -152,170 +127,10 @@ def article_page():
         layout="wide",
     )
 
-    # CSS para scrolls independentes
-    st.markdown("""
-        <style>
-        /* FORÇA remoção COMPLETA do scroll da página principal */
-        html {
-            overflow: hidden !important;
-            height: 100vh !important;
-            position: fixed !important;
-            width: 100% !important;
-        }
-        
-        body {
-            overflow: hidden !important;
-            height: 100vh !important;
-            position: fixed !important;
-            width: 100% !important;
-        }
-        
-        #root {
-            overflow: hidden !important;
-            height: 100vh !important;
-        }
-        
-        .main, section.main {
-            overflow: hidden !important;
-            height: 100vh !important;
-        }
-        
-        section.main > div {
-            overflow: hidden !important;
-            height: 100vh !important;
-        }
-        
-        section.main > div.block-container {
-            padding-top: 0.5rem;
-            padding-bottom: 0 !important;
-            max-height: 100vh !important;
-            height: 100vh !important;
-            overflow: hidden !important;
-        }
-        
-        .main .block-container {
-            overflow: hidden !important;
-        }
-        
-        /* Bloqueia scroll em todos os containers do Streamlit */
-        [data-testid="stAppViewContainer"],
-        [data-testid="stApp"],
-        [data-testid="stDecoration"],
-        [data-testid="stToolbar"] {
-            overflow: hidden !important;
-        }
-        
-        
-        /* Container horizontal das colunas */
-        [data-testid="stHorizontalBlock"] {
-            gap: 0.5rem !important;
-        }
-        
-        /* Reduz gap interno de colunas aninhadas */
-        [data-testid="column"] [data-testid="stHorizontalBlock"] {
-            gap: 0.3rem !important;
-        }
-        
-        /* Aplica altura e scroll nas colunas */
-        [data-testid="stHorizontalBlock"] > div {
-            height: calc(92vh - 2rem);
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding-right: 5px;
-        }
-        
-        /* Remove espaços extras entre elementos */
-        [data-testid="stVerticalBlock"] {
-            gap: 0rem !important;
-        }
-        
-        .element-container {
-            margin-bottom: 0rem !important;
-            padding-bottom: 0rem !important;
-        }
-        
-        /* Reduz padding dos text_area */
-        [data-testid="stTextArea"] {
-            margin-bottom: 0rem !important;
-        }
-        
-        /* Remove espaços de todos os elementos do Streamlit */
-        div[data-testid="stVerticalBlockBorderWrapper"] {
-            padding: 0 !important;
-        }
-        
-        div.st-emotion-cache-b95f0i {
-            padding: 0 !important;
-        }
-        
-        /* Reduz espaçamento entre inputs, radios, etc */
-        .stRadio, .stSelectbox, .stTextInput, .stNumberInput, .stDateInput {
-            margin-bottom: 0.3rem !important;
-        }
-        
-        /* Reduz espaçamento dos markdown */
-        .stMarkdown {
-            margin-bottom: 0.3rem !important;
-        }
-        
-        /* Reduz espaçamento dos pills */
-        div[data-testid="stMarkdownContainer"] {
-            margin-bottom: 0.2rem !important;
-        }
-        
-        /* Reduz espaçamento dos data editors */
-        [data-testid="stDataFrame"] {
-            margin-bottom: 0.3rem !important;
-        }
-        
-        /* Reduz espaçamento dos dividers */
-        hr {
-            margin-top: 0.5rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        /* Reduz espaçamento dos headers */
-        h1, h2, h3 {
-            margin-top: 0.3rem !important;
-            margin-bottom: 0.3rem !important;
-        }
-        
-        /* Garante que o botão de submit seja visível */
-        .stFormSubmitButton {
-            margin-top: 1rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        /* Reduz padding do form */
-        [data-testid="stForm"] {
-            padding: 0.5rem !important;
-        }
-        
-        /* Estilização da barra de rolagem */
-        [data-testid="stHorizontalBlock"] > div::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        [data-testid="stHorizontalBlock"] > div::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-        
-        [data-testid="stHorizontalBlock"] > div::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 10px;
-        }
-        
-        [data-testid="stHorizontalBlock"] > div::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
     article_id = params.get("id", [None])
     article = get_article(_id=article_id)
 
-    col1, col2 = st.columns(2, gap="small")
+    col1, col2 = st.columns(2, gap="medium")
 
     with col1:
         display_article(article)
@@ -355,14 +170,7 @@ def article_page():
             )
 
             # Estado
-            state_index = BRAZILIAN_STATES.index(article.get("state")) if article.get("state") in BRAZILIAN_STATES else None
-            st.selectbox(
-                "Estado:",
-                options=BRAZILIAN_STATES,
-                index=state_index,
-                placeholder="Selecione o estado",
-                key="state_input"
-            )
+            st.text_input("Estado:", value=article.get("state"), key="state_input")
 
             # Cidade
             st.text_input("Município:", value=article.get("city"), key="city_input")
