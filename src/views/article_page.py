@@ -91,6 +91,32 @@ def display_article(article):
     # article = get_article(_id=st.query_params.get("id"))
     article_body = article.get("article")
 
+        # Avaliação automática e confiança
+    col_auto1, col_auto2 = st.columns(2, gap="small")
+    
+    # Avaliação automática
+    automatic_class = article.get("automatic_relevance_class")
+    if automatic_class is not None:
+        relevance_text = {0: "Não relevante", 1: "Relevante"}.get(automatic_class, "Não classificado")
+        relevance_color = {0: "red", 1: "green"}.get(automatic_class, "gray")
+        col_auto1.markdown(f"**Avaliação automática**: :{relevance_color}[{relevance_text}]")
+    else:
+        col_auto1.markdown("**Avaliação automática**: Não classificado")
+    
+    # Confiança
+    confidence = article.get("automatic_relevance_pipeline_confidence")
+    if confidence is not None:
+        confidence_percent = confidence * 100
+        if confidence_percent >= 90:
+            col_auto2.markdown(f"**Confiança**: :blue[{confidence_percent:.1f}%]")
+        elif confidence_percent <= 75:
+            col_auto2.markdown(f"**Confiança**: :red[{confidence_percent:.1f}%]")
+        else:
+            col_auto2.markdown(f"**Confiança**: :orange[{confidence_percent:.1f}%]")
+    else:
+        col_auto2.markdown("**Confiança**: -")
+
+
     col1, col2 = st.columns(2, gap="small")
     # Palavras-chave
     if article.get("accepted_by"):
