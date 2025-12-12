@@ -201,7 +201,13 @@ def article_page():
 
     # Adiciona espaço acima das colunas
     st.markdown("<br>", unsafe_allow_html=True)
-
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+    
     # Usa altura dinâmica baseada no viewport
     container_height = 850  # Altura em pixels (aumentada)
     
@@ -403,12 +409,8 @@ def article_page():
                                 }
                             )
                     except Exception as e:
-                        import traceback
-                        error_details = traceback.format_exc()
-                        print(f"Erro ao salvar: {error_details}")
-                        st.error(f"Ocorreu algum erro ao tentar salvar!")
-                        st.error(f"Detalhes: {str(e)}")
-                        st.code(error_details, language="python")
+                        print(e)
+                        st.error("Ocorreu algum erro ao tentar salvar!")
                     else:
                         if status == 0:
                             st.error(message)
