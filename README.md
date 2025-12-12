@@ -20,7 +20,15 @@ Esta é a versão Streamlit do software de anotação de dados de notícias sobr
     pip install -r requirements.txt
     ```
 
-4. Especificação das credenciais de acesso ao banco de dados em um arquivo intitulado `config.yml` e no seguinte formato:
+4. Configuração do banco de dados:
+    
+    O arquivo `config.yml` já está configurado no repositório. 
+    
+    Para desenvolvimento local, você pode criar sua própria cópia:
+    - Copie o arquivo de exemplo: `cp config.yml.example config.yml` (se necessário)
+    - Edite com suas credenciais locais
+    
+    Formato do arquivo:
     ```yaml
     lamcad:
         server_ip: <value>
@@ -41,7 +49,7 @@ Esta é a versão Streamlit do software de anotação de dados de notícias sobr
 
 ## Execução
 
-Basta executar o comando abaixo para que uma porta local seja disponibilizada para a aplicação, que se torna acessável pelo navegador.
+Basta executar o comando abaixo para que uma porta local seja disponibilizada para a aplicação, que se torna acessível pelo navegador.
 ```shell
 streamlit run main.py
 ```
