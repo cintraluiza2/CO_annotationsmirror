@@ -201,14 +201,6 @@ def article_page():
 
     # Adiciona espaço acima das colunas
     st.markdown("<br>", unsafe_allow_html=True)
-    # Adiciona espaço acima das colunas
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
-    
 
     # Usa altura dinâmica baseada no viewport
     container_height = 850  # Altura em pixels (aumentada)
