@@ -43,55 +43,73 @@ def update_article_on_db(_id: str, update: dict):
 
     # Traduzindo o campo de tipo de droga
     drugs = []
-    for _, row in update.get("drugs").iterrows():
-        if not row["Tipo de droga"].isspace():
-            drugs.append({
-                "type": "fixed_field",
-                "drug_type": row["Tipo de droga"],
-                "amount": row["Quantidade"],
-                "metric": row["Métrica"],
-            })
-    for _, row in update.get("other_drugs").iterrows():
-        if not row["Outro tipo de droga"].isspace():
-            drugs.append({
-                "type": "free_field",
-                "drug_type": row["Outro tipo de droga"],
-                "amount": row["Quantidade"],
-                "metric": row["Métrica"],
-            })
-    del update["other_drugs"]
+    drugs_df = update.get("drugs", pd.DataFrame())
+    if not drugs_df.empty and all(col in drugs_df.columns for col in ["Tipo de droga", "Quantidade", "Métrica"]):
+        for _, row in drugs_df.iterrows():
+            drug_type = str(row["Tipo de droga"]).strip()
+            if drug_type and not drug_type.isspace() and drug_type != "nan":
+                drugs.append({
+                    "type": "fixed_field",
+                    "drug_type": drug_type,
+                    "amount": row["Quantidade"],
+                    "metric": row["Métrica"],
+                })
+    
+    other_drugs_df = update.get("other_drugs", pd.DataFrame())
+    if not other_drugs_df.empty and all(col in other_drugs_df.columns for col in ["Outro tipo de droga", "Quantidade", "Métrica"]):
+        for _, row in other_drugs_df.iterrows():
+            drug_type = str(row["Outro tipo de droga"]).strip()
+            if drug_type and not drug_type.isspace() and drug_type != "nan":
+                drugs.append({
+                    "type": "free_field",
+                    "drug_type": drug_type,
+                    "amount": row["Quantidade"],
+                    "metric": row["Métrica"],
+                })
+    
+    if "other_drugs" in update:
+        del update["other_drugs"]
     update["drugs"] = drugs
 
     # Traduzindo o campo de tipo de arma
     guns = []
-    for _, row in update.get("guns").iterrows():
-        if not row["Tipo de arma"].isspace():
-            guns.append({
-                "gun_type": row["Tipo de arma"],
-                "quantity": row["Quantidade"],
-            })
+    guns_df = update.get("guns", pd.DataFrame())
+    if not guns_df.empty and all(col in guns_df.columns for col in ["Tipo de arma", "Quantidade"]):
+        for _, row in guns_df.iterrows():
+            gun_type = str(row["Tipo de arma"]).strip()
+            if gun_type and not gun_type.isspace() and gun_type != "nan":
+                guns.append({
+                    "gun_type": gun_type,
+                    "quantity": row["Quantidade"],
+                })
     update["guns"] = guns
 
     # Traduzindo o campo de atores
     actors = []
-    for _, row in update.get("actors").iterrows():
-        if not row["Relação"].isspace():
-            actors.append({
-                "actor 1": row["Ator 1"],
-                "actor 2": row["Ator 2"],
-                "relationship": db.domain_translation(column_name="actors_relationship", description=row["Relação"]),
-            })
+    actors_df = update.get("actors", pd.DataFrame())
+    if not actors_df.empty and all(col in actors_df.columns for col in ["Ator 1", "Ator 2", "Relação"]):
+        for _, row in actors_df.iterrows():
+            relationship = str(row["Relação"]).strip()
+            if relationship and not relationship.isspace() and relationship != "nan":
+                actors.append({
+                    "actor 1": row["Ator 1"],
+                    "actor 2": row["Ator 2"],
+                    "relationship": db.domain_translation(column_name="actors_relationship", description=relationship),
+                })
     update["actors"] = actors
 
     # Traduzindo o campo de artigos do mesmo evento
     same_event_article_ids = []
-    for _, row in update.get("same_event").iterrows():
-        if row["ID da notícia"]:
-            same_event_article_ids.append(int(row["ID da notícia"]))
+    same_event_df = update.get("same_event", pd.DataFrame())
+    if not same_event_df.empty and all(col in same_event_df.columns for col in ["ID da notícia"]):
+        for _, row in same_event_df.iterrows():
+            article_id = row["ID da notícia"]
+            if pd.notna(article_id) and article_id:
+                same_event_article_ids.append(int(article_id))
     update["same_event_articles_id"] = same_event_article_ids
     del update["same_event"]
     # Validação dos IDs inseridos
-    if not db.articles_exist(same_event_article_ids):
+    if same_event_article_ids and not db.articles_exist(same_event_article_ids):
         return 0, f"Os dados não foram salvos. Pelo menos um dos IDs de notícias sobre o mesmo evento não existe."
 
     # Traduzindo o campo de data do evento
@@ -99,7 +117,11 @@ def update_article_on_db(_id: str, update: dict):
         update["event_date"] = datetime.combine(update["event_date"], datetime.min.time())
 
     # Traduzindo o campo de validação
-    update["validated"] = {"Não": 0, "Sim": 1}[update.get("validated", 0)]
+    validated_value = update.get("validated", 0)
+    if isinstance(validated_value, str):
+        update["validated"] = {"Não": 0, "Sim": 1}.get(validated_value, 0)
+    else:
+        update["validated"] = int(validated_value) if validated_value is not None else 0
         
     db.update_article(ObjectId(_id), update) # 9805
 
