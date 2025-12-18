@@ -7,6 +7,8 @@ import pymongo
 import socket
 import yaml
 import logging
+import streamlit as st
+from pathlib import Path
 
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 logging.getLogger("watchdog.observers.inotify_buffer").setLevel(logging.WARNING)
@@ -17,10 +19,33 @@ server = None # Servidor do banco
 db_client = None # Cliente do banco
 tunnel_timer = None # Timmer de controle de abertura do banco
 
-# Leitura do arquivo de credenciais
-configs_file = open('config.yml', 'r')
-configs = yaml.safe_load(configs_file)
-configs_file.close()
+# Leitura de credenciais: Streamlit Secrets (produção) ou config.yml (desenvolvimento)
+def load_config():
+    """
+    Carrega configurações do Streamlit Secrets se disponível,
+    caso contrário usa config.yml local.
+    """
+    try:
+        # Tenta carregar do Streamlit Secrets (produção)
+        if hasattr(st, 'secrets') and len(st.secrets) > 0:
+            logging.info("Carregando configurações do Streamlit Secrets")
+            return dict(st.secrets)
+    except Exception as e:
+        logging.debug(f"Streamlit Secrets não disponível: {e}")
+    
+    # Fallback: carrega do config.yml local (desenvolvimento)
+    config_path = Path('config.yml')
+    if config_path.exists():
+        logging.info("Carregando configurações do config.yml local")
+        with open(config_path, 'r') as f:
+            return yaml.safe_load(f)
+    
+    raise FileNotFoundError(
+        "Nenhuma configuração encontrada! "
+        "Configure Streamlit Secrets ou crie um arquivo config.yml local."
+    )
+
+configs = load_config()
 
 def is_port_open(host="localhost", port=27018, timeout=1):
     """
