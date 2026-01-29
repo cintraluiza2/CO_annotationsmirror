@@ -76,22 +76,31 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
         filters.pop("newspaper")
 
     # Formatação da data de início
-    if filters.get("begin_date") == "":
-        filters.pop("begin_date")
-    else:
-        date = datetime.combine(filters["begin_date"], datetime.min.time()) # Formata a data para o início do dia
-        filters.update({"publication_date": {"$gte": date}})
-        filters.pop("begin_date")
+    begin_date = filters.get("begin_date")
+    if begin_date and begin_date != "":
+        # Converte para string no formato YYYY-MM-DD para comparar com as datas do banco
+        if isinstance(begin_date, str):
+            date_str = begin_date  # Já é string
+        else:
+            date_str = begin_date.strftime("%Y-%m-%d")  # Converte date/datetime para string
+        filters.update({"publication_date": {"$gte": date_str}})
+    filters.pop("begin_date", None)
 
     # Formatação da data de fim
-    if filters.get("end_date") == "":
-        filters.pop("end_date")
-    else:
-        date = datetime.combine(filters["end_date"], datetime.max.time()) # Formata a data para o fim do dia
-        filters["publication_date"].update({"$lte": date})
-        filters.pop("end_date")
+    end_date = filters.get("end_date")
+    if end_date and end_date != "":
+        # Converte para string no formato YYYY-MM-DD para comparar com as datas do banco
+        if isinstance(end_date, str):
+            date_str = end_date  # Já é string
+        else:
+            date_str = end_date.strftime("%Y-%m-%d")  # Converte date/datetime para string
+        if "publication_date" in filters:
+            filters["publication_date"].update({"$lte": date_str})
+        else:
+            filters["publication_date"] = {"$lte": date_str}
+    filters.pop("end_date", None)
 
-    # Requisição dos artigoss
+    # Requisição dos artigos
     articles_df, search_count = db.get_articles(
         filters,
         as_df=True,
@@ -113,7 +122,7 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
     articles_df["automatic_relevance_pipeline_confidence"] = articles_df["automatic_relevance_pipeline_confidence"].apply(
         lambda x: "" if (x is None or np.isnan(x)) else f"{round(x*100)}%")
     articles_df["publication_date"] = articles_df["publication_date"].apply(
-        lambda x: x.strftime("%d/%m/%Y"))
+        lambda x: datetime.strptime(x, "%Y-%m-%d").strftime("%d/%m/%Y") if isinstance(x, str) and x else "")
 
     # Alterando o tipo de id_event para str para melhorar a visualização
     articles_df["id_event"] = articles_df["id_event"].astype(str)

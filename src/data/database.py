@@ -313,3 +313,23 @@ def articles_exist(id_events):
     result = collection.find({"id_event": {"$in": id_events}}, {"_id": 1})
 
     return len(list(result)) == len(id_events)
+
+def get_article_extraction(article_id: str):
+    """
+    Obtém a extração mais recente de uma notícia.
+    
+    Args:
+        article_id: ID da notícia (_id do MongoDB como string)
+    
+    Returns:
+        Documento com os dados extraídos ou None se não houver
+    """
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["news_extractions"]
+    
+    result = collection.find_one(
+        {"article_id": article_id},
+        sort=[("extraction_timestamp", -1)]
+    )
+    
+    return result

@@ -12,9 +12,6 @@ from src.settings import (
 
 keys = iter(range(1, 100))
 
-if "filters" not in st.session_state:
-    st.session_state["filters"] = {}
-
 def display_welcome():
     st.title(APP_NAME)
     st.text(APP_DESCRIPTION)
@@ -285,13 +282,9 @@ def create_sidebar(messages_placeholder):
         st.form_submit_button("Buscar", on_click=lambda: apply_filters_form(mode="search"))
 
 def home_page():
-    st.set_page_config(
-        page_title=APP_NAME,
-        page_icon=APP_ICON,
-        layout="wide",
-        initial_sidebar_state="expanded"
-    )
-
+    if "filters" not in st.session_state:
+        st.session_state["filters"] = {}
+    
     if 'current_page' not in st.session_state:
         st.session_state.current_page = 1
 

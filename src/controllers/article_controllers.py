@@ -162,3 +162,9 @@ def get_countries():
 
 def domain_translation(column_name, value=None, description=None):
     return db.domain_translation(column_name, value, description)
+
+def get_article_extraction(_id: str):
+    """
+    Obtém a extração automática de dados da notícia, se existir.
+    """
+    return db.get_article_extraction(_id)

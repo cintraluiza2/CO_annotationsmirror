@@ -2,12 +2,10 @@ from datetime import datetime
 import streamlit as st
 import pandas as pd
 
-from ..controllers.article_controllers import get_article, regex_search, update_article_on_db, get_countries, domain_translation
+from ..controllers.article_controllers import get_article, regex_search, update_article_on_db, get_countries, domain_translation, get_article_extraction
 from ..settings import ACTORS_RELATIONS, DEFAULT_DRUGS_METRICS, DEFAULT_DRUGS, BRAZILIAN_STATES
 
 # keys = iter(range(1, 100))
-
-st.session_state["tab_name"] = "| Notícia"
 
 # def display_article_form(key, disabled=True, submit_label="Salvar", **kwargs):
 #     with st.form(key, enter_to_submit=False):
@@ -146,12 +144,8 @@ def display_article(article):
             st.link_button("Acessar página da notícia", url=url)
 
 def article_page():
-    st.set_page_config(
-        page_title="| Notícia",
-        page_icon="📝",
-        layout="wide",
-    )
-
+    st.session_state["tab_name"] = "| Notícia"
+    
     # CSS para remover scroll principal e estilizar containers
     st.markdown("""
         <style>
@@ -216,6 +210,65 @@ def article_page():
     with col1:
         with st.container(height=container_height, border=False):
             display_article(article)
+            
+            st.divider()
+            
+            extraction = get_article_extraction(article_id)
+            if extraction:
+                with st.expander("🤖 Sugestões de Extração Automática", expanded=True):
+                    st.markdown("**Dados extraídos pelo LLM - Aceite ou rejeite cada sugestão**")
+                    
+                    extracted_data = extraction.get("extracted_data", {})
+                    
+                    col_ext1, col_ext2 = st.columns(2, gap="small")
+                    with col_ext1:
+                        st.caption(f"**Modelo**: {extraction.get('model_name', 'N/A')}")
+                    with col_ext2:
+                        timestamp = extraction.get('extraction_timestamp')
+                        if timestamp:
+                            st.caption(f"**Data**: {timestamp.strftime('%d/%m/%Y %H:%M')}")
+                    
+                    st.markdown("---")
+                    
+                    if isinstance(extracted_data, dict) and extracted_data.get("raw_text"):
+                        st.text_area("Resposta completa do modelo:", value=extracted_data["raw_text"], height=300, disabled=True)
+                    elif isinstance(extracted_data, dict):
+                        field_mapping = {
+                            "Organização Criminosa": "organization",
+                            "país": "country_extracted",
+                            "estado": "state_extracted",
+                            "município": "city_extracted",
+                            "data": "date_extracted",
+                            "Houve Conflito": "conflict_extracted",
+                            "Apreensão de Drogas": "drugs_seized",
+                            "Drogas Apreendidas": "drugs_types",
+                            "Quantidade de Drogas": "drugs_amount",
+                            "Apreensão de Armas": "guns_seized",
+                            "Armas Apreendidas": "guns_types",
+                            "Primeiro Ator": "actor1",
+                            "Segundo Ator": "actor2",
+                            "Relação Entre Atores": "relationship"
+                        }
+                        
+                        for key, value in extracted_data.items():
+                            if key != "raw_text" and value:
+                                col_field, col_btn = st.columns([4, 1])
+                                with col_field:
+                                    st.markdown(f"**{key}**: {value}")
+                                with col_btn:
+                                    field_key = field_mapping.get(key, key.lower().replace(" ", "_"))
+                                    if st.button("✓ Aceitar", key=f"accept_{field_key}", use_container_width=True):
+                                        st.session_state[f"extracted_{field_key}"] = value
+                                        st.success(f"✓ Copiado!", icon="✅")
+                                        st.rerun()
+                        
+                        if not any(extracted_data.values()):
+                            st.info("Nenhum dado foi extraído com sucesso")
+                    else:
+                        st.info("Formato de extração não reconhecido")
+                        st.json(extracted_data)
+            else:
+                st.info("💡 Nenhuma extração automática disponível para esta notícia")
 
     with col2:
         with st.container(height=container_height, border=False):
@@ -253,7 +306,11 @@ def article_page():
                 )
 
                 # Estado
-                state_index = BRAZILIAN_STATES.index(article.get("state")) if article.get("state") in BRAZILIAN_STATES else None
+                extracted_state = st.session_state.get("extracted_state_extracted")
+                if extracted_state and extracted_state in BRAZILIAN_STATES:
+                    state_index = BRAZILIAN_STATES.index(extracted_state)
+                else:
+                    state_index = BRAZILIAN_STATES.index(article.get("state")) if article.get("state") in BRAZILIAN_STATES else None
                 st.selectbox(
                     "Estado:",
                     options=BRAZILIAN_STATES,
@@ -263,7 +320,9 @@ def article_page():
                 )
 
                 # Cidade
-                st.text_input("Município:", value=article.get("city"), key="city_input")
+                extracted_city = st.session_state.get("extracted_city_extracted")
+                city_value = extracted_city if extracted_city else article.get("city")
+                st.text_input("Município:", value=city_value, key="city_input")
 
                 # Referências do local
                 st.text_input("Referências do local (se houver):", value=article.get("location_references"), key="location_references_input")
@@ -287,11 +346,16 @@ def article_page():
                 # Conflito
                 col2_1, col2_2 = st.columns(2, gap="small")
                 with col2_1:
+                    extracted_conflict = st.session_state.get("extracted_conflict_extracted")
+                    if extracted_conflict:
+                        conflict_index = 1 if extracted_conflict.lower() in ["sim", "yes", "s"] else 0
+                    else:
+                        conflict_index = article.get("conflict")
                     st.radio(
                         "Houve conflito?",
                         ["Não", "Sim"],
                         help="Conflito é caracterizado como...",
-                        index=article.get("conflict"),
+                        index=conflict_index,
                         key="conflict_input"
                     )
                 # Mortes
