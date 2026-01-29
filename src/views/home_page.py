@@ -156,19 +156,19 @@ def display_articles_dataframe(df):
         column_order=COLUMNS_ORDER,
         column_config={
             "_id": None,
-            "Abrir": st.column_config.LinkColumn(label="", display_text="Abrir", pinned=True, width="small"),
-            "ID": st.column_config.NumberColumn(label="ID", width="small"),
-            "Data de publicação": st.column_config.TextColumn(label="Data de publicação", width="small"),
-            "Fonte": st.column_config.TextColumn(label="Fonte", width="medium"),
-            "Título da notícia": st.column_config.TextColumn(label="Título da notícia", width="large"),
-            "Anotação manual": st.column_config.TextColumn(label="Anotação manual", width="small"),
-            "Anotação automática": st.column_config.TextColumn(label="Anotação automática", width="small"),
-            "Confiança": st.column_config.TextColumn(label="Confiança", width="small"),
-            "Validada": st.column_config.CheckboxColumn(label="Validada", width="small")
+            "Abrir": st.column_config.LinkColumn(label="", display_text="Abrir", pinned=True),
+            "ID": st.column_config.NumberColumn(label="ID"),
+            "Data de publicação": st.column_config.TextColumn(label="Data de publicação"),
+            "Fonte": st.column_config.TextColumn(label="Fonte"),
+            "Título da notícia": st.column_config.TextColumn(label="Título da notícia"),
+            "Anotação manual": st.column_config.TextColumn(label="Anotação manual"),
+            "Anotação automática": st.column_config.TextColumn(label="Anotação automática"),
+            "Confiança": st.column_config.TextColumn(label="Confiança"),
+            "Validada": st.column_config.CheckboxColumn(label="Validada")
         },
         key="dataframe_widget",
         height=600,
-        use_container_width=True
+        width=1800
     )
 
 def search():

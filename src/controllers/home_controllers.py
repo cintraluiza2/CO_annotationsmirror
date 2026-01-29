@@ -124,6 +124,10 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
     articles_df["publication_date"] = articles_df["publication_date"].apply(
         lambda x: datetime.strptime(x, "%Y-%m-%d").strftime("%d/%m/%Y") if isinstance(x, str) and x else "")
 
+    # Formatação do campo validated para checkbox (converte 0/1 para False/True)
+    articles_df["validated"] = articles_df["validated"].apply(
+        lambda x: bool(x) if x == 1 else False)
+
     # Alterando o tipo de id_event para str para melhorar a visualização
     articles_df["id_event"] = articles_df["id_event"].astype(str)
     
