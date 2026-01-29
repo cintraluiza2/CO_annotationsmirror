@@ -109,8 +109,10 @@ def get_article(_id: str):
     article = db.get_article(_id)
 
     # Formatação da data de publicação
-    if article.get("publication_date"):
+    if article.get("publication_date") and hasattr(article["publication_date"], "strftime"):
         article["publication_date"] = article["publication_date"].strftime("%d/%m/%Y")
+    elif article.get("publication_date"):
+        article["publication_date"] = str(article["publication_date"])
 
     # Formação das drogas do campo do campo livre, isto é, onde "droga" e "métrica" era digitados
     free_type_drugs = [drug for drug in article.get("drugs", []) if drug.get("type", "") == "free_field"]

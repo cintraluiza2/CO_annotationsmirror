@@ -210,68 +210,15 @@ def article_page():
     with col1:
         with st.container(height=container_height, border=False):
             display_article(article)
-            
-            st.divider()
-            
-            extraction = get_article_extraction(article_id)
-            if extraction:
-                with st.expander("🤖 Sugestões de Extração Automática", expanded=True):
-                    st.markdown("**Dados extraídos pelo LLM - Aceite ou rejeite cada sugestão**")
-                    
-                    extracted_data = extraction.get("extracted_data", {})
-                    
-                    col_ext1, col_ext2 = st.columns(2, gap="small")
-                    with col_ext1:
-                        st.caption(f"**Modelo**: {extraction.get('model_name', 'N/A')}")
-                    with col_ext2:
-                        timestamp = extraction.get('extraction_timestamp')
-                        if timestamp:
-                            st.caption(f"**Data**: {timestamp.strftime('%d/%m/%Y %H:%M')}")
-                    
-                    st.markdown("---")
-                    
-                    if isinstance(extracted_data, dict) and extracted_data.get("raw_text"):
-                        st.text_area("Resposta completa do modelo:", value=extracted_data["raw_text"], height=300, disabled=True)
-                    elif isinstance(extracted_data, dict):
-                        field_mapping = {
-                            "Organização Criminosa": "organization",
-                            "país": "country_extracted",
-                            "estado": "state_extracted",
-                            "município": "city_extracted",
-                            "data": "date_extracted",
-                            "Houve Conflito": "conflict_extracted",
-                            "Apreensão de Drogas": "drugs_seized",
-                            "Drogas Apreendidas": "drugs_types",
-                            "Quantidade de Drogas": "drugs_amount",
-                            "Apreensão de Armas": "guns_seized",
-                            "Armas Apreendidas": "guns_types",
-                            "Primeiro Ator": "actor1",
-                            "Segundo Ator": "actor2",
-                            "Relação Entre Atores": "relationship"
-                        }
-                        
-                        for key, value in extracted_data.items():
-                            if key != "raw_text" and value:
-                                col_field, col_btn = st.columns([4, 1])
-                                with col_field:
-                                    st.markdown(f"**{key}**: {value}")
-                                with col_btn:
-                                    field_key = field_mapping.get(key, key.lower().replace(" ", "_"))
-                                    if st.button("✓ Aceitar", key=f"accept_{field_key}", use_container_width=True):
-                                        st.session_state[f"extracted_{field_key}"] = value
-                                        st.success(f"✓ Copiado!", icon="✅")
-                                        st.rerun()
-                        
-                        if not any(extracted_data.values()):
-                            st.info("Nenhum dado foi extraído com sucesso")
-                    else:
-                        st.info("Formato de extração não reconhecido")
-                        st.json(extracted_data)
-            else:
-                st.info("💡 Nenhuma extração automática disponível para esta notícia")
 
     with col2:
         with st.container(height=container_height, border=False):
+            # Obter extrações do Ollama ANTES do formulário
+            extraction = get_article_extraction(article_id)
+            extracted_data = {}
+            if extraction:
+                extracted_data = extraction.get("extracted_data", {})
+            
             with st.form("human_annotation", enter_to_submit=False):
                 st.header("Anotação humana")
 
@@ -297,6 +244,16 @@ def article_page():
                 countries = [c["description"] for c in get_countries()] # Obtendo todos os países conhecidos no banco
                 # Obtendo o índice do país salvo no banco, se houver:
                 index = countries.index(domain_translation("country", value=article["country"])) if article.get("country") else None
+                
+                # Sugestão de País
+                if extracted_data.get("país"):
+                    col_sug, col_btn = st.columns([4, 1])
+                    with col_sug:
+                        st.caption(f"💡 Sugestão: {extracted_data.get('país')}")
+                    with col_btn:
+                        if st.form_submit_button("✓", key="accept_country", use_container_width=True):
+                            st.session_state["suggested_country"] = extracted_data.get("país")
+                
                 st.selectbox(
                     "País:",
                     options=countries,
@@ -311,6 +268,19 @@ def article_page():
                     state_index = BRAZILIAN_STATES.index(extracted_state)
                 else:
                     state_index = BRAZILIAN_STATES.index(article.get("state")) if article.get("state") in BRAZILIAN_STATES else None
+                
+                # Sugestão de Estado
+                if extracted_data.get("estado"):
+                    col_sug, col_btn = st.columns([4, 1])
+                    with col_sug:
+                        st.caption(f"💡 Sugestão: {extracted_data.get('estado')}")
+                    with col_btn:
+                        if st.form_submit_button("✓", key="accept_state", use_container_width=True):
+                            suggested_state = extracted_data.get("estado")
+                            if suggested_state in BRAZILIAN_STATES:
+                                st.session_state["extracted_state_extracted"] = suggested_state
+                                st.rerun()
+                
                 st.selectbox(
                     "Estado:",
                     options=BRAZILIAN_STATES,
@@ -322,6 +292,17 @@ def article_page():
                 # Cidade
                 extracted_city = st.session_state.get("extracted_city_extracted")
                 city_value = extracted_city if extracted_city else article.get("city")
+                
+                # Sugestão de Município
+                if extracted_data.get("município"):
+                    col_sug, col_btn = st.columns([4, 1])
+                    with col_sug:
+                        st.caption(f"💡 Sugestão: {extracted_data.get('município')}")
+                    with col_btn:
+                        if st.form_submit_button("✓", key="accept_city", use_container_width=True):
+                            st.session_state["extracted_city_extracted"] = extracted_data.get("município")
+                            st.rerun()
+                
                 st.text_input("Município:", value=city_value, key="city_input")
 
                 # Referências do local
@@ -336,6 +317,15 @@ def article_page():
                 )
 
                 # Data do evento
+                # Sugestão de Data
+                if extracted_data.get("data"):
+                    col_sug, col_btn = st.columns([4, 1])
+                    with col_sug:
+                        st.caption(f"💡 Sugestão: {extracted_data.get('data')}")
+                    with col_btn:
+                        if st.form_submit_button("✓", key="accept_date", use_container_width=True):
+                            st.session_state["suggested_date"] = extracted_data.get("data")
+                
                 st.date_input(
                     "Data do evento",
                     format="DD/MM/YYYY",
@@ -351,6 +341,18 @@ def article_page():
                         conflict_index = 1 if extracted_conflict.lower() in ["sim", "yes", "s"] else 0
                     else:
                         conflict_index = article.get("conflict")
+                    
+                    # Sugestão de Conflito
+                    if extracted_data.get("Houve Conflito"):
+                        col_sug, col_btn = st.columns([3, 1])
+                        with col_sug:
+                            st.caption(f"💡 Sugestão: {extracted_data.get('Houve Conflito')}")
+                        with col_btn:
+                            if st.form_submit_button("✓", key="accept_conflict", use_container_width=True):
+                                conflict_val = extracted_data.get("Houve Conflito")
+                                st.session_state["extracted_conflict_extracted"] = conflict_val
+                                st.rerun()
+                    
                     st.radio(
                         "Houve conflito?",
                         ["Não", "Sim"],
@@ -368,6 +370,22 @@ def article_page():
                 
                 # Drogas apreendidas
                 st.write("Identifique abaixo as drogas apreendidas, se houver:")
+                
+                # Sugestão de Drogas
+                if extracted_data.get("Drogas Apreendidas") or extracted_data.get("Quantidade de Drogas"):
+                    col_sug, col_btn = st.columns([4, 1])
+                    with col_sug:
+                        drug_info = f"💡 Sugestão: {extracted_data.get('Drogas Apreendidas', 'N/A')}"
+                        if extracted_data.get("Quantidade de Drogas"):
+                            drug_info += f" - {extracted_data.get('Quantidade de Drogas')}"
+                        st.caption(drug_info)
+                    with col_btn:
+                        if st.form_submit_button("✓", key="accept_drugs", use_container_width=True):
+                            st.session_state["suggested_drugs"] = {
+                                "type": extracted_data.get("Drogas Apreendidas"),
+                                "amount": extracted_data.get("Quantidade de Drogas")
+                            }
+                            st.info("💡 Adicione manualmente na tabela abaixo")
                 drugs_df = article["drugs"]
                 drugs_input = st.data_editor(
                     drugs_df,
@@ -401,6 +419,16 @@ def article_page():
 
                 # Armas apreendidas
                 st.write("Identifique abaixo as armas apreendidas, se houver:")
+                
+                # Sugestão de Armas
+                if extracted_data.get("Armas Apreendidas"):
+                    col_sug, col_btn = st.columns([4, 1])
+                    with col_sug:
+                        st.caption(f"💡 Sugestão: {extracted_data.get('Armas Apreendidas')}")
+                    with col_btn:
+                        if st.form_submit_button("✓", key="accept_guns", use_container_width=True):
+                            st.session_state["suggested_guns"] = extracted_data.get("Armas Apreendidas")
+                            st.info("💡 Adicione manualmente na tabela abaixo")
                 guns_df = article["guns"]
                 guns_input = st.data_editor(
                     guns_df,
@@ -417,6 +445,27 @@ def article_page():
 
                 # Relação entre atores
                 st.write("Identifique abaixo a interações entre os atores envolvidos:")
+                
+                # Sugestão de Atores
+                if extracted_data.get("Primeiro Ator") or extracted_data.get("Segundo Ator") or extracted_data.get("Relação Entre Atores"):
+                    col_sug, col_btn = st.columns([4, 1])
+                    with col_sug:
+                        actor_info = "💡 Sugestão: "
+                        if extracted_data.get("Primeiro Ator"):
+                            actor_info += f"{extracted_data.get('Primeiro Ator')}"
+                        if extracted_data.get("Segundo Ator"):
+                            actor_info += f" ↔ {extracted_data.get('Segundo Ator')}"
+                        if extracted_data.get("Relação Entre Atores"):
+                            actor_info += f" ({extracted_data.get('Relação Entre Atores')})"
+                        st.caption(actor_info)
+                    with col_btn:
+                        if st.form_submit_button("✓", key="accept_actors", use_container_width=True):
+                            st.session_state["suggested_actors"] = {
+                                "actor1": extracted_data.get("Primeiro Ator"),
+                                "actor2": extracted_data.get("Segundo Ator"),
+                                "relationship": extracted_data.get("Relação Entre Atores")
+                            }
+                            st.info("💡 Adicione manualmente na tabela abaixo")
                 # actors_df = pd.DataFrame(columns=["Ator 1", "Ator 2", "Relação"])
                 actors_df = article["actors"]
                 actors_input = st.data_editor(
