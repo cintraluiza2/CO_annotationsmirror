@@ -243,16 +243,12 @@ def article_page():
                 # País
                 countries = [c["description"] for c in get_countries()] # Obtendo todos os países conhecidos no banco
                 # Obtendo o índice do país salvo no banco, se houver:
-                index = countries.index(domain_translation("country", value=article["country"])) if article.get("country") else None
-                
-                # Sugestão de País
-                if extracted_data.get("país"):
-                    col_sug, col_btn = st.columns([4, 1])
-                    with col_sug:
-                        st.caption(f"💡 Sugestão: {extracted_data.get('país')}")
-                    with col_btn:
-                        if st.form_submit_button("✓", key="accept_country", use_container_width=True):
-                            st.session_state["suggested_country"] = extracted_data.get("país")
+                suggested_country = st.session_state.get("suggested_country_value")
+                if suggested_country and suggested_country in countries:
+                    index = countries.index(suggested_country)
+                    st.session_state.pop("suggested_country_value", None)
+                else:
+                    index = countries.index(domain_translation("country", value=article["country"])) if article.get("country") else None
                 
                 st.selectbox(
                     "País:",
@@ -261,25 +257,18 @@ def article_page():
                     placeholder="Selecione o país",
                     key="country_input",
                 )
+                
+                # Sugestão de País (abaixo do campo)
+                if extracted_data.get("país"):
+                    st.caption(f"💡 Sugestão: **{extracted_data.get('país')}**")
 
                 # Estado
-                extracted_state = st.session_state.get("extracted_state_extracted")
-                if extracted_state and extracted_state in BRAZILIAN_STATES:
-                    state_index = BRAZILIAN_STATES.index(extracted_state)
+                suggested_state = st.session_state.get("suggested_state_value")
+                if suggested_state and suggested_state in BRAZILIAN_STATES:
+                    state_index = BRAZILIAN_STATES.index(suggested_state)
+                    st.session_state.pop("suggested_state_value", None)
                 else:
                     state_index = BRAZILIAN_STATES.index(article.get("state")) if article.get("state") in BRAZILIAN_STATES else None
-                
-                # Sugestão de Estado
-                if extracted_data.get("estado"):
-                    col_sug, col_btn = st.columns([4, 1])
-                    with col_sug:
-                        st.caption(f"💡 Sugestão: {extracted_data.get('estado')}")
-                    with col_btn:
-                        if st.form_submit_button("✓", key="accept_state", use_container_width=True):
-                            suggested_state = extracted_data.get("estado")
-                            if suggested_state in BRAZILIAN_STATES:
-                                st.session_state["extracted_state_extracted"] = suggested_state
-                                st.rerun()
                 
                 st.selectbox(
                     "Estado:",
@@ -288,22 +277,24 @@ def article_page():
                     placeholder="Selecione o estado",
                     key="state_input"
                 )
+                
+                # Sugestão de Estado (abaixo do campo)
+                if extracted_data.get("estado"):
+                    st.caption(f"💡 Sugestão: **{extracted_data.get('estado')}**")
 
                 # Cidade
-                extracted_city = st.session_state.get("extracted_city_extracted")
-                city_value = extracted_city if extracted_city else article.get("city")
-                
-                # Sugestão de Município
-                if extracted_data.get("município"):
-                    col_sug, col_btn = st.columns([4, 1])
-                    with col_sug:
-                        st.caption(f"💡 Sugestão: {extracted_data.get('município')}")
-                    with col_btn:
-                        if st.form_submit_button("✓", key="accept_city", use_container_width=True):
-                            st.session_state["extracted_city_extracted"] = extracted_data.get("município")
-                            st.rerun()
+                suggested_city = st.session_state.get("suggested_city_value")
+                if suggested_city:
+                    city_value = suggested_city
+                    st.session_state.pop("suggested_city_value", None)
+                else:
+                    city_value = article.get("city")
                 
                 st.text_input("Município:", value=city_value, key="city_input")
+                
+                # Sugestão de Município (abaixo do campo)
+                if extracted_data.get("município"):
+                    st.caption(f"💡 Sugestão: **{extracted_data.get('município')}**")
 
                 # Referências do local
                 st.text_input("Referências do local (se houver):", value=article.get("location_references"), key="location_references_input")
@@ -317,21 +308,16 @@ def article_page():
                 )
 
                 # Data do evento
-                # Sugestão de Data
-                if extracted_data.get("data"):
-                    col_sug, col_btn = st.columns([4, 1])
-                    with col_sug:
-                        st.caption(f"💡 Sugestão: {extracted_data.get('data')}")
-                    with col_btn:
-                        if st.form_submit_button("✓", key="accept_date", use_container_width=True):
-                            st.session_state["suggested_date"] = extracted_data.get("data")
-                
                 st.date_input(
                     "Data do evento",
                     format="DD/MM/YYYY",
                     value=article.get("event_date"),
                     key="event_date_input"
                 )
+                
+                # Sugestão de Data (abaixo do campo)
+                if extracted_data.get("data"):
+                    st.caption(f"💡 Sugestão: **{extracted_data.get('data')}**")
 
                 # Conflito
                 col2_1, col2_2 = st.columns(2, gap="small")
@@ -342,17 +328,6 @@ def article_page():
                     else:
                         conflict_index = article.get("conflict")
                     
-                    # Sugestão de Conflito
-                    if extracted_data.get("Houve Conflito"):
-                        col_sug, col_btn = st.columns([3, 1])
-                        with col_sug:
-                            st.caption(f"💡 Sugestão: {extracted_data.get('Houve Conflito')}")
-                        with col_btn:
-                            if st.form_submit_button("✓", key="accept_conflict", use_container_width=True):
-                                conflict_val = extracted_data.get("Houve Conflito")
-                                st.session_state["extracted_conflict_extracted"] = conflict_val
-                                st.rerun()
-                    
                     st.radio(
                         "Houve conflito?",
                         ["Não", "Sim"],
@@ -360,6 +335,10 @@ def article_page():
                         index=conflict_index,
                         key="conflict_input"
                     )
+                    
+                    # Sugestão de Conflito (abaixo do campo)
+                    if extracted_data.get("Houve Conflito"):
+                        st.caption(f"💡 Sugestão: **{extracted_data.get('Houve Conflito')}**")
                 # Mortes
                 with col2_2:
                     st.number_input(
@@ -371,21 +350,6 @@ def article_page():
                 # Drogas apreendidas
                 st.write("Identifique abaixo as drogas apreendidas, se houver:")
                 
-                # Sugestão de Drogas
-                if extracted_data.get("Drogas Apreendidas") or extracted_data.get("Quantidade de Drogas"):
-                    col_sug, col_btn = st.columns([4, 1])
-                    with col_sug:
-                        drug_info = f"💡 Sugestão: {extracted_data.get('Drogas Apreendidas', 'N/A')}"
-                        if extracted_data.get("Quantidade de Drogas"):
-                            drug_info += f" - {extracted_data.get('Quantidade de Drogas')}"
-                        st.caption(drug_info)
-                    with col_btn:
-                        if st.form_submit_button("✓", key="accept_drugs", use_container_width=True):
-                            st.session_state["suggested_drugs"] = {
-                                "type": extracted_data.get("Drogas Apreendidas"),
-                                "amount": extracted_data.get("Quantidade de Drogas")
-                            }
-                            st.info("💡 Adicione manualmente na tabela abaixo")
                 drugs_df = article["drugs"]
                 drugs_input = st.data_editor(
                     drugs_df,
@@ -399,6 +363,15 @@ def article_page():
                     num_rows="dynamic",
                     key="drugs_df_input",
                 )
+                
+                # Sugestão de Drogas (abaixo da tabela)
+                if extracted_data.get("Drogas Apreendidas") or extracted_data.get("Quantidade de Drogas"):
+                    drug_info = f"💡 Sugestão: **{extracted_data.get('Drogas Apreendidas', 'N/A')}"
+                    if extracted_data.get("Quantidade de Drogas"):
+                        drug_info += f" - {extracted_data.get('Quantidade de Drogas')}**"
+                    else:
+                        drug_info += "**"
+                    st.caption(drug_info)
 
                 st.write("Utilize o campo abaixo se desejar adicionar outros tipos de drogas ou outros tipos de métrica:")
                 other_drugs_df = article["other_drugs"]
@@ -420,15 +393,6 @@ def article_page():
                 # Armas apreendidas
                 st.write("Identifique abaixo as armas apreendidas, se houver:")
                 
-                # Sugestão de Armas
-                if extracted_data.get("Armas Apreendidas"):
-                    col_sug, col_btn = st.columns([4, 1])
-                    with col_sug:
-                        st.caption(f"💡 Sugestão: {extracted_data.get('Armas Apreendidas')}")
-                    with col_btn:
-                        if st.form_submit_button("✓", key="accept_guns", use_container_width=True):
-                            st.session_state["suggested_guns"] = extracted_data.get("Armas Apreendidas")
-                            st.info("💡 Adicione manualmente na tabela abaixo")
                 guns_df = article["guns"]
                 guns_input = st.data_editor(
                     guns_df,
@@ -440,33 +404,16 @@ def article_page():
                     use_container_width=True,
                     num_rows="dynamic",
                 )
+                
+                # Sugestão de Armas (abaixo da tabela)
+                if extracted_data.get("Armas Apreendidas"):
+                    st.caption(f"💡 Sugestão: **{extracted_data.get('Armas Apreendidas')}**")
 
                 st.divider()
 
                 # Relação entre atores
                 st.write("Identifique abaixo a interações entre os atores envolvidos:")
                 
-                # Sugestão de Atores
-                if extracted_data.get("Primeiro Ator") or extracted_data.get("Segundo Ator") or extracted_data.get("Relação Entre Atores"):
-                    col_sug, col_btn = st.columns([4, 1])
-                    with col_sug:
-                        actor_info = "💡 Sugestão: "
-                        if extracted_data.get("Primeiro Ator"):
-                            actor_info += f"{extracted_data.get('Primeiro Ator')}"
-                        if extracted_data.get("Segundo Ator"):
-                            actor_info += f" ↔ {extracted_data.get('Segundo Ator')}"
-                        if extracted_data.get("Relação Entre Atores"):
-                            actor_info += f" ({extracted_data.get('Relação Entre Atores')})"
-                        st.caption(actor_info)
-                    with col_btn:
-                        if st.form_submit_button("✓", key="accept_actors", use_container_width=True):
-                            st.session_state["suggested_actors"] = {
-                                "actor1": extracted_data.get("Primeiro Ator"),
-                                "actor2": extracted_data.get("Segundo Ator"),
-                                "relationship": extracted_data.get("Relação Entre Atores")
-                            }
-                            st.info("💡 Adicione manualmente na tabela abaixo")
-                # actors_df = pd.DataFrame(columns=["Ator 1", "Ator 2", "Relação"])
                 actors_df = article["actors"]
                 actors_input = st.data_editor(
                     actors_df,
@@ -478,7 +425,19 @@ def article_page():
                     hide_index=True,
                     use_container_width=True,
                     num_rows="dynamic",
-                )   
+                )
+                
+                # Sugestão de Atores (abaixo da tabela)
+                if extracted_data.get("Primeiro Ator") or extracted_data.get("Segundo Ator") or extracted_data.get("Relação Entre Atores"):
+                    actor_info = "💡 Sugestão: **"
+                    if extracted_data.get("Primeiro Ator"):
+                        actor_info += f"{extracted_data.get('Primeiro Ator')}"
+                    if extracted_data.get("Segundo Ator"):
+                        actor_info += f" ↔ {extracted_data.get('Segundo Ator')}"
+                    if extracted_data.get("Relação Entre Atores"):
+                        actor_info += f" ({extracted_data.get('Relação Entre Atores')})"
+                    actor_info += "**"
+                    st.caption(actor_info)
 
                 st.divider()
 
