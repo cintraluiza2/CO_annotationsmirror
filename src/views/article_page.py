@@ -300,12 +300,24 @@ def article_page():
                 st.text_input("Referências do local (se houver):", value=article.get("location_references"), key="location_references_input")
 
                 # Latitude e Longitude
-                st.text_input(
-                    "Latitude e longitude",
-                    value=article.get("latitude_and_longitude"),
-                    placeholder="Ex: 18.25000000, -63.16666666",
-                    key="latitude_and_longitude_input"
-                )
+                col1, col2 = st.columns([4, 1])
+                with col1:
+                    st.text_input(
+                        "Latitude e longitude",
+                        value=article.get("latitude_and_longitude"),
+                        placeholder="Ex: 18.25000000, -63.16666666",
+                        key="latitude_and_longitude_input"
+                    )
+                with col2:
+                    st.markdown("<br>", unsafe_allow_html=True)  # Espaçamento para alinhar com o input
+                    coords = st.session_state.get("latitude_and_longitude_input", article.get("latitude_and_longitude"))
+                    if coords and coords.strip():
+                        # Remove espaços e valida formato básico
+                        coords_clean = coords.strip().replace(" ", "")
+                        google_maps_url = f"https://www.google.com/maps/search/?api=1&query={coords_clean}"
+                        st.link_button("📍 Abrir no Maps", google_maps_url, use_container_width=True)
+                    else:
+                        st.button("📍 Abrir no Maps", disabled=True, use_container_width=True, help="Insira coordenadas primeiro")
 
                 # Data do evento
                 st.date_input(
