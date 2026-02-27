@@ -300,24 +300,33 @@ def article_page():
                 st.text_input("Referências do local (se houver):", value=article.get("location_references"), key="location_references_input")
 
                 # Latitude e Longitude
-                col1, col2 = st.columns([4, 1])
-                with col1:
-                    st.text_input(
-                        "Latitude e longitude",
-                        value=article.get("latitude_and_longitude"),
-                        placeholder="Ex: 18.25000000, -63.16666666",
-                        key="latitude_and_longitude_input"
+                st.text_input(
+                    "Latitude e longitude",
+                    value=article.get("latitude_and_longitude"),
+                    placeholder="Ex: 18.25000000, -63.16666666",
+                    key="latitude_and_longitude_input"
+                )
+                
+                # Botões do Google Maps
+                col_btn1, col_btn2 = st.columns(2)
+                with col_btn1:
+                    st.markdown(
+                        '<a href="https://www.google.com/maps" target="_blank" style="display: inline-block; padding: 0.5rem 1rem; background-color: #0066cc; color: white; text-decoration: none; border-radius: 0.25rem; text-align: center; width: 100%; font-size: 0.9rem;">🗺️ Abrir no Maps</a>',
+                        unsafe_allow_html=True
                     )
-                with col2:
-                    st.markdown("<br>", unsafe_allow_html=True)  # Espaçamento para alinhar com o input
-                    coords = st.session_state.get("latitude_and_longitude_input", article.get("latitude_and_longitude"))
+                with col_btn2:
+                    # Pega o valor atual do campo de coordenadas
+                    coords = st.session_state.get("latitude_and_longitude_input", article.get("latitude_and_longitude", ""))
                     if coords and coords.strip():
-                        # Remove espaços e valida formato básico
                         coords_clean = coords.strip().replace(" ", "")
-                        google_maps_url = f"https://www.google.com/maps/search/?api=1&query={coords_clean}"
-                        st.link_button("📍 Abrir no Maps", google_maps_url, use_container_width=True)
+                        maps_url = f"https://www.google.com/maps/search/?api=1&query={coords_clean}"
                     else:
-                        st.button("📍 Abrir no Maps", disabled=True, use_container_width=True, help="Insira coordenadas primeiro")
+                        maps_url = "https://www.google.com/maps"
+                    
+                    st.markdown(
+                        f'<a href="{maps_url}" target="_blank" style="display: inline-block; padding: 0.5rem 1rem; background-color: #ff4b4b; color: white; text-decoration: none; border-radius: 0.25rem; text-align: center; width: 100%; cursor: pointer; font-size: 0.9rem;">📍 Verificar no Maps</a>',
+                        unsafe_allow_html=True
+                    )
 
                 # Data do evento
                 st.date_input(
