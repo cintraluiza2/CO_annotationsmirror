@@ -219,6 +219,37 @@ def article_page():
             if extraction:
                 extracted_data = extraction.get("extracted_data", {})
             
+            # Seção de verificação de coordenadas FORA do formulário
+            st.markdown("#### 📍 Verificar Localização no Mapa")
+            coords_value = article.get("latitude_and_longitude", "")
+            
+            col_coord, col_btn = st.columns([3, 1])
+            with col_coord:
+                st.text_input(
+                    "Coordenadas",
+                    value=coords_value,
+                    placeholder="Ex: 18.25000000, -63.16666666",
+                    key="coords_preview",
+                    help="Digite as coordenadas para verificar no mapa"
+                )
+            with col_btn:
+                st.markdown("<br>", unsafe_allow_html=True)
+                coords_check = st.session_state.get("coords_preview", coords_value)
+                if coords_check and coords_check.strip():
+                    coords_clean = coords_check.strip().replace(" ", "")
+                    maps_url = f"https://www.google.com/maps/search/?api=1&query={coords_clean}"
+                    st.markdown(
+                        f'<a href="{maps_url}" target="_blank" style="display: inline-block; padding: 0.5rem 1rem; background-color: #ff4b4b; color: white; text-decoration: none; border-radius: 0.25rem; text-align: center; width: 100%; cursor: pointer; font-size: 0.9rem;">📍 Ver no Maps</a>',
+                        unsafe_allow_html=True
+                    )
+                else:
+                    st.markdown(
+                        '<a href="https://www.google.com/maps" target="_blank" style="display: inline-block; padding: 0.5rem 1rem; background-color: #0066cc; color: white; text-decoration: none; border-radius: 0.25rem; text-align: center; width: 100%; font-size: 0.9rem;">🗺️ Abrir Maps</a>',
+                        unsafe_allow_html=True
+                    )
+            
+            st.markdown("---")
+            
             with st.form("human_annotation", enter_to_submit=False):
                 st.header("Anotação humana")
 
@@ -299,34 +330,14 @@ def article_page():
                 # Referências do local
                 st.text_input("Referências do local (se houver):", value=article.get("location_references"), key="location_references_input")
 
-                # Latitude e Longitude
+                # Latitude e Longitude (campo para salvar no banco)
                 st.text_input(
                     "Latitude e longitude",
                     value=article.get("latitude_and_longitude"),
                     placeholder="Ex: 18.25000000, -63.16666666",
-                    key="latitude_and_longitude_input"
+                    key="latitude_and_longitude_input",
+                    help="Este valor será salvo no banco de dados ao submeter o formulário"
                 )
-                
-                # Botões do Google Maps
-                col_btn1, col_btn2 = st.columns(2)
-                with col_btn1:
-                    st.markdown(
-                        '<a href="https://www.google.com/maps" target="_blank" style="display: inline-block; padding: 0.5rem 1rem; background-color: #0066cc; color: white; text-decoration: none; border-radius: 0.25rem; text-align: center; width: 100%; font-size: 0.9rem;">🗺️ Abrir no Maps</a>',
-                        unsafe_allow_html=True
-                    )
-                with col_btn2:
-                    # Pega o valor atual do campo de coordenadas
-                    coords = st.session_state.get("latitude_and_longitude_input", article.get("latitude_and_longitude", ""))
-                    if coords and coords.strip():
-                        coords_clean = coords.strip().replace(" ", "")
-                        maps_url = f"https://www.google.com/maps/search/?api=1&query={coords_clean}"
-                    else:
-                        maps_url = "https://www.google.com/maps"
-                    
-                    st.markdown(
-                        f'<a href="{maps_url}" target="_blank" style="display: inline-block; padding: 0.5rem 1rem; background-color: #ff4b4b; color: white; text-decoration: none; border-radius: 0.25rem; text-align: center; width: 100%; cursor: pointer; font-size: 0.9rem;">📍 Verificar no Maps</a>',
-                        unsafe_allow_html=True
-                    )
 
                 # Data do evento
                 st.date_input(
