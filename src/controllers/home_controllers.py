@@ -74,7 +74,19 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
     # Formatação da fonte
     if filters.get("newspaper") == "Todas as fontes":
         filters.pop("newspaper")
-
+    elif filters.get("newspaper"):
+        # Busca todas as variações do nome normalizado no banco
+        selected_newspaper = filters.get("newspaper")
+        newspaper_variations = db.get_newspaper_variations(selected_newspaper)
+        
+        if len(newspaper_variations) > 1:
+            # Se houver múltiplas variações, usa $in para buscar todas
+            filters.update({"newspaper": {"$in": newspaper_variations}})
+        elif len(newspaper_variations) == 1:
+            # Se houver apenas uma variação, usa busca direta
+            filters.update({"newspaper": newspaper_variations[0]})
+        # Se não houver variações, mantém o filtro original
+        
     # Formatação da data de início
     begin_date = filters.get("begin_date")
     if begin_date and begin_date != "":

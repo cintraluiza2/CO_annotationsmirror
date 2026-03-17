@@ -108,14 +108,61 @@ def close_ssh_tunnel():
         tunnel_timer.cancel()
         tunnel_timer = None
 
+def normalize_newspaper_name(name):
+    """
+    Normaliza nomes de jornais para unificar variações.
+    Por exemplo: 'FolhaSP', 'Folha de Sao Paulo' -> 'Folha de São Paulo'
+    """
+    if not name:
+        return name
+    
+    # Dicionário de mapeamento de variações para nomes normalizados
+    normalization_map = {
+        'folhasp': 'Folha de São Paulo',
+        'folha de sao paulo': 'Folha de São Paulo',
+        'folha de são paulo': 'Folha de São Paulo',
+        'folha sp': 'Folha de São Paulo',
+        # Adicione outras variações conforme necessário
+    }
+    
+    # Normaliza o nome para comparação (lowercase, sem acentos extras)
+    name_lower = name.lower().strip()
+    
+    # Retorna o nome normalizado se encontrado no mapa
+    return normalization_map.get(name_lower, name)
+
 def get_newspapers():
     """
-    Retorna os valores únicos de jornais presentes nas notícias.
+    Retorna os valores únicos de jornais presentes nas notícias, com nomes normalizados.
     """
     db_client = open_ssh_tunnel()
     collection = db_client["couser"]["newsData"]
-    newspaper = collection.distinct("newspaper")
-    return newspaper
+    newspapers = collection.distinct("newspaper")
+    
+    # Normaliza os nomes e remove duplicatas
+    normalized_newspapers = set()
+    for newspaper in newspapers:
+        if newspaper:  # Ignora valores None ou vazios
+            normalized_newspapers.add(normalize_newspaper_name(newspaper))
+    
+    return sorted(list(normalized_newspapers))
+
+def get_newspaper_variations(normalized_name):
+    """
+    Retorna todas as variações de um nome de jornal normalizado que existem no banco de dados.
+    Por exemplo, se normalized_name = 'Folha de São Paulo', retorna ['FolhaSP', 'Folha de Sao Paulo', etc.]
+    """
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["newsData"]
+    all_newspapers = collection.distinct("newspaper")
+    
+    # Encontra todas as variações que normalizam para o mesmo nome
+    variations = []
+    for newspaper in all_newspapers:
+        if newspaper and normalize_newspaper_name(newspaper) == normalized_name:
+            variations.append(newspaper)
+    
+    return variations
     
 def get_article(_id: str):
     """
