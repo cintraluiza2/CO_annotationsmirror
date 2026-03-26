@@ -380,3 +380,57 @@ def get_article_extraction(article_id: str):
     )
     
     return result
+
+def get_newspaper_statistics(newspaper=None):
+    """
+    Retorna estatísticas de artigos por jornal.
+    Se newspaper for None, retorna estatísticas totais.
+    """
+    db_client = open_ssh_tunnel()
+    collection = db_client["couser"]["newsData"]
+    
+    filter_query = {}
+    if newspaper and newspaper != "Todas as fontes":
+        newspaper_variations = get_newspaper_variations(newspaper)
+        if len(newspaper_variations) > 1:
+            filter_query = {"newspaper": {"$in": newspaper_variations}}
+        elif len(newspaper_variations) == 1:
+            filter_query = {"newspaper": newspaper_variations[0]}
+        else:
+            filter_query = {"newspaper": newspaper}
+    
+    total = collection.count_documents(filter_query)
+    
+    manual_total = collection.count_documents({**filter_query, "manual_relevance_class": {"$in": [0, 1, 2]}})
+    manual_relevant = collection.count_documents({**filter_query, "manual_relevance_class": 1})
+    manual_irrelevant = collection.count_documents({**filter_query, "manual_relevance_class": 0})
+    manual_doubt = collection.count_documents({**filter_query, "manual_relevance_class": 2})
+    
+    auto_total = collection.count_documents({**filter_query, "automatic_relevance_class": {"$in": [0, 1]}})
+    auto_relevant = collection.count_documents({**filter_query, "automatic_relevance_class": 1})
+    auto_irrelevant = collection.count_documents({**filter_query, "automatic_relevance_class": 0})
+    
+    confirmed_relevant = collection.count_documents({
+        **filter_query,
+        "manual_relevance_class": 1,
+        "automatic_relevance_class": 1
+    })
+    
+    confirmed_irrelevant = collection.count_documents({
+        **filter_query,
+        "manual_relevance_class": 0,
+        "automatic_relevance_class": 0
+    })
+    
+    return {
+        "total": total,
+        "manual_total": manual_total,
+        "manual_relevant": manual_relevant,
+        "manual_irrelevant": manual_irrelevant,
+        "manual_doubt": manual_doubt,
+        "auto_total": auto_total,
+        "auto_relevant": auto_relevant,
+        "auto_irrelevant": auto_irrelevant,
+        "confirmed_relevant": confirmed_relevant,
+        "confirmed_irrelevant": confirmed_irrelevant
+    }

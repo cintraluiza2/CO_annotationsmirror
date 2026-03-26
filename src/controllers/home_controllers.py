@@ -222,3 +222,9 @@ def count_manual_and_automatic_classifications(manual_values: list[int], automat
     Retorna a contagem de notícias que foram classificadas manualmente e automaticamente.
     """
     return db.count_manual_and_automatic_classifications(manual_values, automatic_values)
+
+def get_newspaper_statistics(newspaper=None):
+    """
+    Retorna estatísticas de artigos por jornal.
+    """
+    return db.get_newspaper_statistics(newspaper)

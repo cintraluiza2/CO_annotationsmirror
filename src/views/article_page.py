@@ -293,6 +293,13 @@ def article_page():
     st.session_state["tab_name"] = "| Notícia"
 
     
+    col1, col2 = st.columns([6, 1])
+    with col2:
+        if st.button("🏠 Menu Inicial", use_container_width=True, help="Voltar ao menu inicial"):
+            st.query_params.clear()
+            st.switch_page("src/views/home_page.py")
+
+    
 
     # CSS para remover scroll principal e estilizar containers
 

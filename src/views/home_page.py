@@ -4,7 +4,8 @@ import streamlit as st
 
 from ..controllers.home_controllers import (
     get_articles_dataframe, get_sources, get_best_classification_model, count_articles,
-    count_manual_classifications, count_automatic_classifications, count_manual_and_automatic_classifications
+    count_manual_classifications, count_automatic_classifications, count_manual_and_automatic_classifications,
+    get_newspaper_statistics
 )
 from src.settings import (
     ITEMS_PER_PAGE, COLUMNS_ORDER, APP_NAME, APP_DESCRIPTION, APP_INSTRUCTIONS, APP_ICON
@@ -17,14 +18,27 @@ def display_welcome():
     st.text(APP_DESCRIPTION)
     st.text(APP_INSTRUCTIONS)
 
+    newspapers = get_sources()
+    if newspapers:
+        selected_newspaper = st.selectbox(
+            "Filtrar por fonte:",
+            options=["Todas as fontes"] + newspapers,
+            key="newspaper_filter_home",
+            help="Selecione um jornal para ver estatísticas específicas"
+        )
+    else:
+        selected_newspaper = "Todas as fontes"
+    
     st.header("Indicadores")
     with st.spinner("Por favor, aguarde enquanto os indicadores são carregados...", show_time=True):
+        stats = get_newspaper_statistics(selected_newspaper if selected_newspaper != "Todas as fontes" else None)
+        
         col1, _, _, _ = st.columns(4)
-        articles_count = count_articles()
+        articles_count = stats["total"]
         col1.metric("Total de notícias", f"{articles_count:,}".replace(",", "."), border=True)
 
         col1, col2, col3, col4 = st.columns(4)
-        manual_classifications_count = count_manual_classifications(values=[0, 1, 2])
+        manual_classifications_count = stats["manual_total"]
         col1.metric(
             "Classificações manuais",
             f"{manual_classifications_count:,}".replace(",", "."),
@@ -32,7 +46,7 @@ def display_welcome():
             delta="Total",
             delta_color="off"
         )
-        manual_relevant_classifications_count = count_manual_classifications(values=[1])
+        manual_relevant_classifications_count = stats["manual_relevant"]
         col2.metric(
             "Classificações manuais",
             f"{manual_relevant_classifications_count:,}".replace(",", "."),
@@ -40,7 +54,7 @@ def display_welcome():
             delta="Relevantes",
             delta_color="off"
         )
-        manual_nonrelevant_classifications_count = count_manual_classifications(values=[0])
+        manual_nonrelevant_classifications_count = stats["manual_irrelevant"]
         col3.metric(
             "Classificações manuais",
             f"{manual_nonrelevant_classifications_count:,}".replace(",", "."),
@@ -48,7 +62,7 @@ def display_welcome():
             delta="Não relevantes",
             delta_color="off"
         )
-        manual_doubt_classifications_count = count_manual_classifications(values=[2])
+        manual_doubt_classifications_count = stats["manual_doubt"]
         col4.metric(
             "Classificações manuais",
             f"{manual_doubt_classifications_count:,}".replace(",", "."),
@@ -58,7 +72,7 @@ def display_welcome():
         )
 
         col1, col2, col3, _ = st.columns(4)
-        automatic_classifications_count = count_automatic_classifications(values=[0, 1])
+        automatic_classifications_count = stats["auto_total"]
         col1.metric(
             "Classificações automáticas",
             f"{automatic_classifications_count:,}".replace(",", "."),
@@ -66,7 +80,7 @@ def display_welcome():
             delta="Total",
             delta_color="off"
         )
-        automatic_relevant_classifications_count = count_automatic_classifications(values=[1])
+        automatic_relevant_classifications_count = stats["auto_relevant"]
         col2.metric(
             "Classificações automáticas",
             f"{automatic_relevant_classifications_count:,}".replace(",", "."),
@@ -74,7 +88,7 @@ def display_welcome():
             delta="Relevantes",
             delta_color="off"
         )
-        automatic_nonrelevant_classifications_count = count_automatic_classifications(values=[0])
+        automatic_nonrelevant_classifications_count = stats["auto_irrelevant"]
         col3.metric(
             "Classificações automáticas",
             f"{automatic_nonrelevant_classifications_count:,}".replace(",", "."),
@@ -84,20 +98,20 @@ def display_welcome():
         )
 
         _, col2, col3, _ = st.columns(4)
-        true_true_count = count_manual_and_automatic_classifications(manual_values=[1], automatic_values=[1])
+        true_true_count = stats["confirmed_relevant"]
         col2.metric(
             "Relevantes confirmadas",
             f"{true_true_count:,}".replace(",", "."),
             border=True,
-            delta=f"{round((true_true_count/manual_relevant_classifications_count)*100)}%",
+            delta=f"{round((true_true_count/manual_relevant_classifications_count)*100) if manual_relevant_classifications_count > 0 else 0}%",
             delta_color="off",
             help="Classificações relevantes para o humano e para o modelo",
         )
-        true_false_count = count_manual_and_automatic_classifications(manual_values=[0], automatic_values=[0])
+        true_false_count = stats["confirmed_irrelevant"]
         col3.metric(
             "Não relevantes confirmadas",
             f"{true_false_count:,}".replace(",", "."),
-            delta=f"{round((true_false_count/manual_nonrelevant_classifications_count)*100)}%",
+            delta=f"{round((true_false_count/manual_nonrelevant_classifications_count)*100) if manual_nonrelevant_classifications_count > 0 else 0}%",
             delta_color="off",
             border=True,
             help="Classificações não relevantes para o humano e para o modelo",
@@ -114,7 +128,7 @@ def display_problem_reporting():
         st.button("Reportar problema", disabled=True, key=next(keys))
 
 def display_automatic_annotation_button():
-    columns = st.columns(3)
+    columns = st.columns(4)
     best_classification_model = get_best_classification_model()
     score = best_classification_model.get("score", "Desconhecida")
     last_evaluation = best_classification_model.get('timestamp', "Desconhecido")
@@ -127,6 +141,11 @@ def display_automatic_annotation_button():
     except StopIteration:
         keys = iter(range(1, 100))
         columns[2].button("Atualizar anotação automática", disabled=True, key=next(keys))
+    
+    if columns[3].button("🏠 Menu Inicial", use_container_width=True, help="Voltar ao menu inicial"):
+        if "df" in st.session_state:
+            del st.session_state["df"]
+        st.rerun()
 
 def display_search_count(count):
     st.write(f"{count} notícias encontradas")
