@@ -11,6 +11,39 @@ from ..settings import (
     INVERSE_FIELDS_MAPPING
 )
 
+def format_date(x):
+    """
+    Formata data para o padrão brasileiro (dd/mm/yyyy).
+    Aceita string em diferentes formatos, objetos datetime, ou None.
+    """
+    if not x or (isinstance(x, float) and np.isnan(x)):
+        return ""
+    
+    if isinstance(x, datetime):
+        return x.strftime("%d/%m/%Y")
+    
+    if isinstance(x, str):
+        date_formats = [
+            "%Y-%m-%d",
+            "%Y-%m-%d %H:%M:%S",
+            "%Y-%m-%dT%H:%M:%S",
+            "%Y-%m-%dT%H:%M:%S.%f",
+            "%d/%m/%Y"
+        ]
+        
+        for fmt in date_formats:
+            try:
+                return datetime.strptime(x, fmt).strftime("%d/%m/%Y")
+            except ValueError:
+                continue
+        
+        try:
+            return datetime.fromisoformat(x.replace('Z', '+00:00')).strftime("%d/%m/%Y")
+        except:
+            pass
+    
+    return ""
+
 def stylize_relevance_value(col):
     """
     Recebe uma coluna de pd.DataFrame e adiciona `background-color` às células a depender do valor de cada uma.
@@ -133,8 +166,7 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
         lambda x: "Não anotado" if (x is None or np.isnan(x)) else ("Relevante" if x == 1 else "Irrelevante"))
     articles_df["automatic_relevance_pipeline_confidence"] = articles_df["automatic_relevance_pipeline_confidence"].apply(
         lambda x: "" if (x is None or np.isnan(x)) else f"{round(x*100)}%")
-    articles_df["publication_date"] = articles_df["publication_date"].apply(
-        lambda x: datetime.strptime(x, "%Y-%m-%d").strftime("%d/%m/%Y") if isinstance(x, str) and x else "")
+    articles_df["publication_date"] = articles_df["publication_date"].apply(format_date)
 
     # Formatação do campo validated para checkbox (converte 0/1 para False/True)
     articles_df["validated"] = articles_df["validated"].apply(
