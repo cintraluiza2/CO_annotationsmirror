@@ -297,7 +297,9 @@ def article_page():
     with col2:
         if st.button("🏠 Menu Inicial", use_container_width=True, help="Voltar ao menu inicial"):
             st.query_params.clear()
-            st.switch_page("src/views/home_page.py")
+            if "df" in st.session_state:
+                del st.session_state["df"]
+            st.rerun()
 
     
 
