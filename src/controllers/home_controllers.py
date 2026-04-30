@@ -80,6 +80,65 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
     """
     Retorna o dataframe de notícias a ser exibido.
     """
+    # Formatação do ID do artigo (usa id_event exibido no site)
+    article_id = filters.get("article_id", "").strip()
+    if article_id:
+        # Quando buscar por ID, IGNORAR todos os outros filtros
+        # para garantir que a notícia seja encontrada
+        try:
+            # Tentar converter para int
+            filters = {"id_event": int(article_id)}
+        except ValueError:
+            # Se não for um número válido, busca não retornará resultados
+            filters = {"id_event": article_id}
+        
+        # Buscar artigo diretamente
+        articles_df, search_count = db.get_articles(
+            filters,
+            as_df=True,
+            page=page,
+            items_per_page=ITEMS_PER_PAGE,
+            sort=INVERSE_FIELDS_MAPPING[sort],
+            sort_type={"Ascendente": 1, "Descendente": -1}[sort_type],
+        )
+
+        if (articles_df is None) or (not search_count):
+            return None, 0
+
+        # Formatação dos valores das células
+        articles_df["manual_relevance_class"] = articles_df["manual_relevance_class"].apply(
+            lambda x: "Não anotado" if (x is None or np.isnan(x)) else {0: "Irrelevante", 1: "Relevante", 2: "Dúvida"}[x])
+        articles_df["automatic_relevance_class"] = articles_df["automatic_relevance_class"].apply(
+            lambda x: "Não anotado" if (x is None or np.isnan(x)) else ("Relevante" if x == 1 else "Irrelevante"))
+        articles_df["automatic_relevance_pipeline_confidence"] = articles_df["automatic_relevance_pipeline_confidence"].apply(
+            lambda x: "" if (x is None or np.isnan(x)) else f"{round(x*100)}%")
+        articles_df["publication_date"] = articles_df["publication_date"].apply(format_date)
+
+        # Formatação do campo validated para checkbox
+        articles_df["validated"] = articles_df["validated"].apply(
+            lambda x: bool(x) if x == 1 else False)
+
+        # Alterando o tipo de id_event para str
+        articles_df["id_event"] = articles_df["id_event"].astype(str)
+        
+        # Mapeamento dos nomes das colunas
+        articles_df.rename(columns=FIELDS_MAPPING, inplace=True)
+
+        # Criação da coluna clicável
+        articles_df["Abrir"] = articles_df["_id"].apply(
+            lambda id: f"?page=article&id={id}"
+        )
+
+        # Formatação estética das células
+        articles_df = articles_df.style.apply(stylize_relevance_value, subset=FIELDS_MAPPING["manual_relevance_class"]) \
+            .apply(stylize_relevance_value, subset=FIELDS_MAPPING["automatic_relevance_class"]) \
+                .apply(stylize_confidence_value, subset=FIELDS_MAPPING["automatic_relevance_pipeline_confidence"])
+
+        return articles_df, search_count
+    
+    # Se não houver ID, remover do filtro e processar normalmente
+    filters.pop("article_id", None)
+
     # Formatação da relevância manual
     if not filters.get("manual_relevance") == "Todas":
         if filters.get("manual_relevance") == "Relevantes":

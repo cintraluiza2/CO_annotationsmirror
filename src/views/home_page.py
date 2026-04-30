@@ -222,6 +222,7 @@ def apply_filters_form(mode): # "next_page", "previous_page" ou "search"
         st.session_state.current_page -= 1
 
     st.session_state.filters = {
+        'article_id': st.session_state.get("article_id_input", ""),
         'title': st.session_state.get("title_input", ""),
         'begin_date': st.session_state.get("begin_date_input", ""),
         'end_date': st.session_state.get("end_date_input", ""),
@@ -237,27 +238,30 @@ def create_sidebar(messages_placeholder):
     st.sidebar.title("Filtros")
 
     with st.sidebar.form("filters_form", enter_to_submit=True):
+        st.text_input("ID da notícia:", key="article_id_input", help="Buscar notícia pelo ID (ObjectId do MongoDB)")
         st.text_input("Título da notícia:", key="title_input")
 
-        # Filtros de data
+        # Filtros de data (opcionais)
         col1, col2 = st.columns(2)
         begin_date = col1.date_input(
             "De:",
             min_value=datetime(2011, 1, 1),
             max_value=datetime.today(),
-            value=datetime(2011, 1, 1),
+            value=None,
             format="DD/MM/YYYY",
             disabled=False,
-            key="begin_date_input"
+            key="begin_date_input",
+            help="Deixe vazio para buscar desde o início"
         )
         end_date = col2.date_input(
             "Até:",
             min_value=datetime(2011, 1, 1),
             max_value=datetime.today(),
-            value=datetime.today(),
+            value=None,
             format="DD/MM/YYYY",
             disabled=False,
-            key="end_date_input"
+            key="end_date_input",
+            help="Deixe vazio para buscar até hoje"
         )
 
         # Filtro de relevância manual

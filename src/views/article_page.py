@@ -295,11 +295,23 @@ def article_page():
     
     col1, col2 = st.columns([6, 1])
     with col2:
-        if st.button("🏠 Menu Inicial", use_container_width=True, help="Voltar ao menu inicial"):
-            st.query_params.clear()
-            if "df" in st.session_state:
-                del st.session_state["df"]
-            st.rerun()
+        st.markdown(
+            '<button onclick="window.location.href=window.location.origin" style="'
+            'display: inline-block; '
+            'padding: 0.5rem 1rem; '
+            'background-color: #ff4b4b; '
+            'color: white; '
+            'border: none; '
+            'border-radius: 0.5rem; '
+            'text-align: center; '
+            'width: 100%; '
+            'box-sizing: border-box; '
+            'font-weight: 500; '
+            'cursor: pointer; '
+            'font-size: 1rem;'
+            '">🏠 Menu Inicial</button>',
+            unsafe_allow_html=True
+        )
 
     
 
