@@ -43,53 +43,70 @@ def update_article_on_db(_id: str, update: dict):
 
     # Traduzindo o campo de tipo de droga
     drugs = []
-    for _, row in update.get("drugs").iterrows():
-        if not row["Tipo de droga"].isspace():
-            drugs.append({
-                "type": "fixed_field",
-                "drug_type": row["Tipo de droga"],
-                "amount": row["Quantidade"],
-                "metric": row["Métrica"],
-            })
-    for _, row in update.get("other_drugs").iterrows():
-        if not row["Outro tipo de droga"].isspace():
-            drugs.append({
-                "type": "free_field",
-                "drug_type": row["Outro tipo de droga"],
-                "amount": row["Quantidade"],
-                "metric": row["Métrica"],
-            })
-    del update["other_drugs"]
+    drugs_df = update.get("drugs")
+    if drugs_df is not None and hasattr(drugs_df, 'iterrows'):
+        for _, row in drugs_df.iterrows():
+            drug_type = row.get("Tipo de droga", "")
+            if drug_type and not str(drug_type).isspace():
+                drugs.append({
+                    "type": "fixed_field",
+                    "drug_type": drug_type,
+                    "amount": row.get("Quantidade", ""),
+                    "metric": row.get("Métrica", ""),
+                })
+    other_drugs_df = update.get("other_drugs")
+    if other_drugs_df is not None and hasattr(other_drugs_df, 'iterrows'):
+        for _, row in other_drugs_df.iterrows():
+            drug_type = row.get("Outro tipo de droga", "")
+            if drug_type and not str(drug_type).isspace():
+                drugs.append({
+                    "type": "free_field",
+                    "drug_type": drug_type,
+                    "amount": row.get("Quantidade", ""),
+                    "metric": row.get("Métrica", ""),
+                })
+    if "other_drugs" in update:
+        del update["other_drugs"]
     update["drugs"] = drugs
 
     # Traduzindo o campo de tipo de arma
     guns = []
-    for _, row in update.get("guns").iterrows():
-        if not row["Tipo de arma"].isspace():
-            guns.append({
-                "gun_type": row["Tipo de arma"],
-                "quantity": row["Quantidade"],
-            })
+    guns_df = update.get("guns")
+    if guns_df is not None and hasattr(guns_df, 'iterrows'):
+        for _, row in guns_df.iterrows():
+            gun_type = row.get("Tipo de arma", "")
+            if gun_type and not str(gun_type).isspace():
+                guns.append({
+                    "gun_type": gun_type,
+                    "quantity": row.get("Quantidade", ""),
+                })
     update["guns"] = guns
 
     # Traduzindo o campo de atores
     actors = []
-    for _, row in update.get("actors").iterrows():
-        if not row["Relação"].isspace():
-            actors.append({
-                "actor 1": row["Ator 1"],
-                "actor 2": row["Ator 2"],
-                "relationship": db.domain_translation(column_name="actors_relationship", description=row["Relação"]),
-            })
+    actors_df = update.get("actors")
+    if actors_df is not None and hasattr(actors_df, 'iterrows'):
+        for _, row in actors_df.iterrows():
+            relationship = row.get("Relação", "")
+            if relationship and not str(relationship).isspace():
+                actors.append({
+                    "actor 1": row.get("Ator 1", ""),
+                    "actor 2": row.get("Ator 2", ""),
+                    "relationship": db.domain_translation(column_name="actors_relationship", description=relationship),
+                })
     update["actors"] = actors
 
     # Traduzindo o campo de artigos do mesmo evento
     same_event_article_ids = []
-    for _, row in update.get("same_event").iterrows():
-        if row["ID da notícia"]:
-            same_event_article_ids.append(int(row["ID da notícia"]))
+    same_event_df = update.get("same_event")
+    if same_event_df is not None and hasattr(same_event_df, 'iterrows'):
+        for _, row in same_event_df.iterrows():
+            article_id = row.get("ID da notícia")
+            if article_id:
+                same_event_article_ids.append(int(article_id))
     update["same_event_articles_id"] = same_event_article_ids
-    del update["same_event"]
+    if "same_event" in update:
+        del update["same_event"]
     # Validação dos IDs inseridos
     if not db.articles_exist(same_event_article_ids):
         return 0, f"Os dados não foram salvos. Pelo menos um dos IDs de notícias sobre o mesmo evento não existe."

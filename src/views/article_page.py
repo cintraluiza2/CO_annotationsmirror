@@ -985,9 +985,11 @@ def article_page():
 
                     except Exception as e:
 
-                        print(e)
+                        import traceback
+                        print(f"Erro ao salvar: {e}")
+                        traceback.print_exc()
 
-                        st.error("Ocorreu algum erro ao tentar salvar!")
+                        st.error(f"Ocorreu algum erro ao tentar salvar: {e}")
 
                     else:
 
