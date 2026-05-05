@@ -267,7 +267,7 @@ def create_sidebar(messages_placeholder):
         # Filtro de relevância manual
         st.selectbox(
             "Anotação manual:",
-            options=["Todas", "Relevantes", "Irrelevantes", "Dúvida", "Sem anotação"],
+            options=["Todas", "Relevantes", "Irrelevantes", "Dúvida", "Não, mas com info importantes", "Sem anotação"],
             on_change=None,
             key="manual_relevance_input",
         )

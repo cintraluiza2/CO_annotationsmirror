@@ -473,7 +473,7 @@ def article_page():
 
                     "Relevante?",
 
-                    ["Não", "Sim", "Dúvida"],
+                    ["Não", "Sim", "Dúvida", "Não, mas com informações importantes"],
 
                     horizontal=True,
 
@@ -481,6 +481,14 @@ def article_page():
 
                     index=article.get("manual_relevance_class", None)
 
+                )
+
+                # Campo de texto para informações importantes (sempre visível)
+                st.text_area(
+                    "Informações importantes (caso houver):",
+                    key="important_info_input",
+                    value=article.get("important_info", ""),
+                    height=150
                 )
 
 
@@ -950,6 +958,8 @@ def article_page():
                                 update={
 
                                     "manual_relevance_class": st.session_state.get("manual_relevance_input", None),
+
+                                    "important_info": st.session_state.get("important_info_input", ""),
 
                                     "country": st.session_state.get("country_input", None),
 

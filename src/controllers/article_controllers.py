@@ -31,6 +31,7 @@ def update_article_on_db(_id: str, update: dict):
             "Sim": 1,
             "Não": 0,
             "Dúvida": 2,
+            "Não, mas com informações importantes": 3,
         }[update["manual_relevance_class"]]
 
     # Traduzindo o país
