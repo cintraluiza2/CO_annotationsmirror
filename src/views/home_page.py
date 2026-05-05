@@ -224,6 +224,7 @@ def apply_filters_form(mode): # "next_page", "previous_page" ou "search"
     st.session_state.filters = {
         'article_id': st.session_state.get("article_id_input", ""),
         'title': st.session_state.get("title_input", ""),
+        'keyword': st.session_state.get("keyword_input", ""),
         'begin_date': st.session_state.get("begin_date_input", ""),
         'end_date': st.session_state.get("end_date_input", ""),
         'manual_relevance': st.session_state.get("manual_relevance_input", None),
@@ -240,6 +241,7 @@ def create_sidebar(messages_placeholder):
     with st.sidebar.form("filters_form", enter_to_submit=True):
         st.text_input("ID da notícia:", key="article_id_input", help="Buscar notícia pelo ID (ObjectId do MongoDB)")
         st.text_input("Título da notícia:", key="title_input")
+        st.text_input("Palavra-chave:", key="keyword_input", help="Buscar notícias que contenham esta palavra no título ou texto")
 
         # Filtros de data (opcionais)
         col1, col2 = st.columns(2)

@@ -139,6 +139,18 @@ def get_articles_dataframe(filters, page=1, sort=DEFAULT_SORTING_FIELD, sort_typ
     # Se não houver ID, remover do filtro e processar normalmente
     filters.pop("article_id", None)
 
+    # Formatação da palavra-chave (busca no título e texto do artigo)
+    keyword = filters.get("keyword", "").strip()
+    if keyword:
+        # Usa regex case-insensitive para buscar a palavra-chave no título ou artigo
+        filters.update({
+            "$or": [
+                {"title": {"$regex": keyword, "$options": "i"}},
+                {"article": {"$regex": keyword, "$options": "i"}}
+            ]
+        })
+    filters.pop("keyword", None)
+
     # Formatação da relevância manual
     if not filters.get("manual_relevance") == "Todas":
         if filters.get("manual_relevance") == "Relevantes":
