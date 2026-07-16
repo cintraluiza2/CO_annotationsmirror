@@ -8,7 +8,8 @@ import pandas as pd
 
 from ..controllers.article_controllers import get_article, regex_search, update_article_on_db, get_countries, domain_translation, get_article_extraction
 
-from ..settings import ACTORS_RELATIONS, DEFAULT_DRUGS_METRICS, DEFAULT_DRUGS, BRAZILIAN_STATES
+from ..settings import ACTORS_RELATIONS, DEFAULT_DRUGS_METRICS, DEFAULT_DRUGS
+from ..utils.location_options import subdivisions_for_country
 
 
 
@@ -461,12 +462,66 @@ def article_page():
 
             
 
+            st.header("Anotação humana")
+
+            countries = [c["description"] for c in get_countries()]
+            saved_country = (
+                domain_translation("country", value=article["country"])
+                if article.get("country")
+                else None
+            )
+
+            # Evita transportar valores de localizacao ao navegar para outra noticia.
+            location_article_key = f"location_article_{article_id}"
+            if st.session_state.get("location_article_key") != location_article_key:
+                st.session_state["location_article_key"] = location_article_key
+                st.session_state["country_input"] = saved_country
+                st.session_state["state_input"] = article.get("state")
+
+            suggested_country = st.session_state.pop("suggested_country_value", None)
+            if suggested_country in countries:
+                st.session_state["country_input"] = suggested_country
+
+            def reset_state_after_country_change():
+                st.session_state["state_input"] = None
+
+            st.selectbox(
+                "País:",
+                options=countries,
+                index=None,
+                placeholder="Selecione o país",
+                key="country_input",
+                on_change=reset_state_after_country_change,
+            )
+
+            if extracted_data.get("país"):
+                st.caption(f"💡 Sugestão: **{extracted_data.get('país')}**")
+
+            selected_country = st.session_state.get("country_input")
+            state_options = subdivisions_for_country(selected_country)
+            saved_or_suggested_state = st.session_state.pop("suggested_state_value", None)
+            if saved_or_suggested_state in state_options:
+                st.session_state["state_input"] = saved_or_suggested_state
+            elif st.session_state.get("state_input") not in state_options:
+                st.session_state["state_input"] = None
+
+            st.selectbox(
+                "Estado/Província/Departamento:",
+                options=state_options,
+                index=None,
+                placeholder=(
+                    "Selecione o estado, província ou departamento"
+                    if selected_country and state_options
+                    else "Selecione primeiro o país"
+                ),
+                key="state_input",
+                disabled=not state_options,
+            )
+
+            if extracted_data.get("estado"):
+                st.caption(f"💡 Sugestão: **{extracted_data.get('estado')}**")
+
             with st.form("human_annotation", enter_to_submit=False):
-
-                st.header("Anotação humana")
-
-
-
                 # Relevância
 
                 st.radio(
@@ -508,90 +563,6 @@ def article_page():
                     index=article.get("validated", 0)
 
                 )
-
-
-
-                # País
-
-                countries = [c["description"] for c in get_countries()] # Obtendo todos os países conhecidos no banco
-
-                # Obtendo o índice do país salvo no banco, se houver:
-
-                suggested_country = st.session_state.get("suggested_country_value")
-
-                if suggested_country and suggested_country in countries:
-
-                    index = countries.index(suggested_country)
-
-                    st.session_state.pop("suggested_country_value", None)
-
-                else:
-
-                    index = countries.index(domain_translation("country", value=article["country"])) if article.get("country") else None
-
-                
-
-                st.selectbox(
-
-                    "País:",
-
-                    options=countries,
-
-                    index=index,
-
-                    placeholder="Selecione o país",
-
-                    key="country_input",
-
-                )
-
-                
-
-                # Sugestão de País (abaixo do campo)
-
-                if extracted_data.get("país"):
-
-                    st.caption(f"💡 Sugestão: **{extracted_data.get('país')}**")
-
-
-
-                # Estado
-
-                suggested_state = st.session_state.get("suggested_state_value")
-
-                if suggested_state and suggested_state in BRAZILIAN_STATES:
-
-                    state_index = BRAZILIAN_STATES.index(suggested_state)
-
-                    st.session_state.pop("suggested_state_value", None)
-
-                else:
-
-                    state_index = BRAZILIAN_STATES.index(article.get("state")) if article.get("state") in BRAZILIAN_STATES else None
-
-                
-
-                st.selectbox(
-
-                    "Estado:",
-
-                    options=BRAZILIAN_STATES,
-
-                    index=state_index,
-
-                    placeholder="Selecione o estado",
-
-                    key="state_input"
-
-                )
-
-                
-
-                # Sugestão de Estado (abaixo do campo)
-
-                if extracted_data.get("estado"):
-
-                    st.caption(f"💡 Sugestão: **{extracted_data.get('estado')}**")
 
 
 
