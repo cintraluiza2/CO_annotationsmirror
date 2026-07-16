@@ -53,3 +53,10 @@ Basta executar o comando abaixo para que uma porta local seja disponibilizada pa
 ```shell
 streamlit run main.py
 ```
+
+## Campo dependente de país e subdivisão
+
+Na tela de anotação, o campo **Estado/Província/Departamento** é atualizado automaticamente quando o país muda. A lista usa as subdivisões ISO 3166-2 fornecidas por `pycountry`, com resolução de nomes em português por `Babel`.
+
+Os seletores de país e subdivisão ficam fora de `st.form`, pois widgets internos a um formulário só enviam alterações no submit. O restante da anotação continua sendo salvo pelo botão **Salvar**.
+
